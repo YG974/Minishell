@@ -1,3 +1,9 @@
+fonctions autorisees :
+malloc, free, write, open, read, close, fork, wait,
+waitpid, wait3, wait4, signal, kill, exit, getcwd,
+chdir, stat, lstat, fstat, execve, dup, dup2, pipe,
+opendir, readdir, closedir, strerror, errno
+
 Afficher un prompt en l’attente d’une nouvelle commande
 • Chercher et lancer le bon executable (basé sur une variable d’environnement PATH ou en utilisant un path absolu), comme dans bash
 • Vous devez implémenter les builtins suivants :
