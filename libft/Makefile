@@ -24,6 +24,11 @@ SRCS_B= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
 ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
 ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c \
 
+SRCS_C= ft_checkflags.c ft_convc.c ft_convd.c ft_convd_ii.c \
+ft_convert.c ft_convp.c ft_convp_ii.c ft_convprc.c ft_convs.c \
+ft_convu.c ft_convx.c ft_convxx.c ft_flagsconvert.c ft_getstr.c \
+ft_itoad.c ft_itoap.c ft_itoau.c ft_itoax.c ft_printf.c ft_putstr_p.c\
+
 OBJECTS= ft_atoi.o ft_isprint.o ft_putchar_fd.o ft_strjoin.o ft_substr.o \
 ft_bzero.o ft_memccpy.o ft_putendl_fd.o ft_strlcat.o ft_tolower.o ft_strrchr.o\
 ft_calloc.o ft_memchr.o ft_putnbr_fd.o  ft_strlcpy.o    ft_toupper.o \
@@ -31,6 +36,11 @@ ft_isalnum.o ft_memcmp.o ft_putstr_fd.o ft_strlen.o ft_isalpha.o ft_memcpy.o \
 ft_split.o ft_strncmp.o ft_isascii.o ft_memmove.o ft_strchr.o ft_strnstr.o \
 ft_isdigit.o ft_memset.o ft_strdup.o ft_strtrim.o ft_itoa.o ft_strmapi.o\
 get_next_line.o get_next_line_utils.o \
+ft_checkflags.o ft_convc.o ft_convd.o ft_convd_ii.o \
+ft_convert.o ft_convp.o ft_convp_ii.o ft_convprc.o ft_convs.o \
+ft_convu.o ft_convx.o ft_convxx.o ft_flagsconvert.o ft_getstr.o \
+ft_itoad.o ft_itoap.o ft_itoau.o ft_itoax.o ft_printf.o \
+
 
 OBJECTS_B=ft_lstnew_bonus.o ft_lstadd_front_bonus.o ft_lstsize_bonus.o \
 ft_lstlast_bonus.o ft_lstadd_back_bonus.o ft_lstdelone_bonus.o \
@@ -42,7 +52,7 @@ all: $(NAME)
 	
 $(NAME): $(SRCS) libft.h
 
-	@gcc -Wall -Wextra -Werror -I$(INCLUDES) -c $(SRCS)
+	@gcc -Wall -Wextra -Werror -I$(INCLUDES) -c $(SRCS) $(SRCS_C)
 	@ar rc $(NAME) $(OBJECTS)
 	@ranlib $(NAME)
 	
