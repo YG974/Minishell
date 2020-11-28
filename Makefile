@@ -50,4 +50,3 @@ test:			$(NAME)
 				./${NAME}
 
 .PHONY:			all clean fclean re test
-
