@@ -1,29 +1,28 @@
-NAME		= libasm.a
+NAME		= minishell
 
 CC			= clang
-NA			= nasm
 
 C_FLAGS		= -Wall -Wextra -Werror
-S_FLAGS		= -f macho64
 
-SRC 		= ft_strlen \
-				ft_strcpy \
-				ft_strcmp \
-				ft_write \
-				ft_read \
-				ft_strdup
+SRC 		= minishell \
 
-FILES 		= $(addsuffix .s, $(SRC))
-OBJ			= $(FILES:.s=.o)
+FILES 		= $(addsuffix .c, $(SRC))
 
-%.o: %.s
-	$(NA) $(S_FLAGS) $<
+OBJ			= $(FILES:.c=.o)
+
+%.o: %.c
+	$(CC) $(C_FLAGS) -c $< -o $@
+
+FT		= ./libft/
+FT_LIB	= $(addprefix $(FT),libft.a)
+INCLUDES	= ./includes/
 
 all: $(NAME)
+	$(CC) $(C_FLAGS) -o ${NAME} ${OBJ} -L ${FT_LIB}
 
 $(NAME): $(OBJ)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+$(FT_LIB):
+	make -C $(FT)
 
 clean:
 	rm -f $(OBJ)
