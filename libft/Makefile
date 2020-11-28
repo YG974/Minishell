@@ -39,7 +39,7 @@ get_next_line.o get_next_line_utils.o \
 ft_checkflags.o ft_convc.o ft_convd.o ft_convd_ii.o \
 ft_convert.o ft_convp.o ft_convp_ii.o ft_convprc.o ft_convs.o \
 ft_convu.o ft_convx.o ft_convxx.o ft_flagsconvert.o ft_getstr.o \
-ft_itoad.o ft_itoap.o ft_itoau.o ft_itoax.o ft_printf.o \
+ft_itoad.o ft_itoap.o ft_itoau.o ft_itoax.o ft_printf.o ft_putstr_p.o\
 
 
 OBJECTS_B=ft_lstnew_bonus.o ft_lstadd_front_bonus.o ft_lstsize_bonus.o \
