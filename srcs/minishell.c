@@ -46,7 +46,7 @@ int		main(int ac, char **av)
 	
 	t_mini	s;
 	init_mini(&s);
-	prompt(&s);
 	s.sig = ft_printf("paco c'est un GROS GAYYYYYY hihihi\n\n");
+	prompt(&s);
 	return (0);
 }
