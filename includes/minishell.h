@@ -19,8 +19,11 @@
 
 # define BUFF_SIZE 4096
 
+# define ERR_CALLOC 1
+
 typedef struct		s_read
 {
+	ssize_t			ret;
 	size_t			count;
 	void			*buf;
 	int				fd;
@@ -39,8 +42,8 @@ typedef struct		s_mini
 	t_read			read;
 	int				status;
 	int				sig;
-	s_mini			*next;
-	s_mini			*previous;
+	struct s_mini			*next;
+	struct s_mini			*previous;
 }					t_mini;
 
 void init_mini(t_mini *s);

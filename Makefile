@@ -46,7 +46,7 @@ fclean:			clean
 re:				fclean all
 
 # TESTING RULES
-test:			$(NAME)
+test:			$(NAME) objects ${LIB_FT}
 				./${NAME}
 
-.PHONY:			all clean fclean re test
+.PHONY:			all clean fclean re
