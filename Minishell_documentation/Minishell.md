@@ -15,7 +15,7 @@ How shell works :
 
 ## 1\. Shell read input from :
 
-- **file**
+- **file** (not required in the subject : no arguments for minishell program)
 - **standard input**, the terminal (fd =0)
 
 **Comments** : a word beginning with ``#`` causes that word and all remaining characters on that line to be ignored.
@@ -36,7 +36,7 @@ These separated words and operators are called **tokens**.
     - The characters `$` and `‘` retain their special meaning within double quotes.The backslash `\` retains its special meaning only when followed by one of the following characters: `$`, `‘`, `"`, `\`, or `newline`.
     - Within double quotes, backslashes that are followed by one of these characters are removed. Backslashes preceding characters without a special meaning are left unmodified.
     - A double quote may be quoted within double quotes by preceding it with a backslash.  
-        The special parameters `*` and `@` have special meaning when in double quotes
+    - The special parameters `*` and `@` have special meaning when in double quotes
 
 * * *
 
