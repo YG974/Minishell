@@ -20,7 +20,9 @@ void init_env(t_mini *s, char **env)
 		/*ft_printf("%d : %s\n", i, env[i]);*/
 		/*i++;*/
 	/*}*/
-	s->env->value = 0;
-	ft_printf("%d : %s\n", i, env[i]);
+	/*s->env->value = 0;*/
+	s->sig = 0;
+	/*ft_printf("%d : %s\n", i, env[i]);*/
+	ft_printf("%s\n", env[0]);
 }
 
