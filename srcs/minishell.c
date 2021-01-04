@@ -44,11 +44,6 @@ void	minishell(t_mini *s)
 	}
 }
 
-void init_env(t_mini *s)
-{
-
-}
-
 int		main(int ac, char **av, char **env)
 {
 	t_mini	s;
@@ -56,7 +51,7 @@ int		main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	init_mini(&s);
-	init_env(&s);
+	init_env(&s, env);
 	s.sig = ft_printf("Yann a des gros hemorroides a cause de ses frequentations douteuses.\n");
 	minishell(&s);
 	return (0);

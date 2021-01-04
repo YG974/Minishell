@@ -24,7 +24,7 @@
 typedef struct		s_env
 {
 	char			*value;
-	s_env			*next;
+	struct s_env	*next;
 }					t_env;
 
 typedef struct		s_read
@@ -44,6 +44,7 @@ typedef struct		s_std
 
 typedef struct		s_mini
 {
+	struct s_env	*env;
 	t_std			std;
 	t_read			read;
 	int				status;
@@ -52,16 +53,19 @@ typedef struct		s_mini
 	struct s_mini			*previous;
 }					t_mini;
 
-<<<<<<< HEAD
 void init_mini(t_mini *s);
-void init_env(t_mini *s);
-=======
+
 /*
 **	minishell.c
 */
 void	init_mini(t_mini *s);
 void	minishell(t_mini *s);
 void	prompt(t_mini *s);
+
+/*
+**	env.c
+*/
+void	init_env(t_mini *s, char **env);
 
 /*
 **	ft_parse.c
@@ -87,6 +91,5 @@ int     ft_exe_cmd(t_mini *s);
 **	ft_error.c
 */
 void	error(t_mini *s, int error);
->>>>>>> fc286a00b21c12ba070d257c3dbe746fc658f2cb
 
 #endif
