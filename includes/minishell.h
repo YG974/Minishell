@@ -52,7 +52,41 @@ typedef struct		s_mini
 	struct s_mini			*previous;
 }					t_mini;
 
+<<<<<<< HEAD
 void init_mini(t_mini *s);
 void init_env(t_mini *s);
+=======
+/*
+**	minishell.c
+*/
+void	init_mini(t_mini *s);
+void	minishell(t_mini *s);
+void	prompt(t_mini *s);
+
+/*
+**	ft_parse.c
+*/
+int     ft_parse(t_mini *s);
+
+/*
+**	ft_init_signal.c
+*/
+int     init_signal(t_mini *s);
+
+/*
+**	ft_redirection.c
+*/
+int     ft_redirection(t_mini *s);
+
+/*
+**	ft_exe_cmd.c
+*/
+int     ft_exe_cmd(t_mini *s);
+
+/*
+**	ft_error.c
+*/
+void	error(t_mini *s, int error);
+>>>>>>> fc286a00b21c12ba070d257c3dbe746fc658f2cb
 
 #endif
