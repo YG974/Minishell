@@ -20,6 +20,9 @@ void init_mini(t_mini *s)
 	s->status = 0;
 	s->next = NULL;
 	s->previous = NULL;
+	s->first_token = NULL;
+	s->current_token = NULL;
+	s->previous_token = NULL;
 	s->read.fd = STDIN;
 	s->read.count = BUFF_SIZE;
 }
@@ -32,15 +35,13 @@ void	minishell(t_mini *s)
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
 		prompt(s);
-		if (ft_parse(s))
+		if (!s->status && ft_parse(s))
 			error(s, ERR_CALLOC);
-		if (ft_redirection(s))
+		if (!s->status && ft_redirection(s))
 			error(s, ERR_CALLOC);
-		if (ft_exe_cmd(s))
+		if (!s->status && ft_exe_cmd(s))
 			error(s, ERR_CALLOC);
-		ft_printf("%s", s->read.buf);
 		free(s->read.buf);
-		s->status = 0;
 	}
 }
 
@@ -56,5 +57,6 @@ a =	write(1, "\n", 1);
 	init_env(&s, env);
 	s.sig = ft_printf("Yann a des gros hemorroides a cause de ses frequentations douteuses.\n");
 	minishell(&s);
+	ft_printf("END OF MINISHELL\n");
 	return (0);
 }

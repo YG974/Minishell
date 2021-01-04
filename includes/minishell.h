@@ -20,6 +20,16 @@
 # define BUFF_SIZE 4096
 
 # define ERR_CALLOC 1
+# define ERR_PARSING 11
+# define ERR_QUOTES 12
+# define ERR_TOKEN 13
+# define ERR_META 14
+
+typedef struct		s_tok
+{
+	char			*line;
+	struct s_tok	*next;
+}					t_tok;
 
 typedef struct		s_env
 {
@@ -47,6 +57,9 @@ typedef struct		s_mini
 	struct s_env	*env;
 	t_std			std;
 	t_read			read;
+	t_tok			*first_token;
+	t_tok			*current_token;
+	t_tok			*previous_token;
 	int				status;
 	int				sig;
 	struct s_mini			*next;
