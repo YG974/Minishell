@@ -1,30 +1,11 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-void error(t_mini *s, int error)
-{
-	int	ret;
-
-	s->status = 0;
-	if (error == ERR_CALLOC)
-		ret = ft_printf("Memory Allocation fail");
-}
-
 void prompt(t_mini *s)
-{
-	s->read.fd = STDIN;
-	s->read.count = BUFF_SIZE;
-	while(1)
-	{
-		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
-			error(s, ERR_CALLOC);
-		ft_printf("MINISHELL DU TURFU ---> ");
-		s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
-		ft_printf("%s", s->read.buf);
-		if (ft_parse(s))
-			error(s, ERR_CALLOC);
-		free(s->read.buf);
-	}
+{	
+	ft_printf("MINISHELL DU TURFU ---> ");
+	s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
+	/*ft_printf("%s", s->read.buf);*/
 }
 
 void init_mini(t_mini *s)
@@ -40,16 +21,38 @@ void init_mini(t_mini *s)
 	s->status = 0;
 	s->next = NULL;
 	s->previous = NULL;
+	s->read.fd = STDIN;
+	s->read.count = BUFF_SIZE;
+}
+
+void	minishell(t_mini *s)
+{
+	init_signal(s);
+	while(!s->status)
+	{
+		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
+			error(s, ERR_CALLOC);
+		prompt(s);
+		if (ft_parse(s))
+			error(s, ERR_CALLOC);
+		if (ft_redirection(s))
+			error(s, ERR_CALLOC);
+		if (ft_exe_cmd(s))
+			error(s, ERR_CALLOC);
+		ft_printf("%s", s->read.buf);
+		free(s->read.buf);
+		s->status = 0;
+	}
 }
 
 int		main(int ac, char **av)
 {
+	t_mini	s;
+
 	(void)ac;
 	(void)av;
-	
-	t_mini	s;
 	init_mini(&s);
-	s.sig = ft_printf("paco c'est un GROS GAYYYYYY hihihi\n\n");
-	prompt(&s);
+	s.sig = ft_printf("Yann a des gros hemorroides a cause de ses frequentations douteuses.\n");
+	minishell(&s);
 	return (0);
 }
