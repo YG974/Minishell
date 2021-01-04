@@ -5,27 +5,32 @@
 void init_env(t_mini *s, char **env)
 {
 	int		i;
-	t_env	new;
-	t_env	old;
+	t_env	*new;
+	t_env	*old;
 
 	i = 0;
-	if (!(s->*env = ft_calloc(sizeof(t_env), 1)))
+	if (!(old = ft_calloc(sizeof(t_env), 1)))
 		error(s, ERR_CALLOC);
-	s->env->value = 0;
+	old->value = ft_strdup(env[i]);
+	old->next = NULL;
+	s->env = old;
+	i++;
 	while (env[i] != NULL)
 	{
-		/*while (s->env->next != NULL)*/
-			/*s->env->next = next;*/
 		if (!(new = ft_calloc(sizeof(t_env), 1)))
 			error(s, ERR_CALLOC);
-		new.value = ft_strdup(env[i]);
-		new.next = NULL;
-
-		ft_printf("%d : %s\n", i, env[i]);
+		new->value = ft_strdup(env[i]);
+		new->next = NULL;
+		old->next = new;
+		old = new;
+		/*ft_printf("%d : %s\n", i, env[i]);*/
 		i++;
 	}
-	s->sig = 0;
-	ft_printf("%d : %s\n", i, env[i]);
-	ft_printf("%s\n", env[0]);
+
+	while (s->env->next)
+	{
+		ft_printf("%s\n", s->env->value);
+		s->env = s->env->next;
+	}
 }
 

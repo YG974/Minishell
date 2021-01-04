@@ -44,7 +44,7 @@ typedef struct		s_std
 
 typedef struct		s_mini
 {
-	struct s_env	env;
+	struct s_env	*env;
 	t_std			std;
 	t_read			read;
 	int				status;
