@@ -14,7 +14,8 @@ LIB_DIR			= ./libft/
 LIB_FT			= $(addprefix $(LIB_DIR),libft.a)
 
 # FILES
-SRCS			= minishell \
+SRCS			= 	minishell \
+					ft_parse_1 \
 
 FILES			= $(addsuffix .c, $(SRCS))
 OBJECTS			= $(addprefix $(BUILDING_DIR),$(FILES:.c=.o))

@@ -20,6 +20,7 @@ copy env() -->
  `new line`, `|` , `;`, `(`, `)`, `<`, or `>`.   
  check if the metacharacter is not quoted  
  check quoting exceptions
+		1.1 Check Quotes (", ', \) : " and/or ' need to be even or equal to 0. If not, a quote is not close, so return error.
 	2. split_words_into_tokens() --> into linked chain or **char  
  `space`, `tab`  
 	3. convert_tokens_into_commands()

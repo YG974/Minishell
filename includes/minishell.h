@@ -47,5 +47,6 @@ typedef struct		s_mini
 }					t_mini;
 
 void init_mini(t_mini *s);
+int     ft_parse(t_mini *s);
 
 #endif

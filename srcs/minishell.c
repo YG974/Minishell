@@ -14,13 +14,16 @@ void prompt(t_mini *s)
 {
 	s->read.fd = STDIN;
 	s->read.count = BUFF_SIZE;
-	if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
-		error(s, ERR_CALLOC);
 	while(1)
 	{
+		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
+			error(s, ERR_CALLOC);
 		ft_printf("MINISHELL DU TURFU ---> ");
 		s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
-		/*ft_printf("%s", s->read.buf);*/
+		ft_printf("%s", s->read.buf);
+		if (ft_parse(s))
+			error(s, ERR_CALLOC);
+		free(s->read.buf);
 	}
 }
 
