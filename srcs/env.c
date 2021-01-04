@@ -4,10 +4,10 @@
 
 void init_env(t_mini *s, char **env)
 {
-	/*int		i;*/
+	int		i;
 	/*t_env	new;*/
 
-	/*i = 0;*/
+	i = 0;
 	/*while (env[i] != NULL)*/
 	/*{*/
 		/*[>while (s->env->next != NULL)<]*/
@@ -20,7 +20,7 @@ void init_env(t_mini *s, char **env)
 		/*ft_printf("%d : %s\n", i, env[i]);*/
 		/*i++;*/
 	/*}*/
-	env[0] = 0;
 	s->env->value = 0;
+	ft_printf("%d : %s\n", i, env[i]);
 }
 
