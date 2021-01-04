@@ -1,6 +1,9 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
+/*
+**	copy every string of the env in s->env linked list
+*/
 
 void init_env(t_mini *s, char **env)
 {
