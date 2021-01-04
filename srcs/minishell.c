@@ -20,7 +20,6 @@ void prompt(t_mini *s)
 	{
 		ft_printf("MINISHELL DU TURFU ---> ");
 		s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
-		/*ft_printf("%s", s->read.buf);*/
 	}
 }
 
@@ -39,13 +38,19 @@ void init_mini(t_mini *s)
 	s->previous = NULL;
 }
 
-int		main(int ac, char **av)
+void init_env(t_mini *s)
+{
+
+}
+
+int		main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
 	
 	t_mini	s;
 	init_mini(&s);
+	init_env(&s);
 	s.sig = ft_printf("paco c'est un GROS GAYYYYYY hihihi\n\n");
 	prompt(&s);
 	return (0);

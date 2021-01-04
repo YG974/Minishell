@@ -21,6 +21,12 @@
 
 # define ERR_CALLOC 1
 
+typedef struct		s_env
+{
+	char			*value;
+	s_env			*next;
+}					t_env;
+
 typedef struct		s_read
 {
 	ssize_t			ret;
@@ -47,5 +53,6 @@ typedef struct		s_mini
 }					t_mini;
 
 void init_mini(t_mini *s);
+void init_env(t_mini *s);
 
 #endif
