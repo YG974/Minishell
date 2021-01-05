@@ -61,6 +61,7 @@ t_cmdl   *ft_create_cmdl(t_mini *s)
             tmp = tmp->next;
         if (!(tmp->next = ft_calloc(1, sizeof(t_cmdl))))
             return (NULL);
+        tmp = tmp->next;
         tmp->line = NULL;
         tmp->next = NULL;
     }
@@ -79,8 +80,11 @@ int     ft_del_cmdline(t_mini *s, int ret)
         if (todel->line)
             free(todel->line);
         free(todel);
+        todel->line = NULL;
+        todel->next = NULL;
         todel = tmp;
     }
+    s->firstcmdl = NULL;
     return (ret);
 }
 
@@ -103,6 +107,7 @@ int     ft_get_cmd(char *line, t_mini *s)
                     return (ft_del_cmdline(s, 1));
                 if (!(tmp->line = ft_strdup_size(line, i, j)))
                     return (ft_del_cmdline(s, 1));
+                i++;
                 j = i;
             }
         i++;

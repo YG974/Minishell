@@ -24,16 +24,36 @@ int     ft_check_semicolons(char *line)
     return (0);
 }
 
+void    ft_testchainlist(t_mini *s)
+{
+    int     i;
+    t_cmdl  *tmp;
+
+    i = 0;
+    tmp = s->firstcmdl;
+    while (tmp)
+    {
+        ft_printf("CMD LINE %d : %s\n", i, tmp->line);
+        i++;
+        tmp = tmp->next;
+    }
+}
+
 int     ft_parse(t_mini *s)
 {
     int     ret;
 
     ret = 0;
+    s->error = 0;
     ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");
     if (ft_check_semicolons(s->read.buf))
         error(s, ERR_SEMCOL);
-    /*if (!s->error && (ret = ft_get_cmd(s->read.buf, s)))
-        error(s, ret);*/
+    if (!s->error && (ret = ft_get_cmd(s->read.buf, s)))
+        error(s, ret);
+    /* test chain list cmdlines
+    */
+    ft_testchainlist(s);
+    ret = ft_del_cmdline(s, 0);
     ft_printf("===========> On sort de la fonction de PARSING <============\n");
     return (0);
 }
