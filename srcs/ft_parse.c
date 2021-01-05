@@ -10,7 +10,9 @@ int     ft_check_quotes(char *line)
     q = 0;
     while (line[i])
     {
-        if (line[i] == '\'' && q == 0)
+        if (i > 0 && line[i - 1] == '\\')
+            q = q + 0;
+        else if (line[i] == '\'' && q == 0)
             q = 1;
         else if (line[i] == '\"' && q == 0)
             q = 2;
@@ -33,8 +35,9 @@ int     ft_get_meta(char *line, t_mini *s)
     (void)s;
     while (line[i])
     {
-        if (line[i] == '|' || line[i] == '&' || line[i] == ';' || line[i] == '(' || line[i] == ')' || line[i] == '<' 
-            || line[i] == '>')
+        if (i > 0 && line[i - 1] == '\\')
+            count = count + 0;
+        else if (line[i] == '|' || line[i] == ';' || line[i] == '<' || line[i] == '>')
             if (!ft_check_quotes(line + i))
                 count++;
         i++;
