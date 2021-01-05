@@ -12,4 +12,6 @@ void error(t_mini *s, int error)
 		ret = ft_printf("Parsing fail\n");
 	if (error == ERR_QUOTES)
 		ret = ft_printf("Parsing fail, quote not close\n");
+	if (error == ERR_SEMCOL)
+		ret = ft_printf("Bad using of ';'. Retry mother fucker.\n");
 }

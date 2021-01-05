@@ -103,6 +103,7 @@ void	init_env(t_mini *s, char **env);
 /*
 **	ft_parse.c
 */
+int     ft_check_semicolons(char *line);
 int     ft_parse(t_mini *s);
 
 /*
