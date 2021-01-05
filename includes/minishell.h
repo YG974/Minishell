@@ -20,9 +20,11 @@
 # define BUFF_SIZE 4096
 
 # define ERR_CALLOC 1
+# define ERR_INVALID_ENV_NAME 2
 
 typedef struct		s_env
 {
+	char			*name;
 	char			*value;
 	struct s_env	*next;
 }					t_env;
@@ -65,6 +67,9 @@ void	prompt(t_mini *s);
 **	env.c
 */
 void init_env(t_mini *s, char **env);
+void copy_env(t_mini *s, char **env);
+void check_env_validity(t_mini *s);
+void is_valid_env_name(t_mini *s, char *str);
 
 /*
 **	ft_parse.c

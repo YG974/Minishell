@@ -7,5 +7,7 @@ void error(t_mini *s, int error)
 
 	s->status = 0;
 	if (error == ERR_CALLOC)
-		ret = ft_printf("Memory Allocation fail");
+		ret = ft_printf("Memory Allocation fail\n");
+	if (error == ERR_INVALID_ENV_NAME)
+		ret = ft_printf("invalid variable name or value\n");
 }
