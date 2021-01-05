@@ -25,6 +25,8 @@ void init_mini(t_mini *s)
 	s->previous_token = NULL;
 	s->read.fd = STDIN;
 	s->read.count = BUFF_SIZE;
+	s->parse.semcol = 0;
+	s->firstcmdl = NULL;
 }
 
 void	minishell(t_mini *s)

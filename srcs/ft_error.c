@@ -5,7 +5,7 @@ void error(t_mini *s, int error)
 {
 	int	ret;
 
-	s->status = 1;
+	s->error = 1;
 	if (error == ERR_CALLOC)
 		ret = ft_printf("Memory Allocation fail\n");
 	if (error == ERR_PARSING)

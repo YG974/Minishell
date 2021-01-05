@@ -24,6 +24,10 @@
 # define ERR_QUOTES 12
 # define ERR_TOKEN 13
 # define ERR_META 14
+# define ERR_SEMCOL 15
+# define ERR_GETCMD 16
+
+
 
 typedef struct		s_tok
 {
@@ -52,16 +56,32 @@ typedef struct		s_std
 	int				err;
 }					t_std;
 
+typedef	struct		s_forparse
+{
+	int				semcol;
+}					t_forparse;
+
+typedef	struct		s_cmdl
+{
+	char			*line;
+	struct s_cmdl	*next;
+}					t_cmdl;
+
+
 typedef struct		s_mini
 {
 	struct s_env	*env;
 	t_std			std;
 	t_read			read;
+	t_forparse		parse;
 	t_tok			*first_token;
 	t_tok			*current_token;
 	t_tok			*previous_token;
+	t_cmdl			*firstcmdl;
+	t_cmdl			*currentcmdl;
 	int				status;
 	int				sig;
+	int				error;
 	struct s_mini			*next;
 	struct s_mini			*previous;
 }					t_mini;
@@ -84,6 +104,15 @@ void	init_env(t_mini *s, char **env);
 **	ft_parse.c
 */
 int     ft_parse(t_mini *s);
+
+/*
+**	ft_get_cmd_lines.c
+*/
+int     ft_not_quoted(char *line, int i);
+char    *ft_strdup_size(char *line, int i, int j);
+t_cmdl    *ft_create_cmdl(t_mini *s);
+int     ft_del_cmdline(t_mini *s, int ret);
+int     ft_get_cmd(char *line, t_mini *s);
 
 /*
 **	ft_init_signal.c
