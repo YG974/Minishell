@@ -97,3 +97,14 @@ int     ft_exe_cmd(t_mini *s);
 void	error(t_mini *s, int error);
 
 #endif
+
+/*
+**	if quotes are not even -> error
+**	if ";;" error 
+**	operator or word
+**	boolean to know if quoted, control operator, redir etc
+**	delete space tab etc
+**	
+*/
+
+
