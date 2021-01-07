@@ -28,7 +28,7 @@ void	check_env_variable_name(t_mini *s)
 }
 
 /*
-** split name and value, deleting the "=" into env->name and env->value
+** split name and value into env->name and env->value, deleting the "=".
 ** if value is empty, replace by ""(empty string) and not NULL Char
 */
 
