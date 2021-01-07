@@ -9,7 +9,7 @@ int     ft_check_semicolons(char *line)
     while (line[i])
     {
         if (i > 0 && line[i - 1] == '\\')
-            i = i + 0;
+            i++;
         else if (line[i] == ';' && !ft_not_quoted(line, i))
         {
             i++;
