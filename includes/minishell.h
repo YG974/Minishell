@@ -136,3 +136,5 @@ int     ft_exe_cmd(t_mini *s);
 void	error(t_mini *s, int error);
 
 #endif
+
+    //ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");
