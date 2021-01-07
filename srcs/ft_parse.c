@@ -8,11 +8,13 @@ int     ft_check_semicolons(char *line)
     i = 0;
     while (line[i])
     {
+		ft_printf("line char %d : %c\n",i, line[i]);
         if (i > 0 && line[i - 1] == '\\')
             i++;
         else if (line[i] == ';' && !ft_not_quoted(line, i))
         {
             i++;
+		ft_printf("hihi");
             while (line[i] != '\0' && line[i] == ' ')
                 i++;
             if (line[i] == ';')
@@ -53,6 +55,7 @@ int     ft_parse(t_mini *s)
     /* test chain list cmdlines
     */
     ft_testchainlist(s);
+	break_cmdline_into_token(s);
     ret = ft_del_cmdline(s, 0);
     ft_printf("===========> On sort de la fonction de PARSING <============\n");
     return (0);

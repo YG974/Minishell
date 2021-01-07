@@ -79,9 +79,11 @@ typedef struct		s_mini
 	t_tok			*previous_token;
 	t_cmdl			*firstcmdl;
 	t_cmdl			*currentcmdl;
+	char			**line;
 	int				status;
 	int				sig;
 	int				error;
+	int				i;
 	struct s_mini			*next;
 	struct s_mini			*previous;
 }					t_mini;
@@ -135,6 +137,11 @@ int     ft_exe_cmd(t_mini *s);
 */
 void	error(t_mini *s, int error);
 
+/*
+**	token.c
+*/
+void break_cmdline_into_token(t_mini *s);
+int is_char_set(int c, const char *char_set);
 #endif
 
     //ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");

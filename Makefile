@@ -19,6 +19,7 @@ SRCS			= 	minishell \
 					ft_parse2 \
 					ft_get_cmd_lines \
 					env \
+					token \
 					ft_init_signal \
 					ft_redirection \
 					ft_exe_cmd \
