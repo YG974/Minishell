@@ -27,6 +27,11 @@
 # define ERR_SEMCOL 15
 # define ERR_GETCMD 16
 
+/* FLAGS ON EVERY CHAR OF COMMAND LINE FOR THE PARSING */
+# define S_QUOTED 1
+# define D_QUOTED 2
+# define ESCAPED 3
+
 
 
 typedef struct		s_tok
