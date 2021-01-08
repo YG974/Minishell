@@ -21,9 +21,9 @@ void check_double_quotes(t_mini *s)
 		while (s->line[0][s->i] != '\"' && s->line[0][s->i])
 		{
 			s->line[1][s->i] = '2';
+			s->i++;
 			if (s->line[0][s->i] == '\0')
 				error (s, ERR_QUOTES);
-			s->i++;
 		}
 		s->i++;
 	}
@@ -40,9 +40,9 @@ void check_double_quotes(t_mini *s)
 		while (s->line[0][s->i] != '\'' && s->line[0][s->i])
 		{
 			s->line[1][s->i] = '1';
+			s->i++;
 			if (s->line[0][s->i] == '\0')
 				error (s, ERR_QUOTES);
-			s->i++;
 		}
 		s->i++;
 	}
