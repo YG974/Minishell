@@ -11,13 +11,6 @@
  * 2 : inside double quotes
  * 3 : escaped by backslash
  */
-void dollar_expansions(t_mini *s)
-{
-	while (s->line[0][++s->i] && (ft_isalnum(s->line[0][s->i])
-				|| s->line[0][s->i] == '_'))
-		s->line[1][s->i] = '4';
-	/*if (s->line[1][s->i] == 1)*/
-}
 
 void check_dollars(t_mini *s)
 {
@@ -27,10 +20,15 @@ void check_dollars(t_mini *s)
 		if (s->line[0][s->i] == '$' && s->line[1][s->i] != '1'
 				&& s->line[0][s->i - 1] != '\\')
 		{
-			while (s->line[0][++s->i]
+				s->line[1][s->i] = '4';
+				s->i++;
+			while (s->line[0][s->i]
 					&& (ft_isalnum(s->line[0][s->i])
 					|| s->line[0][s->i] == '_'))
+			{
 				s->line[1][s->i] = '4';
+				s->i++;
+			}
 		}
 		else
 			s->i++;
