@@ -6,8 +6,34 @@
  * s->line[1] = flags or comments;
  * s->line[0][i] = char i of the line;
  * s->line[1][i] = flags or comments on char i;
- * 
+ * flags :
+ * 1 : inside simpled quotes
+ * 2 : inside double quotes
+ * 3 : escaped by backslash
  */
+void dollar_expansions(t_mini *s)
+{
+	while (s->line[0][++s->i] && (ft_isalnum(s->line[0][s->i])
+				|| s->line[0][s->i] == '_'))
+		s->line[1][s->i] = '4';
+	/*if (s->line[1][s->i] == 1)*/
+}
+
+void check_dollars(t_mini *s)
+{
+	s->i = 0;
+	while (s->line[0][s->i])
+	{
+		/*if (s->line[0][s->i] == '$' && s->line[1][s->i] == 1)*/
+			/*s->i++;*/
+		if (s->line[0][s->i] == '$' && s->line[1][s->i] != '1')
+			dollar_expansions(s);
+		else
+			s->i++;
+	}
+}
+
+
 void check_double_quotes(t_mini *s)
 {
 	if (s->line[0][s->i - 1] == '\\')
@@ -27,7 +53,9 @@ void check_double_quotes(t_mini *s)
 		}
 		s->i++;
 	}
-}void check_simple_quotes(t_mini *s)
+}
+
+void check_simple_quotes(t_mini *s)
 {
 	if (s->line[0][s->i - 1] == '\\')
 	{
@@ -47,6 +75,7 @@ void check_double_quotes(t_mini *s)
 		s->i++;
 	}
 }
+
 void check_quotes(t_mini *s)
 {
 	s->i = 0;
@@ -59,16 +88,13 @@ void check_quotes(t_mini *s)
 		else
 			s->i++;
 	}
-	ft_printf("%s\n", s->line[0]);
-	ft_printf("%s\n", s->line[1]);
 }
+
 void break_cmdline_into_token(t_mini *s)
 {
 	int i;
-	char c;
 
 	i = -1;
-	c = '0';
 	ft_printf("-----break_cmdline_into_token-----\n");
 	if (!(s->line = ft_calloc(3 , sizeof(char **))))
 		error(s, ERR_CALLOC);
@@ -76,9 +102,10 @@ void break_cmdline_into_token(t_mini *s)
 	s->line[1] = ft_strdup(s->line[0]);
 	while (s->line[1] && s->line[1][++i])
 		s->line[1][i] = '0';
-	ft_printf("%s\n", s->line[0]);
-	ft_printf("%s\n", s->line[1]);
 	check_quotes(s);
+	check_dollars(s);
+	ft_printf("%s\n", s->line[1]);
+	ft_printf("%s\n", s->line[0]);
 }
 
 int is_char_set(int c, const char *char_set)

@@ -1,5 +1,5 @@
-#include "../libft/libft.h"
 #include "../includes/minishell.h"
+#include "../libft/libft.h"
 
 int     ft_not_quoted(char *line, int i)
 {
@@ -18,7 +18,6 @@ int     ft_not_quoted(char *line, int i)
             q = 0;
         else if (line[i] == '\"' && q == 2)
             q = 0;
-		ft_printf("q %d | line char %d : %c\n",q,i, line[i]);
         i--;
     }
     return (q);

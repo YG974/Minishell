@@ -8,7 +8,6 @@ int     ft_check_semicolons(char *line)
     i = 0;
     while (line[i])
     {
-		ft_printf("line char %d : %c\n",i, line[i]);
         if (i > 0 && line[i - 1] == '\\')
             i++;
         else if (line[i] == ';' && !ft_not_quoted(line, i))

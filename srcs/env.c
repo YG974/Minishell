@@ -1,6 +1,5 @@
-#include "../libft/libft.h"
 #include "../includes/minishell.h"
-
+#include "../libft/libft.h"
 
 void init_env(t_mini *s, char **env)
 {
