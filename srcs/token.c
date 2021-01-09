@@ -24,10 +24,14 @@ void check_dollars(t_mini *s)
 	s->i = 0;
 	while (s->line[0][s->i])
 	{
-		/*if (s->line[0][s->i] == '$' && s->line[1][s->i] == 1)*/
-			/*s->i++;*/
-		if (s->line[0][s->i] == '$' && s->line[1][s->i] != '1')
-			dollar_expansions(s);
+		if (s->line[0][s->i] == '$' && s->line[1][s->i] != '1'
+				&& s->line[0][s->i - 1] != '\\')
+		{
+			while (s->line[0][++s->i]
+					&& (ft_isalnum(s->line[0][s->i])
+					|| s->line[0][s->i] == '_'))
+				s->line[1][s->i] = '4';
+		}
 		else
 			s->i++;
 	}
@@ -103,6 +107,8 @@ void break_cmdline_into_token(t_mini *s)
 	while (s->line[1] && s->line[1][++i])
 		s->line[1][i] = '0';
 	check_quotes(s);
+	ft_printf("%s\n", s->line[1]);
+	ft_printf("%s\n", s->line[0]);
 	check_dollars(s);
 	ft_printf("%s\n", s->line[1]);
 	ft_printf("%s\n", s->line[0]);
