@@ -21,15 +21,11 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 		if (cmd->str[s->i] == '$' && cmd->flag[s->i] != '1'
 				&& cmd->str[s->i - 1] != '\\')
 		{
-				cmd->flag[s->i] = '4';
-				s->i++;
+				cmd->flag[s->i++] = '4';
 			while (cmd->str[s->i]
 					&& (ft_isalnum(cmd->str[s->i])
 					|| cmd->str[s->i] == '_'))
-			{
-				cmd->flag[s->i] = '4';
-				s->i++;
-			}
+				cmd->flag[s->i++] = '4';
 		}
 		else
 			s->i++;
@@ -40,42 +36,34 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 void check_double_quotes(t_mini *s, t_cmdl *cmd)
 {
 	if (cmd->str[s->i - 1] == '\\')
-	{
-		cmd->flag[s->i] = '3';
-		s->i++;
-	}
+		cmd->flag[s->i++] = '3';
 	else
 	{
-		s->i++;
+		cmd->flag[s->i++] = '2';
 		while (cmd->str[s->i] != '\"' && cmd->str[s->i])
 		{
-			cmd->flag[s->i] = '2';
-			s->i++;
+			cmd->flag[s->i++] = '2';
 			if (cmd->str[s->i] == '\0')
 				error (s, ERR_QUOTES);
 		}
-		s->i++;
+		cmd->flag[s->i++] = '2';
 	}
 }
 
 void check_simple_quotes(t_mini *s, t_cmdl *cmd)
 {
 	if (cmd->str[s->i - 1] == '\\')
-	{
-		cmd->flag[s->i] = '3';
-		s->i++;
-	}
+		cmd->flag[s->i++] = '3';
 	else
 	{
-		s->i++;
+		cmd->flag[s->i++] = '1';
 		while (cmd->str[s->i] != '\'' && cmd->str[s->i])
 		{
-			cmd->flag[s->i] = '1';
-			s->i++;
+			cmd->flag[s->i++] = '1';
 			if (cmd->str[s->i] == '\0')
 				error (s, ERR_QUOTES);
 		}
-		s->i++;
+		cmd->flag[s->i++] = '1';
 	}
 }
 
@@ -108,8 +96,9 @@ void break_cmdline_into_token(t_mini *s)
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
 		ft_printf("-----------\n", cmd->flag);
-		ft_printf("%s\n", cmd->str);
 		ft_printf("%s\n", cmd->flag);
+		ft_printf("%s\n", cmd->str);
+		ft_get_tokens(s, cmd);
 		cmd =cmd->next;
 	}
 }
