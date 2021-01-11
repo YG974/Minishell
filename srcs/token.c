@@ -99,7 +99,7 @@ void break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
-	while (cmd && cmd->next)
+	while (cmd)
 	{
 		i = -1;
 		cmd->flag = ft_strdup(cmd->str);
