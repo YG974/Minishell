@@ -84,12 +84,12 @@ void	init_env(t_mini *s, char **env)
 	split_env_value(s);
 	check_env_variable_name(s);
 
-	t_env	*print;
-	print = s->env;
-	while (print)
-	{
-		ft_printf("-%s:", print->name);
-		ft_printf("%s\n----\n", print->value);
-		print = print->next;
-	}
+	/*t_env	*print;*/
+	/*print = s->env;*/
+	/*while (print)*/
+	/*{*/
+		/*ft_printf("-%s:", print->name);*/
+		/*ft_printf("%s\n----\n", print->value);*/
+		/*print = print->next;*/
+	/*}*/
 }
