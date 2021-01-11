@@ -159,7 +159,7 @@ int is_char_set(int c, const char *char_set);
 /*
 **	token2.c
 */
-int     ft_get_tokens(t_mini *s, t_cmdl *cmd)
+int     ft_get_tokens(t_mini *s, t_cmdl *cmd);
 
 #endif
 
