@@ -19,16 +19,19 @@ char *get_env_value(t_mini *s, char *name)
 	t_env *env;
 	int		i;
 
-	value = ft_strdup("");
+	value = NULL;
 	env = s->env;
 	i = ft_strlen(name);
 	while (env)
 	{
 		if (ft_strncmp(env->name, name, i) == 0
 				&& i == ft_strlen(env->name))
-			return (env->value);
+			value = ft_strdup(env->value);
 		env = env->next;
 	}
+	if (value == NULL)
+		value = ft_strdup("");
+	free(name);
 	return (value);
 }
 
@@ -40,23 +43,31 @@ void expand_dollars(t_mini *s, t_cmdl *cmd)
 	int j;
 	s->i = 0;
 	j = 0;
+	buf = ft_strdup("");
 	while (cmd->str[s->i])
 	{
+		s->i = s->i + j;
 		while (cmd->flag[s->i] != '4' && cmd->str[s->i])
+		{
 			s->i++;
-		buf = ft_strdup_size(cmd->str, s->i, 0);
-		//ft_printf("%d %d\n", s->i, j);
+		}
+		tmp = ft_strdup_size(cmd->str, s->i, j);
+		buf = ft_strjoin(buf, tmp);
+		ft_printf("buf :%d-%d :%s|\n", s->i, s->i - j, buf);
+		ft_printf("tmp :%s|\n---------\n", tmp);
+		j = 0;
 		while (cmd->flag[s->i++] == '4' && cmd->str[s->i + 1] != '$'
 				&& cmd->str[s->i])
 			j++;
 		tmp = ft_strdup_size(cmd->str, s->i, s->i - j);
 		tmp = get_env_value(s, tmp);
+		buf = ft_strjoin(buf, tmp);
 		ft_printf("buf :%d-%d :%s|\n", s->i, s->i - j, buf);
 		ft_printf("tmp :%s|\n", tmp);
+		free(buf);
+		free(tmp);
 		//ft_printf("%d %d\n", s->i, j);
 	}
-
-
 }
 
 void check_dollars(t_mini *s, t_cmdl *cmd)
