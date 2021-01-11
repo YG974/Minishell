@@ -23,18 +23,18 @@ int     ft_not_quoted(char *line, int i)
     return (q);
 }
 
-char    *ft_strdup_size(char *line, int i, int j)
+char    *ft_strdup_size(char *line, int end, int start)
 {
     char    *dest;
     int     k;
 
     k = 0;
-    if (!(dest = malloc(sizeof(char) * (i - j) + 1)))
+    if (!(dest = malloc(sizeof(char) * (end - start) + 1)))
         return (NULL);
-    while (j < i)
+    while (start < end)
     {
-        dest[k] = line[j];
-        j++;
+        dest[k] = line[start];
+        start++;
         k++;
     }
     dest[k] = '\0';

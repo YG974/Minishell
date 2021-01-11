@@ -119,7 +119,7 @@ int     ft_parse(t_mini *s);
 **	ft_get_cmd_lines.c
 */
 int     ft_not_quoted(char *line, int i);
-char    *ft_strdup_size(char *line, int i, int j);
+char    *ft_strdup_size(char *line, int end, int start);
 t_cmdl    *ft_create_cmdl(t_mini *s);
 int     ft_del_cmdline(t_mini *s, int ret);
 int     ft_get_cmd(char *line, t_mini *s);

@@ -13,6 +13,52 @@
  * 4 : dollar expansion
  */
 
+char *get_env_value(t_mini *s, char *name)
+{
+	char *value;
+	t_env *env;
+	int		i;
+
+	value = ft_strdup("");
+	env = s->env;
+	i = ft_strlen(name);
+	while (env)
+	{
+		if (ft_strncmp(env->name, name, i) == 0
+				&& i == ft_strlen(env->name))
+			return (env->value);
+		env = env->next;
+	}
+	return (value);
+}
+
+void expand_dollars(t_mini *s, t_cmdl *cmd)
+{
+	char *tmp;
+	char *buf;
+
+	int j;
+	s->i = 0;
+	j = 0;
+	while (cmd->str[s->i])
+	{
+		while (cmd->flag[s->i] != '4' && cmd->str[s->i])
+			s->i++;
+		buf = ft_strdup_size(cmd->str, s->i, 0);
+		//ft_printf("%d %d\n", s->i, j);
+		while (cmd->flag[s->i++] == '4' && cmd->str[s->i + 1] != '$'
+				&& cmd->str[s->i])
+			j++;
+		tmp = ft_strdup_size(cmd->str, s->i, s->i - j);
+		tmp = get_env_value(s, tmp);
+		ft_printf("buf :%d-%d :%s|\n", s->i, s->i - j, buf);
+		ft_printf("tmp :%s|\n", tmp);
+		//ft_printf("%d %d\n", s->i, j);
+	}
+
+
+}
+
 void check_dollars(t_mini *s, t_cmdl *cmd)
 {
 	s->i = 0;
@@ -98,6 +144,7 @@ void break_cmdline_into_token(t_mini *s)
 		ft_printf("-----------\n", cmd->flag);
 		ft_printf("%s\n", cmd->flag);
 		ft_printf("%s\n", cmd->str);
+		expand_dollars(s, cmd);
 		cmd =cmd->next;
 	}
 }
