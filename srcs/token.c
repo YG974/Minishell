@@ -99,22 +99,19 @@ void break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
-	i = -1;
-	cmd->str = ft_strdup(s->read.buf);
-	cmd->flag = ft_strdup(cmd->str);
-	while (cmd->flag && cmd->flag[++i])
-		cmd->flag[i] = '0';
-	i = 0;
 	while (cmd && cmd->next)
 	{
-	
-	check_quotes(s, cmd);
-	ft_printf("%s\n", cmd->flag);
-	ft_printf("%s\n", cmd->str);
-	check_dollars(s, cmd);
-	ft_printf("%s\n", cmd->flag);
-	ft_printf("%s\n", cmd->str);
-	cmd =cmd->next;
+		i = -1;
+		cmd->flag = ft_strdup(cmd->str);
+		while (cmd->flag && cmd->flag[++i])
+			cmd->flag[i] = '0';
+		check_quotes(s, cmd);
+		ft_printf("%s\n", cmd->flag);
+		ft_printf("%s\n", cmd->str);
+		check_dollars(s, cmd);
+		ft_printf("%s\n", cmd->flag);
+		ft_printf("%s\n", cmd->str);
+		cmd =cmd->next;
 	}
 }
 

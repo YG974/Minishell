@@ -46,7 +46,7 @@ ${NAME}:		${OBJECTS}
 clean:
 				rm -f $(OBJECTS)
 				make clean -C ${LIB_DIR}
-				rm -R building_dir
+				rm -Rf building_dir
 
 fclean:			clean
 				rm -f $(NAME)
