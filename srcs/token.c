@@ -40,46 +40,34 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 void check_double_quotes(t_mini *s, t_cmdl *cmd)
 {
 	if (cmd->str[s->i - 1] == '\\')
-	{
-		cmd->flag[s->i] = '3';
-		s->i++;
-	}
+		cmd->flag[s->i++] = '3';
 	else
 	{
-		cmd->flag[s->i] = '2';
-		s->i++;
+		cmd->flag[s->i++] = '2';
 		while (cmd->str[s->i] != '\"' && cmd->str[s->i])
 		{
-			cmd->flag[s->i] = '2';
-			s->i++;
+			cmd->flag[s->i++] = '2';
 			if (cmd->str[s->i] == '\0')
 				error (s, ERR_QUOTES);
 		}
-		cmd->flag[s->i] = '2';
-		s->i++;
+		cmd->flag[s->i++] = '2';
 	}
 }
 
 void check_simple_quotes(t_mini *s, t_cmdl *cmd)
 {
 	if (cmd->str[s->i - 1] == '\\')
-	{
-		cmd->flag[s->i] = '3';
-		s->i++;
-	}
+		cmd->flag[s->i++] = '3';
 	else
 	{
-		cmd->flag[s->i] = '1';
-		s->i++;
+		cmd->flag[s->i++] = '1';
 		while (cmd->str[s->i] != '\'' && cmd->str[s->i])
 		{
-			cmd->flag[s->i] = '1';
-			s->i++;
+			cmd->flag[s->i++] = '1';
 			if (cmd->str[s->i] == '\0')
 				error (s, ERR_QUOTES);
 		}
-		cmd->flag[s->i] = '1';
-		s->i++;
+		cmd->flag[s->i++] = '1';
 	}
 }
 
