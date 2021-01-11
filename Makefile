@@ -17,7 +17,6 @@ LIB_FT			= $(addprefix $(LIB_DIR),libft.a)
 SRCS			= 	minishell \
 					env \
 					ft_parse \
-					env \
 					ft_init_signal \
 					ft_redirection \
 					ft_exe_cmd \
