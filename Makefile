@@ -15,8 +15,11 @@ LIB_FT			= $(addprefix $(LIB_DIR),libft.a)
 
 # FILES
 SRCS			= 	minishell \
-					env \
 					ft_parse \
+					ft_parse2 \
+					ft_get_cmd_lines \
+					env \
+					token \
 					ft_init_signal \
 					ft_redirection \
 					ft_exe_cmd \
@@ -43,7 +46,7 @@ ${NAME}:		${OBJECTS}
 clean:
 				rm -f $(OBJECTS)
 				make clean -C ${LIB_DIR}
-				rm -R building_dir
+				rm -Rf building_dir
 
 fclean:			clean
 				rm -f $(NAME)

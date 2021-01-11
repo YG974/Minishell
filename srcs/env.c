@@ -1,10 +1,10 @@
-#include "../libft/libft.h"
 #include "../includes/minishell.h"
 
 /*
 ** check if name variable contains only letters, numbers, underscores "_"
 **and don't begin with numbers
 */
+#include "../libft/libft.h"
 
 void	check_env_variable_name(t_mini *s)
 {

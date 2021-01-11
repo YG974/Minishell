@@ -21,6 +21,25 @@
 
 # define ERR_CALLOC 1
 # define ERR_INVALID_ENV_NAME 2
+# define ERR_PARSING 11
+# define ERR_QUOTES 12
+# define ERR_TOKEN 13
+# define ERR_META 14
+# define ERR_SEMCOL 15
+# define ERR_GETCMD 16
+
+/* FLAGS ON EVERY CHAR OF COMMAND LINE FOR THE PARSING */
+# define S_QUOTED 1
+# define D_QUOTED 2
+# define ESCAPED 3
+
+
+
+typedef struct		s_tok
+{
+	char			*line;
+	struct s_tok	*next;
+}					t_tok;
 
 typedef struct		s_env
 {
@@ -44,13 +63,33 @@ typedef struct		s_std
 	int				err;
 }					t_std;
 
+typedef	struct		s_forparse
+{
+	int				semcol;
+}					t_forparse;
+
+typedef	struct		s_cmdl
+{
+	t_tok			*token;
+	char			*str;
+	char			*flag;
+	struct s_cmdl	*next;
+}					t_cmdl;
+
+
 typedef struct		s_mini
 {
 	struct s_env	*env;
 	t_std			std;
 	t_read			read;
+	t_forparse		parse;
+	t_cmdl			*firstcmdl;
+	t_cmdl			*currentcmdl;
+	char			**line;
 	int				status;
 	int				sig;
+	int				error;
+	int				i;
 	struct s_mini			*next;
 	struct s_mini			*previous;
 }					t_mini;
@@ -73,7 +112,17 @@ void	is_valid_env_name(t_mini *s, char *str);
 /*
 **	ft_parse.c
 */
+int     ft_check_semicolons(char *line);
 int     ft_parse(t_mini *s);
+
+/*
+**	ft_get_cmd_lines.c
+*/
+int     ft_not_quoted(char *line, int i);
+char    *ft_strdup_size(char *line, int i, int j);
+t_cmdl    *ft_create_cmdl(t_mini *s);
+int     ft_del_cmdline(t_mini *s, int ret);
+int     ft_get_cmd(char *line, t_mini *s);
 
 /*
 **	ft_init_signal.c
@@ -95,6 +144,11 @@ int     ft_exe_cmd(t_mini *s);
 */
 void	error(t_mini *s, int error);
 
+/*
+**	token.c
+*/
+void break_cmdline_into_token(t_mini *s);
+int is_char_set(int c, const char *char_set);
 #endif
 
 /*
@@ -107,3 +161,4 @@ void	error(t_mini *s, int error);
 */
 
 
+    //ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");
