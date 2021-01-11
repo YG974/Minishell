@@ -54,7 +54,7 @@ int		main(int ac, char **av, char **env)
 
 	init_mini(&s);
 	init_env(&s, env);
-	s.sig = ft_printf("Yann a des gros hemorroides a cause de ses frequentations douteuses.\n");
+	/*s.sig = ft_printf("Yann a des gros hemorroides a cause de ses frequentations douteuses.\n");*/
 	minishell(&s);
 	ft_printf("END OF MINISHELL\n");
 	return (0);
