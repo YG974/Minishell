@@ -50,9 +50,8 @@ int		main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	int a;
+
 	init_mini(&s);
-a =	write(1, "\n", 1);
 	init_env(&s, env);
 	s.sig = ft_printf("Yann a des gros hemorroides a cause de ses frequentations douteuses.\n");
 	minishell(&s);

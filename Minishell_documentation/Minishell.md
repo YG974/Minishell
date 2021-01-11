@@ -93,3 +93,331 @@ word A sequence of characters treated as a unit by the shell. Words may not incl
 (BONUS)`&&`, or `||`, and optionally terminated by one of `;`, `&`, or a newline.
 
 Sources: https://www.gnu.org/software/bash/manual/bash.pdf
+
+env : These strings have the form name=value; names shall not contain the character '='. For values to be portable across systems conforming to IEEE Std 1003.1-2001, the value shall be composed of characters from the portable character set (except NUL and as indicated below).
+Environment variable names used by the utilities in the Shell and Utilities volume of IEEE Std 1003.1-2001 consist solely of uppercase letters, digits, and the '_' (underscore) from the characters defined in Portable Character Set and do not begin with a digit. Other characters may be permitted by an implementation; applications shall tolerate the presence of such names.
+
+
+2.10 Shell Grammar
+The following grammar defines the Shell Command Language. This formal syntax shall take precedence over the preceding text syntax description.
+
+2.10.1 Shell Grammar Lexical Conventions
+The input language to the shell must be first recognized at the character level. The resulting tokens shall be classified by their immediate context according to the following rules (applied in order). These rules shall be used to determine what a "token" is that is subject to parsing at the token level. The rules for token recognition in Token Recognition shall apply.
+
+A <newline> shall be returned as the token identifier NEWLINE.
+
+If the token is an operator, the token identifier for that operator shall result.
+
+If the string consists solely of digits and the delimiter character is one of '<' or '>', the token identifier IO_NUMBER shall be returned.
+
+Otherwise, the token identifier TOKEN results.
+
+Further distinction on TOKEN is context-dependent. It may be that the same TOKEN yields WORD, a NAME, an ASSIGNMENT, or one of the reserved words below, dependent upon the context. Some of the productions in the grammar below are annotated with a rule number from the following list. When a TOKEN is seen where one of those annotated productions could be used to reduce the symbol, the applicable rule shall be applied to convert the token identifier type of the TOKEN to a token identifier acceptable at that point in the grammar. The reduction shall then proceed based upon the token identifier type yielded by the rule applied. When more than one rule applies, the highest numbered rule shall apply (which in turn may refer to another rule). (Note that except in rule 7, the presence of an '=' in the token has no effect.)
+
+The WORD tokens shall have the word expansion rules applied to them immediately before the associated command is executed, not at the time the command is parsed.
+
+2.10.2 Shell Grammar Rules
+[Command Name]
+
+When the TOKEN is exactly a reserved word, the token identifier for that reserved word shall result. Otherwise, the token WORD shall be returned. Also, if the parser is in any state where only a reserved word could be the next correct token, proceed as above.
+
+Note:
+Because at this point quote marks are retained in the token, quoted strings cannot be recognized as reserved words. This rule also implies that reserved words are not recognized except in certain positions in the input, such as after a <newline> or semicolon; the grammar presumes that if the reserved word is intended, it is properly delimited by the user, and does not attempt to reflect that requirement directly. Also note that line joining is done before tokenization, as described in Escape Character (Backslash) , so escaped <newline>s are already removed at this point.
+Rule 1 is not directly referenced in the grammar, but is referred to by other rules, or applies globally.
+
+[Redirection to or from filename]
+
+The expansions specified in Redirection shall occur. As specified there, exactly one field can result (or the result is unspecified), and there are additional requirements on pathname expansion.
+
+[Redirection from here-document]
+
+Quote removal shall be applied to the word to determine the delimiter that is used to find the end of the here-document that begins after the next <newline>.
+
+[Case statement termination]
+
+When the TOKEN is exactly the reserved word esac, the token identifier for esac shall result. Otherwise, the token WORD shall be returned.
+
+[ NAME in for]
+
+When the TOKEN meets the requirements for a name (see the Base Definitions volume of IEEE Std 1003.1-2001, Section 3.230, Name), the token identifier NAME shall result. Otherwise, the token WORD shall be returned.
+
+[Third word of for and case]
+
+[ case only]
+
+When the TOKEN is exactly the reserved word in, the token identifier for in shall result. Otherwise, the token WORD shall be returned.
+
+[ for only]
+
+When the TOKEN is exactly the reserved word in or do, the token identifier for in or do shall result, respectively. Otherwise, the token WORD shall be returned.
+
+(For a. and b.: As indicated in the grammar, a linebreak precedes the tokens in and do. If <newline>s are present at the indicated location, it is the token after them that is treated in this fashion.)
+
+[Assignment preceding command name]
+
+[When the first word]
+
+If the TOKEN does not contain the character '=', rule 1 is applied. Otherwise, 7b shall be applied.
+
+[Not the first word]
+
+If the TOKEN contains the equal sign character:
+
+If it begins with '=', the token WORD shall be returned.
+
+If all the characters preceding '=' form a valid name (see the Base Definitions volume of IEEE Std 1003.1-2001, Section 3.230, Name), the token ASSIGNMENT_WORD shall be returned. (Quoted characters cannot participate in forming a valid name.)
+
+Otherwise, it is unspecified whether it is ASSIGNMENT_WORD or WORD that is returned.
+
+Assignment to the NAME shall occur as specified in Simple Commands.
+
+[ NAME in function]
+
+When the TOKEN is exactly a reserved word, the token identifier for that reserved word shall result. Otherwise, when the TOKEN meets the requirements for a name, the token identifier NAME shall result. Otherwise, rule 7 applies.
+
+[Body of function]
+
+Word expansion and assignment shall never occur, even when required by the rules above, when this rule is being parsed. Each TOKEN that might either be expanded or have assignment applied to it shall instead be returned as a single WORD consisting only of characters that are exactly the token described in Token Recognition.
+
+
+/* -------------------------------------------------------
+   The grammar symbols
+   ------------------------------------------------------- */
+
+
+%token  WORD
+%token  ASSIGNMENT_WORD
+%token  NAME
+%token  NEWLINE
+%token  IO_NUMBER
+
+
+/* The following are the operators mentioned above. */
+
+
+%token  AND_IF    OR_IF    DSEMI
+/*      '&&'      '||'     ';;'    */
+
+
+%token  DLESS  DGREAT  LESSAND  GREATAND  LESSGREAT  DLESSDASH
+/*      '<<'   '>>'    '<&'     '>&'      '<>'       '<<-'   */
+
+
+%token  CLOBBER
+/*      '>|'   */
+
+
+/* The following are the reserved words. */
+
+
+%token  If    Then    Else    Elif    Fi    Do    Done
+/*      'if'  'then'  'else'  'elif'  'fi'  'do'  'done'   */
+
+
+%token  Case    Esac    While    Until    For
+/*      'case'  'esac'  'while'  'until'  'for'   */
+
+
+/* These are reserved words, not operator tokens, and are
+   recognized when reserved words are recognized. */
+
+
+%token  Lbrace    Rbrace    Bang
+/*      '{'       '}'       '!'   */
+
+
+%token  In
+/*      'in'   */
+
+
+/* -------------------------------------------------------
+   The Grammar
+   ------------------------------------------------------- */
+
+
+%start  complete_command
+%%
+complete_command : list separator
+                 | list
+                 ;
+list             : list separator_op and_or
+                 |                   and_or
+                 ;
+and_or           :                         pipeline
+                 | and_or AND_IF linebreak pipeline
+                 | and_or OR_IF  linebreak pipeline
+                 ;
+pipeline         :      pipe_sequence
+                 | Bang pipe_sequence
+                 ;
+pipe_sequence    :                             command
+                 | pipe_sequence '|' linebreak command
+                 ;
+command          : simple_command
+                 | compound_command
+                 | compound_command redirect_list
+                 | function_definition
+                 ;
+compound_command : brace_group
+                 | subshell
+                 | for_clause
+                 | case_clause
+                 | if_clause
+                 | while_clause
+                 | until_clause
+                 ;
+subshell         : '(' compound_list ')'
+                 ;
+compound_list    :              term
+                 | newline_list term
+                 |              term separator
+                 | newline_list term separator
+                 ;
+term             : term separator and_or
+                 |                and_or
+                 ;
+for_clause       : For name linebreak                            do_group
+                 | For name linebreak in          sequential_sep do_group
+                 | For name linebreak in wordlist sequential_sep do_group
+                 ;
+name             : NAME                     /* Apply rule 5 */
+                 ;
+in               : In                       /* Apply rule 6 */
+                 ;
+wordlist         : wordlist WORD
+                 |          WORD
+                 ;
+case_clause      : Case WORD linebreak in linebreak case_list    Esac
+                 | Case WORD linebreak in linebreak case_list_ns Esac
+                 | Case WORD linebreak in linebreak              Esac
+                 ;
+case_list_ns     : case_list case_item_ns
+                 |           case_item_ns
+                 ;
+case_list        : case_list case_item
+                 |           case_item
+                 ;
+case_item_ns     :     pattern ')'               linebreak
+                 |     pattern ')' compound_list linebreak
+                 | '(' pattern ')'               linebreak
+                 | '(' pattern ')' compound_list linebreak
+                 ;
+case_item        :     pattern ')' linebreak     DSEMI linebreak
+                 |     pattern ')' compound_list DSEMI linebreak
+                 | '(' pattern ')' linebreak     DSEMI linebreak
+                 | '(' pattern ')' compound_list DSEMI linebreak
+                 ;
+pattern          :             WORD         /* Apply rule 4 */
+                 | pattern '|' WORD         /* Do not apply rule 4 */
+                 ;
+if_clause        : If compound_list Then compound_list else_part Fi
+                 | If compound_list Then compound_list           Fi
+                 ;
+else_part        : Elif compound_list Then else_part
+                 | Else compound_list
+                 ;
+while_clause     : While compound_list do_group
+                 ;
+until_clause     : Until compound_list do_group
+                 ;
+function_definition : fname '(' ')' linebreak function_body
+                 ;
+function_body    : compound_command                /* Apply rule 9 */
+                 | compound_command redirect_list  /* Apply rule 9 */
+                 ;
+fname            : NAME                            /* Apply rule 8 */
+                 ;
+brace_group      : Lbrace compound_list Rbrace
+                 ;
+do_group         : Do compound_list Done           /* Apply rule 6 */
+                 ;
+simple_command   : cmd_prefix cmd_word cmd_suffix
+                 | cmd_prefix cmd_word
+                 | cmd_prefix
+                 | cmd_name cmd_suffix
+                 | cmd_name
+                 ;
+cmd_name         : WORD                   /* Apply rule 7a */
+                 ;
+cmd_word         : WORD                   /* Apply rule 7b */
+                 ;
+cmd_prefix       :            io_redirect
+                 | cmd_prefix io_redirect
+                 |            ASSIGNMENT_WORD
+                 | cmd_prefix ASSIGNMENT_WORD
+                 ;
+cmd_suffix       :            io_redirect
+                 | cmd_suffix io_redirect
+                 |            WORD
+                 | cmd_suffix WORD
+                 ;
+redirect_list    :               io_redirect
+                 | redirect_list io_redirect
+                 ;
+io_redirect      :           io_file
+                 | IO_NUMBER io_file
+                 |           io_here
+                 | IO_NUMBER io_here
+                 ;
+io_file          : '<'       filename
+                 | LESSAND   filename
+                 | '>'       filename
+                 | GREATAND  filename
+                 | DGREAT    filename
+                 | LESSGREAT filename
+                 | CLOBBER   filename
+                 ;
+filename         : WORD                      /* Apply rule 2 */
+                 ;
+io_here          : DLESS     here_end
+                 | DLESSDASH here_end
+                 ;
+here_end         : WORD                      /* Apply rule 3 */
+                 ;
+newline_list     :              NEWLINE
+                 | newline_list NEWLINE
+                 ;
+linebreak        : newline_list
+                 | /* empty */
+                 ;
+separator_op     : '&'
+                 | ';'
+                 ;
+separator        : separator_op linebreak
+                 | newline_list
+                 ;
+sequential_sep   : ';' linebreak
+                 | newline_list
+                 ;
+
+
+2.3 Token Recognition
+The shell shall read its input in terms of lines from a file, from a terminal in the case of an interactive shell, or from a string in the case of sh -c or system(). The input lines can be of unlimited length. These lines shall be parsed using two major modes: ordinary token recognition and processing of here-documents.
+
+When an io_here token has been recognized by the grammar (see Shell Grammar), one or more of the subsequent lines immediately following the next NEWLINE token form the body of one or more here-documents and shall be parsed according to the rules of Here-Document.
+
+When it is not processing an io_here, the shell shall break its input into tokens by applying the first applicable rule below to the next character in its input. The token shall be from the current position in the input until a token is delimited according to one of the rules below; the characters forming the token are exactly those in the input, including any quoting characters. If it is indicated that a token is delimited, and no characters have been included in a token, processing shall continue until an actual token is delimited.
+
+If the end of input is recognized, the current token shall be delimited. If there is no current token, the end-of-input indicator shall be returned as the token.
+
+If the previous character was used as part of an operator and the current character is not quoted and can be used with the current characters to form an operator, it shall be used as part of that (operator) token.
+
+If the previous character was used as part of an operator and the current character cannot be used with the current characters to form an operator, the operator containing the previous character shall be delimited.
+
+If the current character is backslash, single-quote, or double-quote ( '\', '", or ' )' and it is not quoted, it shall affect quoting for subsequent characters up to the end of the quoted text. The rules for quoting are as described in Quoting. During token recognition no substitutions shall be actually performed, and the result token shall contain exactly the characters that appear in the input (except for <newline> joining), unmodified, including any embedded or enclosing quotes or substitution operators, between the quote mark and the end of the quoted text. The token shall not be delimited by the end of the quoted field.
+
+If the current character is an unquoted '$' or '`', the shell shall identify the start of any candidates for parameter expansion ( Parameter Expansion), command substitution ( Command Substitution), or arithmetic expansion ( Arithmetic Expansion) from their introductory unquoted character sequences: '$' or "${", "$(" or '`', and "$((", respectively. The shell shall read sufficient input to determine the end of the unit to be expanded (as explained in the cited sections). While processing the characters, if instances of expansions or quoting are found nested within the substitution, the shell shall recursively process them in the manner specified for the construct that is found. The characters found from the beginning of the substitution to its end, allowing for any recursion necessary to recognize embedded constructs, shall be included unmodified in the result token, including any embedded or enclosing substitution operators or quotes. The token shall not be delimited by the end of the substitution.
+
+If the current character is not quoted and can be used as the first character of a new operator, the current token (if any) shall be delimited. The current character shall be used as the beginning of the next (operator) token.
+
+If the current character is an unquoted <newline>, the current token shall be delimited.
+
+If the current character is an unquoted <blank>, any token containing the previous character is delimited and the current character shall be discarded.
+
+If the previous character was part of a word, the current character shall be appended to that word.
+
+If the current character is a '#', it and all subsequent characters up to, but excluding, the next <newline> shall be discarded as a comment. The <newline> that ends the line is not considered part of the comment.
+
+The current character is used as the start of a new word.
+
+Once a token is delimited, it is categorized as required by the grammar in Shell Grammar.

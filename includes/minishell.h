@@ -20,9 +20,11 @@
 # define BUFF_SIZE 4096
 
 # define ERR_CALLOC 1
+# define ERR_INVALID_ENV_NAME 2
 
 typedef struct		s_env
 {
+	char			*name;
 	char			*value;
 	struct s_env	*next;
 }					t_env;
@@ -53,8 +55,6 @@ typedef struct		s_mini
 	struct s_mini			*previous;
 }					t_mini;
 
-void init_mini(t_mini *s);
-
 /*
 **	minishell.c
 */
@@ -66,6 +66,10 @@ void	prompt(t_mini *s);
 **	env.c
 */
 void	init_env(t_mini *s, char **env);
+void init_env(t_mini *s, char **env);
+void copy_env(t_mini *s, char **env);
+void check_env_validity(t_mini *s);
+void is_valid_env_name(t_mini *s, char *str);
 
 /*
 **	ft_parse.c
@@ -93,3 +97,14 @@ int     ft_exe_cmd(t_mini *s);
 void	error(t_mini *s, int error);
 
 #endif
+
+/*
+**	if quotes are not even -> error
+**	if ";;" error 
+**	operator or word
+**	boolean to know if quoted, control operator, redir etc
+**	delete space tab etc
+**	
+*/
+
+
