@@ -21,15 +21,11 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 		if (cmd->str[s->i] == '$' && cmd->flag[s->i] != '1'
 				&& cmd->str[s->i - 1] != '\\')
 		{
-				cmd->flag[s->i] = '4';
-				s->i++;
+				cmd->flag[s->i++] = '4';
 			while (cmd->str[s->i]
 					&& (ft_isalnum(cmd->str[s->i])
 					|| cmd->str[s->i] == '_'))
-			{
-				cmd->flag[s->i] = '4';
-				s->i++;
-			}
+				cmd->flag[s->i++] = '4';
 		}
 		else
 			s->i++;
