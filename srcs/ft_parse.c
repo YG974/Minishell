@@ -13,7 +13,6 @@ int     ft_check_semicolons(char *line)
         else if (line[i] == ';' && !ft_not_quoted(line, i))
         {
             i++;
-		ft_printf("hihi");
             while (line[i] != '\0' && line[i] == ' ')
                 i++;
             if (line[i] == ';')
@@ -34,7 +33,7 @@ void    ft_testchainlist(t_mini *s)
     tmp = s->firstcmdl;
     while (tmp)
     {
-        ft_printf("CMD LINE %d : %s\n", i, tmp->line);
+        ft_printf("CMD LINE %d : %s\n", i, tmp->str);
         i++;
         tmp = tmp->next;
     }

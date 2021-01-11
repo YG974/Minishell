@@ -68,7 +68,9 @@ typedef	struct		s_forparse
 
 typedef	struct		s_cmdl
 {
-	char			*line;
+	t_tok			*token;
+	char			*str;
+	char			*flag;
 	struct s_cmdl	*next;
 }					t_cmdl;
 
@@ -79,9 +81,6 @@ typedef struct		s_mini
 	t_std			std;
 	t_read			read;
 	t_forparse		parse;
-	t_tok			*first_token;
-	t_tok			*current_token;
-	t_tok			*previous_token;
 	t_cmdl			*firstcmdl;
 	t_cmdl			*currentcmdl;
 	char			**line;
