@@ -46,6 +46,7 @@ void check_double_quotes(t_mini *s, t_cmdl *cmd)
 	}
 	else
 	{
+		cmd->flag[s->i] = '2';
 		s->i++;
 		while (cmd->str[s->i] != '\"' && cmd->str[s->i])
 		{
@@ -54,6 +55,7 @@ void check_double_quotes(t_mini *s, t_cmdl *cmd)
 			if (cmd->str[s->i] == '\0')
 				error (s, ERR_QUOTES);
 		}
+		cmd->flag[s->i] = '2';
 		s->i++;
 	}
 }
@@ -67,6 +69,7 @@ void check_simple_quotes(t_mini *s, t_cmdl *cmd)
 	}
 	else
 	{
+		cmd->flag[s->i] = '1';
 		s->i++;
 		while (cmd->str[s->i] != '\'' && cmd->str[s->i])
 		{
@@ -75,6 +78,7 @@ void check_simple_quotes(t_mini *s, t_cmdl *cmd)
 			if (cmd->str[s->i] == '\0')
 				error (s, ERR_QUOTES);
 		}
+		cmd->flag[s->i] = '1';
 		s->i++;
 	}
 }
@@ -108,8 +112,8 @@ void break_cmdline_into_token(t_mini *s)
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
 		ft_printf("-----------\n", cmd->flag);
-		ft_printf("%s\n", cmd->str);
 		ft_printf("%s\n", cmd->flag);
+		ft_printf("%s\n", cmd->str);
 		cmd =cmd->next;
 	}
 }
