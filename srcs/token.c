@@ -48,12 +48,14 @@ void expand_dollars(t_mini *s, t_cmdl *cmd)
 	{
 		s->i = s->i + j;
 		j = 0;
-		if (cmd->flag[s->i] == '4')
+		if (cmd->flag[s->i] == '4' )
 		{
-			s->i++;
-			while (cmd->flag[s->i + j] == '4' && cmd->str[s->i + j])
+			//s->i++;
+			while (cmd->flag[s->i + j] == '4' && cmd->str[s->i + j]
+					&& cmd->str[s->i + j -1!= '$'])
 				j++;
 			tmp = ft_strdup_size(cmd->str, s->i + j, s->i);
+		ft_printf("tmp :%s|\n---------\n", tmp);
 			tmp = get_env_value(s, tmp);
 		}
 		else
@@ -79,7 +81,7 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 		if (cmd->str[s->i] == '$' && cmd->flag[s->i] != '1'
 				&& cmd->str[s->i - 1] != '\\')
 		{
-				cmd->flag[s->i++] = '4';
+			s->i++;
 			while (cmd->str[s->i]
 					&& (ft_isalnum(cmd->str[s->i])
 					|| cmd->str[s->i] == '_'))
