@@ -17,7 +17,7 @@ void	ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c)
 	tok->next = NULL;
 }
 
-char	*ft_strdup_space(char *src)
+char	*ft_strdup_meta(char *src, char *flagstr)
 {
 	int		i;
 	int		len;
@@ -25,11 +25,13 @@ char	*ft_strdup_space(char *src)
 
 	i = 0;
 	len = 0;
-	while (src[len] && src[len] != ' ')
+	if (flagstr[i] == '1' || flagstr[i] == '2')
+		return(ft_strdup_quotes(src, flagstr, flagstr[i]));
+	while (src[len] && src[len] != ' ' && flagstr[len] == '0')
 		len++;
 	if (!(dest = calloc(len, sizeof(char))))
 		return (NULL);
-	while (src[i] && src[i] != ' ')
+	while (i < len)
 	{
 		dest[i] = src[i];
 		i++;
@@ -89,7 +91,7 @@ int		ft_add_token(t_cmdl *cmd, int i)
 		ft_puttok_givflag(tmp, cmd->firsttoken, cmd->str[i]);
 	if (tmp->flag != FLAG_SPACE)
 	{
-		if (!(tmp->str = ft_strdup_space(cmd->str + i)))
+		if (!(tmp->str = ft_strdup_meta(cmd->str + i, cmd->flag + i)))
 			return (1);
 		}
 	else
@@ -115,12 +117,14 @@ int     ft_get_tokens(t_mini *s, t_cmdl *cmd)
 	{
 		if (ft_add_token(cmd, i))
 			return (ft_del_tokens(cmd, 1));
-		while (cmd->str[i] && cmd->str[i] != ' ')
-			i++;
-		if (cmd->str[i] && ft_add_token(cmd, i))
-			return (ft_del_tokens(cmd, 1));
-		while (cmd->str[i] && cmd->str[i] == ' ')
-			i++;
+// inc i ' ' or quotes
+		i = ft_inc_i(cmd->str, cmd->flag, i, cmd->flag[i]);
+//		while (cmd->str[i] && cmd->str[i] != ' ')
+//			i++;
+//		if (cmd->str[i] && ft_add_token(cmd, i))
+//			return (ft_del_tokens(cmd, 1));
+//		while (cmd->str[i] && cmd->str[i] == ' ')
+//			i++;
 	}
 	testtokkens(cmd);
     ft_printf("On quitte la fonction qui split les commandes en tokens.\n");
