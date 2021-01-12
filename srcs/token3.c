@@ -53,8 +53,10 @@ int		ft_inc_i(char *str, char *flag, int i, char c)
 			i++;
 		return (i);
 	}
-	i++;
-	while (str[i] && str[i] != ' ' && flag[i] == '0')
+	if (str[i] && ft_ismeta(str[i]))
 		i++;
+	else
+		while (str[i] && !ft_ismeta(str[i]) && flag[i] == '0')
+			i++;
 	return (i);
 }

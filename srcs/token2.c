@@ -6,7 +6,7 @@ void	ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c)
 	t_tok	*tmp;
 
 	tmp = firsttoken;
-	if (c == ' ')
+	if (ft_ismeta(c))
 		tok->flag = FLAG_SPACE;
 	else
 		tok->flag = FLAG_STR;
@@ -27,9 +27,9 @@ char	*ft_strdup_meta(char *src, char *flagstr)
 	len = 0;
 	if (flagstr[i] == '1' || flagstr[i] == '2')
 		return(ft_strdup_quotes(src, flagstr, flagstr[i]));
-	while (src[len] && src[len] != ' ' && flagstr[len] == '0')
+	while (src[len] && !ft_ismeta(src[len]) && flagstr[len] == '0')
 		len++;
-	if (!(dest = calloc(len, sizeof(char))))
+	if (!(dest = calloc(len + 1, sizeof(char))))
 		return (NULL);
 	while (i < len)
 	{
@@ -86,6 +86,8 @@ int		ft_add_token(t_cmdl *cmd, int i)
 	{
 		tmp->flag = FLAG_CMD;
 		cmd->firsttoken = tmp;
+		if (ft_ismeta(cmd->str[i]))
+			tmp->flag = FLAG_SPACE;
 	}
 	else
 		ft_puttok_givflag(tmp, cmd->firsttoken, cmd->str[i]);
@@ -93,12 +95,12 @@ int		ft_add_token(t_cmdl *cmd, int i)
 	{
 		if (!(tmp->str = ft_strdup_meta(cmd->str + i, cmd->flag + i)))
 			return (1);
-		}
+	}
 	else
 	{
 		if (!(tmp->str = calloc(2, sizeof(char))))
 			return (1);
-		tmp->str[0] = ' ';
+		tmp->str[0] = cmd->str[i];
 		tmp->str[1] = '\0';
 	}
 	return (0);
