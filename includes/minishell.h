@@ -171,6 +171,7 @@ void	testtokkens(t_cmdl *cmd);//function to del
 */
 char	*ft_strdup_quotes(char *src, char *flagstr, char c);
 int		ft_inc_i(char *str, char *flag, int i, char c);
+int		ft_ismeta(char c);
 
 
 

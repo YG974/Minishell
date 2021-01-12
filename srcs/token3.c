@@ -1,6 +1,13 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
+int		ft_ismeta(char c)
+{
+	if (c == ' ' || c == '<' || c == '>' || c == '|')
+		return (1);
+	return (0);
+}
+
 char	*ft_strdup_quotes(char *src, char *flagstr, char c)
 {
 	int		i;
