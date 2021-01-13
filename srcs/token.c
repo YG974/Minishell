@@ -93,21 +93,30 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 	}
 }
 
-
+//probleme lorsque escape double quote in double quote \"
 void check_double_quotes(t_mini *s, t_cmdl *cmd)
 {
 	if (cmd->str[s->i - 1] == '\\')
 		cmd->flag[s->i++] = '3';
 	else
 	{
-		cmd->flag[s->i++] = '2';
-		while (cmd->str[s->i] != '\"' && cmd->str[s->i])
+		while (cmd->str[s->i])
 		{
-			cmd->flag[s->i++] = '2';
-			if (cmd->str[s->i] == '\0')
-				error (s, ERR_QUOTES);
+			if (cmd->str[s->i] != '\"' && cmd->str[s->i - 1] != '\\')
+				cmd->flag[s->i++] = '2';
+			else if (cmd->str[s->i - 1] == '\\')
+				cmd->flag[s->i++] = '3';
+			else
+				break;
+				
 		}
-		cmd->flag[s->i++] = '2';
+		/*while (cmd->str[s->i] != '\"' && cmd->str[s->i])*/
+		/*{*/
+			/*cmd->flag[s->i++] = '2';*/
+			/*if (cmd->str[s->i] == '\0')*/
+				/*error (s, ERR_QUOTES);*/
+		/*}*/
+		/*cmd->flag[s->i++] = '2';*/
 	}
 }
 
