@@ -30,16 +30,12 @@ void init_mini(t_mini *s)
 void	minishell(t_mini *s)
 {
 	init_signal(s);
-	while(!s->status)
+	while(!s->status && s->error != 2)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
 		prompt(s);
 		if (!s->status && ft_parse(s))
-			error(s, ERR_CALLOC);
-		if (!s->status && ft_redirection(s))
-			error(s, ERR_CALLOC);
-		if (!s->status && ft_exe_cmd(s))
 			error(s, ERR_CALLOC);
 		free(s->read.buf);
 	}

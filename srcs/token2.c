@@ -112,7 +112,7 @@ int     ft_get_tokens(t_mini *s, t_cmdl *cmd)
 
 	i = 0;
 	(void)s;
-    ft_printf("On entre dans la fonction qui split les commandes en tokens.\n");
+    // ft_printf("On entre dans la fonction qui split les commandes en tokens.\n");
 	while (cmd->str[i] == ' ')
 		i++;
 	while (cmd->str[i])
@@ -129,7 +129,7 @@ int     ft_get_tokens(t_mini *s, t_cmdl *cmd)
 			i = ft_inc_i(cmd->str, cmd->flag, i, cmd->flag[i]);
 		}
 	}
-	testtokkens(cmd);
-    ft_printf("On quitte la fonction qui split les commandes en tokens.\n");
-	return (ft_del_tokens(cmd, 0));
+	//testtokkens(cmd);
+    // ft_printf("On quitte la fonction qui split les commandes en tokens.\n");
+	return (0);
 }

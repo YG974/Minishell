@@ -165,7 +165,7 @@ void break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
-	while (cmd)
+	while (cmd && !s->error)
 	{
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
@@ -181,6 +181,8 @@ void break_cmdline_into_token(t_mini *s)
 		ft_printf("%s\n", cmd->flag);
 		ft_printf("%s\n", cmd->str);
 		ft_get_tokens(s, cmd);
+		ft_exe_cmd(s, cmd);
+		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;
 	}
 }

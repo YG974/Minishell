@@ -16,4 +16,11 @@ void error(t_mini *s, int error)
 		ret = ft_printf("Parsing fail, quote not close\n");
 	if (error == ERR_SEMCOL)
 		ret = ft_printf("Bad using of ';'. Retry mother fucker.\n");
+	if (error == ERR_EXEC_CMD)
+		ret = ft_printf("ERROR IN COMMAND LINE\n");
+	if (error == WANT_EXIT)
+	{
+		s->error = 2;
+		ret = ft_printf("EXIT MINISHELL, GOOD BYE <3 (yann grosse suceuse)\n");
+	}
 }

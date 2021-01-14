@@ -27,6 +27,8 @@
 # define ERR_META 14
 # define ERR_SEMCOL 15
 # define ERR_GETCMD 16
+# define ERR_EXEC_CMD 17
+# define WANT_EXIT 18
 
 /* FLAGS ON EVERY CHAR OF COMMAND LINE FOR THE PARSING */
 # define S_QUOTED 1
@@ -145,7 +147,7 @@ int     ft_redirection(t_mini *s);
 /*
 **	ft_exe_cmd.c
 */
-int     ft_exe_cmd(t_mini *s);
+void	ft_exe_cmd(t_mini *s, t_cmdl *cmd);
 
 /*
 **	ft_error.c
@@ -155,8 +157,8 @@ void	error(t_mini *s, int error);
 /*
 **	token.c
 */
-void break_cmdline_into_token(t_mini *s);
-int is_char_set(int c, const char *char_set);
+void	break_cmdline_into_token(t_mini *s);
+int		is_char_set(int c, const char *char_set);
 
 /*
 **	token2.c
