@@ -80,6 +80,7 @@ typedef	struct		s_cmdl
 	t_tok			*token;
 	char			*str;
 	char			*flag;
+	char			*buf;
 	struct s_cmdl	*next;
 }					t_cmdl;
 

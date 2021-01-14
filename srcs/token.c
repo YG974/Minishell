@@ -38,12 +38,11 @@ char *get_env_value(t_mini *s, char *name)
 void expand_dollars(t_mini *s, t_cmdl *cmd)
 {
 	char *tmp;
-	char *buf;
 
 	int j;
 	s->i = 0;
 	j = 0;
-	buf = ft_strdup("");
+	cmd->buf = ft_strdup("");
 	while (cmd->str[s->i])
 	{
 		s->i = s->i + j;
@@ -63,9 +62,9 @@ void expand_dollars(t_mini *s, t_cmdl *cmd)
 				j++;
 			tmp = ft_strdup_size(cmd->str, s->i + j - 1, s->i);
 		}
-		buf = ft_strjoin(buf, tmp);
+		cmd->buf = ft_strjoin(cmd->buf, tmp);
 		//ne pas oublier de free buf dans strjoin
-		ft_printf("buf :%d-%d :%s|\n", s->i, j, buf);
+		ft_printf("buf :%d-%d :%s|\n", s->i, j, cmd->buf);
 		ft_printf("tmp :%s|\n---------\n", tmp);
 		//free(buf);
 		free(tmp);
@@ -147,6 +146,12 @@ void check_lit_char(t_mini *s, t_cmdl *cmd)
 
 void check_quotes(t_mini *s, t_cmdl *cmd)
 {
+	int i;
+
+	i = -1;
+	cmd->flag = ft_strdup(cmd->str);
+	while (cmd->flag && cmd->flag[++i])
+		cmd->flag[i] = '0';
 	s->i = 0;
 	while (cmd->str[s->i])
 	{
@@ -163,22 +168,22 @@ void check_quotes(t_mini *s, t_cmdl *cmd)
 
 void break_cmdline_into_token(t_mini *s)
 {
-	int i;
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
 	while (cmd)
 	{
-		i = -1;
-		cmd->flag = ft_strdup(cmd->str);
-		while (cmd->flag && cmd->flag[++i])
-			cmd->flag[i] = '0';
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
 		ft_printf("-----------\n", cmd->flag);
 		ft_printf("%s\n", cmd->flag);
 		ft_printf("%s\n", cmd->str);
 		expand_dollars(s, cmd);
+		cmd->str = cmd->buf;
+		check_quotes(s, cmd);
+		check_dollars(s, cmd);
+		ft_printf("%s\n", cmd->flag);
+		ft_printf("%s\n", cmd->str);
 		ft_get_tokens(s, cmd);
 		cmd = cmd->next;
 	}
