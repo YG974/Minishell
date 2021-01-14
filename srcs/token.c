@@ -49,11 +49,9 @@ void expand_dollars(t_mini *s, t_cmdl *cmd)
 		j = 0;
 		if (cmd->flag[s->i] == '4' )
 		{
-			//s->i++;
 			while (cmd->flag[s->i + j] == '4' && cmd->str[s->i + j])
 				j++;
 			tmp = ft_strdup_size(cmd->str, s->i + j, s->i);
-		ft_printf("tmp :%s|\n---------\n", tmp);
 			tmp = get_env_value(s, tmp);
 		}
 		else
@@ -64,11 +62,7 @@ void expand_dollars(t_mini *s, t_cmdl *cmd)
 		}
 		cmd->buf = ft_strjoin(cmd->buf, tmp);
 		//ne pas oublier de free buf dans strjoin
-		ft_printf("buf :%d-%d :%s|\n", s->i, j, cmd->buf);
-		ft_printf("tmp :%s|\n---------\n", tmp);
-		//free(buf);
 		free(tmp);
-		//ft_printf("%d %d\n", s->i, j);
 	}
 }
 
@@ -179,6 +173,8 @@ void break_cmdline_into_token(t_mini *s)
 		ft_printf("%s\n", cmd->flag);
 		ft_printf("%s\n", cmd->str);
 		expand_dollars(s, cmd);
+		free(cmd->str);
+		free(cmd->flag);
 		cmd->str = cmd->buf;
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
