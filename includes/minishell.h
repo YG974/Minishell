@@ -36,7 +36,8 @@
 /* FLAGS FOR TOKENS */
 # define FLAG_CMD 1
 # define FLAG_SPACE 2
-# define FLAG_STR 3
+# define FLAG_LIT_CHAR 3
+# define FLAG_STR 4
 
 typedef struct		s_tok
 {
@@ -169,6 +170,7 @@ void	testtokkens(t_cmdl *cmd);//function to del
 /*
 **	token3.c
 */
+int		ft_lit_char(t_cmdl *cmd, int i);
 char	*ft_strdup_quotes(char *src, char *flagstr, char c);
 int		ft_inc_i(char *str, char *flag, int i, char c);
 int		ft_ismeta(char c);

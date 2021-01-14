@@ -1,6 +1,33 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
+int		ft_lit_char(t_cmdl *cmd, int i)
+{
+	t_tok	*tmp;
+	t_tok	*current;
+
+	if (!(tmp = calloc(1, sizeof(t_tok))))
+		return (1);
+	tmp->flag = FLAG_LIT_CHAR;
+	tmp->next = NULL;
+	if (!cmd->firsttoken)
+		cmd->firsttoken = tmp;
+	else
+	{
+		current = cmd->firsttoken;
+		while (current->next)
+			current = current->next;
+		current->next = tmp;
+		tmp->prev = current;
+	}
+	if (!(tmp->str = calloc(3, sizeof(char))))
+		return (1);
+	tmp->str[0] = '\\';
+	tmp->str[1] = cmd->str[i + 1];
+	tmp->str[3] = '\0';
+	return (0);
+}
+
 int		ft_ismeta(char c)
 {
 	if (c == ' ' || c == '<' || c == '>' || c == '|')
@@ -36,14 +63,22 @@ int		ft_inc_i(char *str, char *flag, int i, char c)
 	{
 		i++;
 		while (str[i] && str[i] != '\'')
+		{
+			// if (str[i] == '\\')
+			// 	i++;
 			i++;
+		}
 		i++;
 		return (i);
 	} else if (c == '2')
 	{
 		i++;
 		while (str[i] && str[i] != '\"')
+		{
+			if (str[i] == '\\')
+				i++;
 			i++;
+		}
 		i++;
 		return (i);
 	}

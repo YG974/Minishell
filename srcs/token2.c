@@ -117,19 +117,19 @@ int     ft_get_tokens(t_mini *s, t_cmdl *cmd)
 		i++;
 	while (cmd->str[i])
 	{
-		if (ft_add_token(cmd, i))
-			return (ft_del_tokens(cmd, 1));
-// inc i ' ' or quotes
-		i = ft_inc_i(cmd->str, cmd->flag, i, cmd->flag[i]);
-//		while (cmd->str[i] && cmd->str[i] != ' ')
-//			i++;
-//		if (cmd->str[i] && ft_add_token(cmd, i))
-//			return (ft_del_tokens(cmd, 1));
-//		while (cmd->str[i] && cmd->str[i] == ' ')
-//			i++;
+		if (cmd->str[i] == '\\')
+		{
+			if (ft_lit_char(cmd, i))
+				return (ft_del_tokens(cmd, 1));
+			i += 2;
+		} else
+		{
+			if (ft_add_token(cmd, i))
+				return (ft_del_tokens(cmd, 1));
+			i = ft_inc_i(cmd->str, cmd->flag, i, cmd->flag[i]);
+		}
 	}
 	testtokkens(cmd);
     ft_printf("On quitte la fonction qui split les commandes en tokens.\n");
 	return (ft_del_tokens(cmd, 0));
-    return (0);
 }
