@@ -33,11 +33,17 @@
 # define D_QUOTED 2
 # define ESCAPED 3
 
-
+/* FLAGS FOR TOKENS */
+# define FLAG_CMD 1
+# define FLAG_SPACE 2
+# define FLAG_LIT_CHAR 3
+# define FLAG_STR 4
 
 typedef struct		s_tok
 {
-	char			*line;
+	char			*str;
+	int				flag;
+	struct s_tok	*prev;
 	struct s_tok	*next;
 }					t_tok;
 
@@ -70,6 +76,7 @@ typedef	struct		s_forparse
 
 typedef	struct		s_cmdl
 {
+	t_tok			*firsttoken;
 	t_tok			*token;
 	char			*str;
 	char			*flag;
@@ -149,6 +156,27 @@ void	error(t_mini *s, int error);
 */
 void break_cmdline_into_token(t_mini *s);
 int is_char_set(int c, const char *char_set);
+
+/*
+**	token2.c
+*/
+int     ft_get_tokens(t_mini *s, t_cmdl *cmd);
+int		ft_add_token(t_cmdl *cmd, int i);
+int		ft_del_tokens(t_cmdl *cmd, int ret);
+char	*ft_strdup_meta(char *src, char *flagstr);
+void	ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c);
+void	testtokkens(t_cmdl *cmd);//function to del
+
+/*
+**	token3.c
+*/
+int		ft_lit_char(t_cmdl *cmd, int i);
+char	*ft_strdup_quotes(char *src, char *flagstr, char c);
+int		ft_inc_i(char *str, char *flag, int i, char c);
+int		ft_ismeta(char c);
+
+
+
 #endif
 
 /*
