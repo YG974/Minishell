@@ -33,7 +33,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
     (void)s;
     (void)cmd;
     ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");
-    if ((ret = ft_exe_tokens(cmd)))
-        error(s, ret);
+    /*if ((ret = ft_exe_tokens(cmd)))*/
+        /*error(s, ret);*/
     ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");
 }
