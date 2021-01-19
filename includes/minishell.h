@@ -40,6 +40,7 @@
 # define FLAG_SPACE 2
 # define FLAG_LIT_CHAR 3
 # define FLAG_STR 4
+# define FLAG_ASSIGNEMENT 5
 
 typedef struct		s_tok
 {
@@ -83,6 +84,9 @@ typedef	struct		s_cmdl
 	char			*str;
 	char			*flag;
 	char			*buf;
+	int				ret;
+	int				pipe;
+	int				redir;
 	struct s_cmdl	*next;
 }					t_cmdl;
 

@@ -24,16 +24,20 @@ int		ft_exe_tokens(t_cmdl *cmd)
 	}
     return (0);
 }
+/*
+ * WARNING : the first argument is not always the command
+ * -> if first argument is an assignement(contains "="), it looks forward for a
+ * command
+ * -> if there is a command, it doesnt apply the assignement and try to run cmd
+ * -> if there is only an assignement in the command line, it applies it.
+ */
 
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
-	int		ret;
 
-	ret = 0;
-    (void)s;
-    (void)cmd;
     ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");
-    /*if ((ret = ft_exe_tokens(cmd)))*/
-        /*error(s, ret);*/
+	cmd->ret = 0;
+	if ((cmd->ret = ft_exe_tokens(cmd)))
+		error(s, cmd->ret);
     ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");
 }
