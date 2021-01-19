@@ -163,7 +163,7 @@ void check_quotes(t_mini *s, t_cmdl *cmd)
 void break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
-	char	**tab;
+	/*char	**tab;*/
 
 	cmd = s->firstcmdl;
 	while (cmd && !s->error)
@@ -183,8 +183,8 @@ void break_cmdline_into_token(t_mini *s)
 		ft_printf("%s\n", cmd->str);
 		ft_get_tokens(s, cmd);
 		/*ft_flag_assignement(s, cmd);*/
-		tab = put_env_in_tab(s);
-		print_tab(tab);
+		/* tab = put_env_in_tab(s); */
+		/* print_tab(tab); */
 		ft_exe_cmd(s, cmd);
 		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;
