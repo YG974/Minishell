@@ -163,6 +163,7 @@ void check_quotes(t_mini *s, t_cmdl *cmd)
 void break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
+	char	**tab;
 
 	cmd = s->firstcmdl;
 	while (cmd && !s->error)
@@ -182,10 +183,22 @@ void break_cmdline_into_token(t_mini *s)
 		ft_printf("%s\n", cmd->str);
 		ft_get_tokens(s, cmd);
 		/*ft_flag_assignement(s, cmd);*/
+		tab = put_env_in_tab(s);
+		print_tab(tab);
 		ft_exe_cmd(s, cmd);
 		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;
 	}
+}
+
+void	print_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	printf("print tab \n");
+	while (tab[i++])
+		printf("%s\n", tab[i]);
 }
 
 int is_char_set(int c, const char *char_set)

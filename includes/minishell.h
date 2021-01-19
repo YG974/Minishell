@@ -152,6 +152,8 @@ int     ft_redirection(t_mini *s);
 **	ft_exe_cmd.c
 */
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd);
+void	print_tab(char **tab);
+char	**put_env_in_tab(t_mini *s);
 
 /*
 **	ft_error.c

@@ -42,17 +42,21 @@ char **put_env_in_tab(t_mini *s)
 	char	**env_tab;
 
 	env = s->env;
+	env_str = strdup("");
 	while (env)
 	{
-		env_str = ft_strjoin(env->name, "=");
+		env_str = ft_strjoin(env_str, env->name);
+		env_str = ft_strjoin(env_str, "=");
 		env_str = ft_strjoin_free_s1(env_str, env->value);
 		env_str = ft_strjoin_free_s1(env_str, "\n");
 		env = env->next;
 	}
+		/*printf("%s\n", env_str);*/
 	env_tab = ft_split(env_str, '\n');
 	free(env_str);
 	return (env_tab);
 }
+
 void	check_env_variable_name(t_mini *s)
 {
 	t_env	*env;
