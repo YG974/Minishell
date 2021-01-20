@@ -157,6 +157,17 @@ void	print_tab(char **tab);
 char	**put_env_in_tab(t_mini *s);
 
 /*
+**	ft_exe_cmd.c
+*/
+int		ft_echo(t_mini *s, t_cmdl *cmd);
+int		ft_cd(t_mini *s, t_cmdl *cmd);
+int		ft_pwd(t_mini *s, t_cmdl *cmd);
+int		ft_export(t_mini *s, t_cmdl *cmd);
+int		ft_unset(t_mini *s, t_cmdl *cmd);
+int		ft_env(t_mini *s, t_cmdl *cmd);
+int		ft_exit(t_mini *s, t_cmdl *cmd);
+
+/*
 **	ft_error.c
 */
 void	error(t_mini *s, int error);
