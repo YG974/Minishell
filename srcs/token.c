@@ -195,7 +195,7 @@ void	print_tab(char **tab)
 {
 	int i;
 
-	i = 0;
+	i = -1;
 	printf("print tab \n");
 	while (tab[i++])
 		printf("%s\n", tab[i]);
