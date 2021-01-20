@@ -60,6 +60,8 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd)
 int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
+	if (cmd->buf)
+		free(cmd->buf);
 	cmd->buf = ft_strdup("");
 	cmd->token = cmd->firsttoken;
 	ft_printf("parse_cmd_args\n");
