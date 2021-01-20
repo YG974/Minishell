@@ -63,7 +63,8 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 	cmd->buf = ft_strdup("");
 	cmd->token = cmd->firsttoken;
 	ft_printf("parse_cmd_args\n");
-	while (ft_strchr(cmd->token->str, '='))
+	while ((ft_strchr(cmd->token->str, '=')
+				|| (cmd->token->flag == 2 && cmd->token->str[0] == ' ')))
 		cmd->token = cmd->token->next;
 	while (cmd->token)
 	{
