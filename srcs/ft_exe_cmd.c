@@ -60,15 +60,26 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd)
 int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
-	// (void)cmd;
+	cmd->buf = ft_strdup("");
 	cmd->token = cmd->firsttoken;
-	while (!(ft_strchr(cmd->token->str, '=')) && cmd->token->flag != 2)
-		cmd->token = cmd->firsttoken;
+	ft_printf("parse_cmd_args\n");
+	while (ft_strchr(cmd->token->str, '='))
+		cmd->token = cmd->token->next;
 	while (cmd->token)
 	{
-		if (ft_is_builtin(cmd->token->str))
-			cmd->ret = exec_builtin(s, cmd);
+		ft_printf("token :%s|\n", cmd->token->str);
+		if (cmd->token->flag != 2 && cmd->token)
+		{
+			cmd->buf = ft_strjoin_free_s1(cmd->buf, cmd->token->str);
+			cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
+			cmd->token = cmd->token->next;
+		}
+		else if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' && cmd->token)
+			cmd->token = cmd->token->next;
+		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' ' && cmd->token)
+			break;
 	}
+	/*cmd->token = cmd->firsttoken;*/
 	ft_printf("parse_cmd_args\n");
 	return (cmd->ret);
 }
@@ -100,9 +111,6 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 }
 int		cmd_has_only_assignement(t_cmdl *cmd)
 {
-	int		cmd_flag;
-	
-	cmd_flag = 0;
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
 	{
@@ -110,6 +118,7 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 			return (0);
 		cmd->token = cmd->token->next;
 	}
+	cmd->token = cmd->firsttoken;
 	return (1);
 }
 /*
@@ -123,14 +132,18 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
 
+	char **args;
     ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");
 	cmd->ret = 0;
+	s->i = ft_exe_tokens(s, cmd);
 	if (cmd_has_only_assignement(cmd))
 		cmd->ret = apply_assignement(s, cmd);
 	else 
 		parse_cmd_args(s, cmd);
-	ft_redirection(s);
-	if (ft_is_builtin(cmd->token->str))
+    ft_printf("str ok args :%s\n", cmd->buf);
+	args = ft_split(cmd->buf, '\n');
+	print_tab(args);
+	if (ft_is_builtin(args[0]))
 		cmd->ret = exec_builtin(s, cmd);
 	else
 		cmd->ret = exec_bin(s,cmd);

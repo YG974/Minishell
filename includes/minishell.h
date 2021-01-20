@@ -85,8 +85,6 @@ typedef	struct		s_cmdl
 	char			*flag;
 	char			*buf;
 	int				ret;
-	int				pipe;
-	int				redir;
 	struct s_cmdl	*next;
 }					t_cmdl;
 
