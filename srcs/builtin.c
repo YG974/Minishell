@@ -5,7 +5,6 @@ int		echo_flag_on(char *str)
 	int i;
 
 	i = 2;
-	/*ft_printf("str echo %s\n", str);*/
 	if (str[0] != '-')
 		return (0);
 	if (str[1] != 'n')
@@ -40,7 +39,6 @@ int		ft_echo(t_mini *s, char **args)
 	}
 	if (n_flag == 0)
 		ft_putstr_fd("\n", s->std.out);
-	ft_printf("flag %d\n", n_flag);
 	return (0);
 }
 
