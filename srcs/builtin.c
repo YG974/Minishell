@@ -1,5 +1,23 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+int		echo_flag_on(char *str)
+{
+	int i;
+
+	i = 2;
+	printf("str echo %s", str);
+	if (str[0] != '=')
+		return (0);
+	if (str[1] != 'n')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int		ft_echo(t_mini *s, char **args)
 {
@@ -8,14 +26,12 @@ int		ft_echo(t_mini *s, char **args)
 
 	n_flag = 0;
 	i = 1;
-	print_tab(args);
+	/*print_tab(args);*/
 	while (args[i])
 	{
-		if ((ft_strncmp("-n", args[i], 2) == 0))
-		{
-			n_flag = 1;
+		n_flag = echo_flag_on(args[i]);
+		if (n_flag == 1)
 			i++;
-		}
 		else
 		{
 			ft_putstr_fd(args[i], s->std.out);
