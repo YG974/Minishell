@@ -27,33 +27,34 @@ int		ft_is_builtin(char *str)
 	return (0);
 }
 
-int		exec_bin(t_mini *s, t_cmdl *cmd)
+int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	(void)s;
 	(void)cmd;
+	(void)args;
 	ft_printf("exec BINNN\n");
 	return (0);
 }
 
-int		exec_builtin(t_mini *s, t_cmdl *cmd)
+int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	(void)s;
 	// (void)cmd;
 	ft_printf("exec buliltin\n");
 	if (!ft_strncmp(cmd->str, "echo", 4))
-		cmd->ret = ft_echo(s, cmd);
+		cmd->ret = ft_echo(s, args);
 	if (!ft_strncmp(cmd->str, "cd", 2))
-		cmd->ret = ft_cd(s, cmd);
+		cmd->ret = ft_cd(s, args);
 	if (!ft_strncmp(cmd->str, "pwd", 3))
-		cmd->ret = ft_pwd(s, cmd);
+		cmd->ret = ft_pwd(s, args);
 	if (!ft_strncmp(cmd->str, "export", 6))
-		cmd->ret = ft_export(s, cmd);
+		cmd->ret = ft_export(s, args);
 	if (!ft_strncmp(cmd->str, "unset", 5))
-		cmd->ret = ft_unset(s, cmd);
+		cmd->ret = ft_unset(s, args);
 	if (!ft_strncmp(cmd->str, "env", 3))
-		cmd->ret = ft_env(s, cmd);
+		cmd->ret = ft_env(s, args);
 	if (!ft_strncmp(cmd->str, "exit", 4))
-		cmd->ret = ft_exit(s, cmd);
+		cmd->ret = ft_exit(s, args);
 	return (cmd->ret);
 }
 
@@ -147,8 +148,8 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	args = ft_split(cmd->buf, '\n');
 	print_tab(args);
 	if (ft_is_builtin(args[0]))
-		cmd->ret = exec_builtin(s, cmd);
+		cmd->ret = exec_builtin(s, cmd, args);
 	else
-		cmd->ret = exec_bin(s,cmd);
+		cmd->ret = exec_bin(s,cmd, args);
     ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");
 }
