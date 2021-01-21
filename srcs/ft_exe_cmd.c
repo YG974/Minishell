@@ -71,7 +71,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 		cmd->token = cmd->token->next;
 	while (cmd->token)
 	{
-		ft_printf("token :%s|\n", cmd->token->str);
+		/*ft_printf("token :%s|\n", cmd->token->str);*/
 		if (cmd->token->flag != 2 && cmd->token)
 		{
 			cmd->buf = ft_strjoin_free_s1(cmd->buf, cmd->token->str);
@@ -98,7 +98,7 @@ int		ft_exe_tokens(t_mini *s, t_cmdl *cmd)
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
 	{
-    	printf("------- TOKEN #%d\n\tline : %s\n\tflag : %d\n-------\n\n", i, cmd->token->str, cmd->token->flag);
+        /*printf("------- TOKEN #%d\n\tline : %s\n\tflag : %d\n-------\n\n", i, cmd->token->str, cmd->token->flag);*/
 		cmd->token = cmd->token->next;
 		i++;
 	}

@@ -8,22 +8,24 @@ int		ft_echo(t_mini *s, char **args)
 
 	n_flag = 0;
 	i = 1;
+	print_tab(args);
 	while (args[i])
 	{
-		if (ft_strncmp("-n", args[i], 2))
+		if ((ft_strncmp("-n", args[i], 2) == 0))
 		{
 			n_flag = 1;
 			i++;
 		}
 		else
+		{
 			ft_putstr_fd(args[i], s->std.out);
-		if (args[i + 1])
-			ft_putstr_fd(" ", s->std.out);
-		i++;
+			i++;
+			if (args[i])
+				ft_putstr_fd(" ", s->std.out);
+		}
 	}
 	if (n_flag == 0)
 		ft_putstr_fd("\n", s->std.out);
-	ft_printf("echo \n");
 	return (0);
 }
 
