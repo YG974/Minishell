@@ -18,24 +18,38 @@ int		echo_flag_on(char *str)
 	return (1);
 }
 
+int		count_args(char **args)
+{
+	int i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	return (i);
+}
+
 int		ft_echo(t_mini *s, char **args)
 {
 	int		n_flag;
 	int		i;
+	int		nb;
 
 	n_flag = 0;
 	i = 1;
-	while (echo_flag_on(args[i]) && args[i])
+	if ((nb = count_args(args)) > 1)
 	{
-		n_flag = 1;
+		while (echo_flag_on(args[i]) && args[i])
+		{
+			n_flag = 1;
 			i++;
-	}
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], s->std.out);
-		i++;
-		if (args[i])
-			ft_putstr_fd(" ", s->std.out);
+		}
+		while (args[i])
+		{
+			ft_putstr_fd(args[i], s->std.out);
+			i++;
+			if (args[i])
+				ft_putstr_fd(" ", s->std.out);
+		}
 	}
 	if (n_flag == 0)
 		ft_putstr_fd("\n", s->std.out);
