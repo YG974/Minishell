@@ -54,7 +54,10 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 	if (!ft_strncmp(cmd->str, "env", 3))
 		cmd->ret = ft_env(s, args);
 	if (!ft_strncmp(cmd->str, "exit", 4))
+	{
 		cmd->ret = ft_exit(s, args);
+		error(s, WANT_EXIT);
+	}
 	return (cmd->ret);
 }
 
