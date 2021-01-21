@@ -114,6 +114,7 @@ int		ft_env(t_mini *s, char **args)
 // si on veut peaufiner, bien checker a verifier si un seul argument, et que 
 // cest un nombre, dans ce cas, return ce nombre, sinon renvoyer de dernier
 // retour cmd->ret
+// Dans le sujet c'est ecrit, sans option, mais pas sans argument.
 int		ft_exit(t_mini *s, char **args)
 {
 	(void)s;
