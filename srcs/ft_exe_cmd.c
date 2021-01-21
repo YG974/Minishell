@@ -84,7 +84,6 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 			break;
 	}
 	/*cmd->token = cmd->firsttoken;*/
-	ft_printf("parse_cmd_args\n");
 	return (cmd->ret);
 }
 
@@ -144,7 +143,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		cmd->ret = apply_assignement(s, cmd);
 	else 
 		parse_cmd_args(s, cmd);
-    ft_printf("str ok args :%s\n", cmd->buf);
+    /*ft_printf("str ok args :%s\n", cmd->buf);*/
 	args = ft_split(cmd->buf, '\n');
 	print_tab(args);
 	if (ft_is_builtin(args[0]))
