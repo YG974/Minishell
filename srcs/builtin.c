@@ -152,17 +152,64 @@ int		print_sorted_env(t_mini *s)
 
 }
 
+int		ft_strchr_int(const char *s, int c)
+{
+	int i;
+
+	i = 0;
+	c = (char)c;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (i);
+		i++;
+	}
+	if (s[i] == c)
+		return (i);
+	return (-1);
+}
+
+int		is_in_env(t_mini *s, char *str)
+{
+	t_env	*env;
+	int		len;
+
+	env = s->env;
+	len = ft_strlen(str);
+	while (env)
+	{
+		if (ft_strncmp(env->name, str, len) == 0)
+			return (1);
+		env = env->next;
+	}
+	return (0);
+}
+
 void	export_assignement(t_mini *s, char *str)
 {
 	t_env	*env;
+	t_env	*new;
 	char	*tmp;
 	int		pos;
 
-	pos = ft_strchrgnl(str, '=');
-	tmp = ft_strdup_size(str, pos, 0);
 	env = s->env;
+	if (is_in_env(s, str) == 0)
+		if (!(new = ft_calloc(1, sizeof(t_env))))
+			return error(s, ERR_CALLOC);
+	pos = ft_strchr_int(str, '=');
+	if (pos < 0)
+		tmp = ft_strdup(str);
+	else
+	{
+		tmp = ft_strdup_size(str, pos - 1, 0);
+		new->name = tmp;
+		if (str[pos + 1])
+		{
+			tmp = ft_strdup_size(str, ft_strlen(str), pos + 1);
+			new->value = tmp;
+		}
+	}
 	ft_printf("apply %s\n", str);
-
 }
 
 int		ft_export(t_mini *s, char **args)
