@@ -185,6 +185,20 @@ int		is_in_env(t_mini *s, char *str)
 	return (0);
 }
 
+/*secure the return for the name of the env var without = */
+char	*get_name(char *str)
+{
+	int		pos;
+	char	*tmp;
+
+	pos = ft_strchr_int(str, '=');
+	if (pos < 0)
+		tmp = ft_strdup(str);
+	else
+		tmp = ft_strdup_size(str, pos - 1, 0);
+	return (tmp);
+}
+
 void	export_assignement(t_mini *s, char *str)
 {
 	t_env	*env;
@@ -193,12 +207,67 @@ void	export_assignement(t_mini *s, char *str)
 	int		pos;
 
 	env = s->env;
+	pos = ft_strchr_int(str, '=');
+	tmp = get_name(str);
+	if (is_in_env(s, tmp) == 0)
+	{
+
+	}
+	else
+	{
+		if (pos < 0)
+			return ;
+		else if (pos == ft_strlen(str))
+			modify_export_value()
+	}
+	if (pos < 0)
+	{
+		if (is_in_env(s, tmp) == 0)
+			if (!(new = ft_calloc(1, sizeof(t_env))))
+				return error(s, ERR_CALLOC);
+		new->name = ft_strdup(str);
+		return ;
+	}
+	else
+	{
+		if (pos == ft_strlen(str) && (is_in_env(s, tmp) == 0))
+		{
+			new->name = ft_strdup(tmp);
+			new->value = ft_strdup("");
+		}
+
+	}
+		tmp = ft_strdup_size(str, pos - 1, 0);
+	if (is_in_env(s, str) == 1)
+		
+	else if (pos == ft_strlen(str))
+	{
+		if (is_in_env(s, str) == 0)
+			if (!(new = ft_calloc(1, sizeof(t_env))))
+				return error(s, ERR_CALLOC);
+		new->name = ft_strdup(str);
+		return ;
+
+	}
+	else
+	{
+
+	}
+	if (pos < 0)
+	tmp = ft_strdup_size(str, pos - 1, 0);
 	if (is_in_env(s, str) == 0)
 		if (!(new = ft_calloc(1, sizeof(t_env))))
 			return error(s, ERR_CALLOC);
-	pos = ft_strchr_int(str, '=');
-	if (pos < 0)
-		tmp = ft_strdup(str);
+	else
+	{
+		if (pos < 0)
+			return ;
+		else if (pos == ft_strlen(str))
+			tmp = ft_strdup("");
+		else
+			tmp = ft_strdup(str);
+		
+	}
 	else
 	{
 		tmp = ft_strdup_size(str, pos - 1, 0);
