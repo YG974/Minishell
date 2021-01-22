@@ -38,7 +38,6 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
-	(void)s;
 	// (void)cmd;
 	ft_printf("exec buliltin\n");
 	if (!ft_strncmp(cmd->str, "echo", 4))
@@ -55,7 +54,9 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 		cmd->ret = ft_env(s, args);
 	if (!ft_strncmp(cmd->str, "exit", 4))
 	{
-		cmd->ret = ft_exit(s, args);
+		if ((s->i = ft_exit(s, args)) == 0)
+			cmd->ret = ft_atoi(args[1]);
+		ft_printf("ret = %d", cmd->ret);
 		error(s, WANT_EXIT);
 	}
 	return (cmd->ret);

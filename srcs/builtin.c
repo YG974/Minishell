@@ -1,5 +1,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+
 int		echo_flag_on(char *str)
 {
 	int i;
@@ -96,7 +97,8 @@ int		ft_env(t_mini *s, char **args)
 	env = s->env;
 	if ((i = count_args(args)) > 1)
 	{
-		ft_printf("Error: env command doesn't allow any flag or argument.\n");
+		ft_putstr_fd("Error: flag or argument forbidden with env command .\n",
+				s->std.err);
 		return (1);
 	}
 	while (env)
@@ -107,10 +109,24 @@ int		ft_env(t_mini *s, char **args)
 		ft_putstr_fd("\n", s->std.out);
 		env = env->next;
 	}
-	ft_printf("env \n");
 	return (0);
 }
 
+int		str_is_digit(char *str)
+{
+	int		i;
+
+	i = 0;
+	if (str[i] == '-' || str[i] == '+' )
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 // si on veut peaufiner, bien checker a verifier si un seul argument, et que 
 // cest un nombre, dans ce cas, return ce nombre, sinon renvoyer de dernier
 // retour cmd->ret
@@ -123,13 +139,15 @@ int		ft_exit(t_mini *s, char **args)
 	i = count_args(args);
 	if (i > 2)
 	{
-		ft_printf("Error: exit command allows only an integer argument.\n");
+		ft_printf("Error: exit command allows only an numeric argument.\n");
 		ft_printf("Ex : exit 4\n");
 		return (1);
 	}
-	if (i == 2)
-		i = ft_atoi(args[1]);
-	else
-		i = 0;
-	return (i);
+	if (!(i = str_is_digit(args[1])))
+	{
+		ft_printf("Error: exit command allows only an numeric argument.\n");
+		ft_printf("Ex : exit 4\n");
+		return (1);
+	}
+	return (0);
 }
