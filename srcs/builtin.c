@@ -125,11 +125,58 @@ int		ft_pwd(t_mini *s, char **args)
 	return (0);
 }
 
-int		ft_export(t_mini *s, char **args)
+int		is_valid_env_name(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if (ft_isdigit(str[0]) == 1)
+			return (0);
+		if (ft_isalnum(str[i]) == 0 && str[i] != '_')
+			return (0);
+		i++;
+	}
+	/*ft_printf("export \n");*/
+	return (1);
+}
+
+int		print_sorted_env(t_mini *s)
+{
+	t_env	*env;
+
+	env = s->env;
+	ft_printf("sorted env\n");
+	return (0);
+
+}
+
+void	export_assignement(t_mini *s, char *str)
 {
 	(void)s;
-	(void)args;
+	ft_printf("apply %s\n", str);
+
+}
+
+int		ft_export(t_mini *s, char **args)
+{
+	int		i;
+	int		ret;
+
+	i = 1;
+	if ((ret = count_args(args)) == 1)
+		return (print_sorted_env(s));
+	while (args[i])
+	{
+		if (!(ret = is_valid_env_name(args[i])))
+			error(s, ERR_INVALID_ENV_NAME);
+		else
+			export_assignement(s, args[i]);
+		i++;
+	}
 	ft_printf("export \n");
+	/*ft_printf("export \n");*/
 	return (0);
 }
 
@@ -155,10 +202,13 @@ int		ft_env(t_mini *s, char **args)
 	}
 	while (env)
 	{
+		if (env->value)
+		{
 		ft_putstr_fd(env->name, s->std.out);
 		ft_putstr_fd("=", s->std.out);
 		ft_putstr_fd(env->value, s->std.out);
 		ft_putstr_fd("\n", s->std.out);
+		}
 		env = env->next;
 	}
 	return (0);

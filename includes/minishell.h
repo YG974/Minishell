@@ -114,12 +114,16 @@ void	minishell(t_mini *s);
 void	prompt(t_mini *s);
 
 /*
+**	buliltin.c
+*/
+int		is_valid_env_name(char *str);
+
+/*
 **	env.c
 */
 void	init_env(t_mini *s, char **env);
 void	copy_env(t_mini *s, char **env);
 void	check_env_validity(t_mini *s);
-void	is_valid_env_name(t_mini *s, char *str);
 char	*ft_strjoin_free_s1(char const *s1, char const *s2);
 
 /*
