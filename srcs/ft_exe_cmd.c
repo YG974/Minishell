@@ -38,25 +38,23 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
-	// (void)cmd;
 	ft_printf("exec buliltin\n");
-	if (!ft_strncmp(cmd->str, "echo", 4))
+	if (!ft_strncmp(args[0], "echo", 4))
 		cmd->ret = ft_echo(s, args);
-	if (!ft_strncmp(cmd->str, "cd", 2))
+	if (!ft_strncmp(args[0], "cd", 2))
 		cmd->ret = ft_cd(s, args);
-	if (!ft_strncmp(cmd->str, "pwd", 3))
+	if (!ft_strncmp(args[0], "pwd", 3))
 		cmd->ret = ft_pwd(s, args);
-	if (!ft_strncmp(cmd->str, "export", 6))
+	if (!ft_strncmp(args[0], "export", 6))
 		cmd->ret = ft_export(s, args);
-	if (!ft_strncmp(cmd->str, "unset", 5))
+	if (!ft_strncmp(args[0], "unset", 5))
 		cmd->ret = ft_unset(s, args);
-	if (!ft_strncmp(cmd->str, "env", 3))
+	if (!ft_strncmp(args[0], "env", 3))
 		cmd->ret = ft_env(s, args);
-	if (!ft_strncmp(cmd->str, "exit", 4))
+	if (!ft_strncmp(args[0], "exit", 4))
 	{
 		if ((s->i = ft_exit(s, args)) == 0)
 			cmd->ret = ft_atoi(args[1]);
-		ft_printf("ret = %d", cmd->ret);
 		error(s, WANT_EXIT);
 	}
 	return (cmd->ret);
