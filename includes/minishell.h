@@ -175,6 +175,7 @@ void	error(t_mini *s, int error);
 */
 void	break_cmdline_into_token(t_mini *s);
 int		is_char_set(int c, const char *char_set);
+char *get_env_value(t_mini *s, char *name);
 
 /*
 **	token2.c

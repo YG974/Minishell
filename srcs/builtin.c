@@ -57,12 +57,45 @@ int		ft_echo(t_mini *s, char **args)
 	return (0);
 }
 
-int		ft_cd(t_mini *s, char **args)
+int		go_to_path(t_mini *s, char **args)
 {
 	(void)s;
 	(void)args;
-	ft_printf("cd \n");
+
 	return (0);
+}
+
+int		go_to_home_path(t_mini *s)
+{
+	char	*path;
+	int		i;
+
+	path = ft_strdup("HOME");
+	path = get_env_value(s, path);
+	if ((i = ft_strlen(path)) < 1)
+	{
+		ft_putstr_fd("HOME is not defined\n", 2);
+		return (1);
+	}
+	i = chdir(path);
+	if (i != 0)
+		ft_putstr_fd("Error, couldn't change dir", 2);
+	ft_printf("home path %s", path);
+	return (i);
+}
+
+int		ft_cd(t_mini *s, char **args)
+{
+	(void)s;
+	int		i;
+
+	i = count_args(args);
+	if (i == 1)
+		return (go_to_home_path(s));
+	else
+		return (go_to_path(s, args));
+	ft_printf("cd \n");
+	/*ft_putstr_fd("Error: cd command allows only one argument.\n", 2);*/
 }
 
 int		ft_pwd(t_mini *s, char **args)
