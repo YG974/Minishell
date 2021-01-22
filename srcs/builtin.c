@@ -1,5 +1,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+#include <sys/syslimits.h>
 
 int		echo_flag_on(char *str)
 {
@@ -104,8 +105,23 @@ int		ft_cd(t_mini *s, char **args)
 int		ft_pwd(t_mini *s, char **args)
 {
 	(void)s;
-	(void)args;
-	ft_printf("pwd \n");
+	char *cwd;
+
+	cwd = ft_calloc(PATH_MAX, sizeof(char));
+	if (!cwd)
+	{
+		error(s, ERR_CALLOC);
+		return (1);
+	}
+	cwd = getcwd(args[1], PATH_MAX);
+	if (!cwd)
+	{
+		ft_putstr_fd("Error, couldn't get current dir", 2);
+		return (1);
+	}
+	ft_putstr_fd(cwd, s->std.out);
+	ft_putstr_fd("\n", s->std.out);
+	/*ft_printf("pwd \n");*/
 	return (0);
 }
 
