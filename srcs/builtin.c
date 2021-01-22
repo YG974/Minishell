@@ -154,7 +154,13 @@ int		print_sorted_env(t_mini *s)
 
 void	export_assignement(t_mini *s, char *str)
 {
-	(void)s;
+	t_env	*env;
+	char	*tmp;
+	int		pos;
+
+	pos = ft_strchrgnl(str, '=');
+	tmp = ft_strdup_size(str, pos, 0);
+	env = s->env;
 	ft_printf("apply %s\n", str);
 
 }
