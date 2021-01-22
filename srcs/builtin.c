@@ -60,9 +60,12 @@ int		ft_echo(t_mini *s, char **args)
 int		go_to_path(t_mini *s, char **args)
 {
 	(void)s;
-	(void)args;
+	int		i;
 
-	return (0);
+	i = chdir(args[1]);
+	if (i != 0)
+		ft_putstr_fd("Error, couldn't change dir", 2);
+	return (i);
 }
 
 int		go_to_home_path(t_mini *s)
