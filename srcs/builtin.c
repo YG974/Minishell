@@ -97,7 +97,6 @@ int		ft_cd(t_mini *s, char **args)
 		return (go_to_home_path(s));
 	else
 		return (go_to_path(s, args));
-	/*ft_putstr_fd("Error: cd command allows only one argument.\n", 2);*/
 }
 
 int		ft_pwd(t_mini *s, char **args)
