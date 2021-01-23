@@ -2,7 +2,7 @@ NAME			= minishell
 
 # FLAGS
 CC				= clang
-C_FLAGS			= -Wall -Wextra -Werror
+C_FLAGS			= -Wall -Wextra -Werror -g
 
 # DIRECTORIES
 SRCS_DIR		= ./srcs/

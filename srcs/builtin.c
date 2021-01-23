@@ -84,7 +84,6 @@ int		go_to_home_path(t_mini *s)
 	i = chdir(path);
 	if (i != 0)
 		ft_putstr_fd("Error, couldn't change dir", 2);
-	ft_printf("home path %s", path);
 	return (i);
 }
 
@@ -98,7 +97,6 @@ int		ft_cd(t_mini *s, char **args)
 		return (go_to_home_path(s));
 	else
 		return (go_to_path(s, args));
-	ft_printf("cd \n");
 	/*ft_putstr_fd("Error: cd command allows only one argument.\n", 2);*/
 }
 
@@ -195,91 +193,91 @@ char	*get_name(char *str)
 	if (pos < 0)
 		tmp = ft_strdup(str);
 	else
-		tmp = ft_strdup_size(str, pos - 1, 0);
+		tmp = ft_strdup_size(str, pos, 0);
 	return (tmp);
+}
+void	create_export_value(t_mini *s, char *name, char *str, int pos)
+{
+	t_env	*env;
+	t_env	*tmp;
+	int		len;
+
+	env = s->env;
+	len = ft_strlen(str);
+	while (env->next)
+		env = env->next;
+	if (!(tmp = ft_calloc(1, sizeof(t_env))))
+		return error(s, ERR_CALLOC);
+	tmp->name = name;
+	if (pos < 0)
+		return ;
+	else
+	{
+		if (pos == ft_strlen(str))
+			tmp->value = ft_strdup("");
+		else
+			tmp->value = ft_strdup_size(str, len, pos + 1);
+	}
+	env->next = tmp;
+	tmp->next = NULL;
+	return ;
+}
+
+
+void	modify_export_value(t_mini *s, char *name, char *str, int pos)
+{
+	t_env	*env;
+	int		len;
+
+	env = s->env;
+	len = ft_strlen(str);
+	while (env)
+	{
+		if (ft_strncmp(env->name, name, len) == 0)
+		{
+			if (pos < 0)
+				return ;
+			else
+			{
+				if (env->value)
+					free(env->value);
+				if (pos == ft_strlen(str))
+					env->value = ft_strdup("");
+				else
+					env->value = ft_strdup_size(str, len, pos + 1);
+			}
+		}
+		env = env->next;
+	}
 }
 
 void	export_assignement(t_mini *s, char *str)
 {
-	t_env	*env;
-	t_env	*new;
 	char	*tmp;
 	int		pos;
 
-	env = s->env;
 	pos = ft_strchr_int(str, '=');
 	tmp = get_name(str);
 	if (is_in_env(s, tmp) == 0)
 	{
-
-	}
-	else
-	{
 		if (pos < 0)
 			return ;
 		else if (pos == ft_strlen(str))
-			modify_export_value()
-	}
-	if (pos < 0)
-	{
-		if (is_in_env(s, tmp) == 0)
-			if (!(new = ft_calloc(1, sizeof(t_env))))
-				return error(s, ERR_CALLOC);
-		new->name = ft_strdup(str);
-		return ;
-	}
-	else
-	{
-		if (pos == ft_strlen(str) && (is_in_env(s, tmp) == 0))
-		{
-			new->name = ft_strdup(tmp);
-			new->value = ft_strdup("");
-		}
-
-	}
-		tmp = ft_strdup_size(str, pos - 1, 0);
-	if (is_in_env(s, str) == 1)
-		
-	else if (pos == ft_strlen(str))
-	{
-		if (is_in_env(s, str) == 0)
-			if (!(new = ft_calloc(1, sizeof(t_env))))
-				return error(s, ERR_CALLOC);
-		new->name = ft_strdup(str);
-		return ;
-
-	}
-	else
-	{
-
-	}
-	if (pos < 0)
-	tmp = ft_strdup_size(str, pos - 1, 0);
-	if (is_in_env(s, str) == 0)
-		if (!(new = ft_calloc(1, sizeof(t_env))))
-			return error(s, ERR_CALLOC);
-	else
-	{
-		if (pos < 0)
-			return ;
-		else if (pos == ft_strlen(str))
-			tmp = ft_strdup("");
+			create_export_value(s, tmp, str, pos);
 		else
-			tmp = ft_strdup(str);
-		
+			create_export_value(s, tmp, str, pos);
 	}
 	else
 	{
-		tmp = ft_strdup_size(str, pos - 1, 0);
-		new->name = tmp;
-		if (str[pos + 1])
-		{
-			tmp = ft_strdup_size(str, ft_strlen(str), pos + 1);
-			new->value = tmp;
-		}
+		if (pos < 0)
+			return ;
+		else if (pos == ft_strlen(str))
+			modify_export_value(s, tmp, str, pos);
+		else
+			modify_export_value(s, tmp, str, pos);
 	}
-	ft_printf("apply %s\n", str);
 }
+
 
 int		ft_export(t_mini *s, char **args)
 {
