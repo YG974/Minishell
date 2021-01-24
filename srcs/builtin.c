@@ -1,5 +1,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+#include <string.h>
 #include <sys/syslimits.h>
 
 int		echo_flag_on(char *str)
@@ -290,13 +291,18 @@ int		ft_export(t_mini *s, char **args)
 	{
 		if (!(ret = is_valid_env_name(args[i])))
 			error(s, ERR_INVALID_ENV_NAME);
+		else if (strchr(args[i], '='))
+		{
+			error(s, ERR_INVALID_ENV_NAME);
+			ret = 1;
+		}
 		else
 			export_assignement(s, args[i]);
 		i++;
 	}
 	ft_printf("export \n");
 	/*ft_printf("export \n");*/
-	return (0);
+	return (ret);
 }
 
 void	unset_value(t_mini *s, char *args)
@@ -335,7 +341,7 @@ int		ft_unset(t_mini *s, char **args)
 		i++;
 	}
 	ft_printf("unset \n");
-	return (0);
+	return (1);
 }
 
 int		ft_env(t_mini *s, char **args)
