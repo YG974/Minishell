@@ -27,11 +27,26 @@ int		ft_is_builtin(char *str)
 	return (0);
 }
 
+char	*find_bin_path(t_mini *s, char **args)
+{
+	/*char **bin_path;*/
+	char *cmd;
+	(void)s;
+
+	cmd = args[0];
+	/*bin_path = ft_split(get_env_value(s, "PATH"), ':');*/
+	/*print_tab(bin_path);*/
+	return (cmd);
+}
+
 int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	(void)s;
 	(void)cmd;
 	(void)args;
+	char *path;
+
+	path = find_bin_path(s, args);
 	ft_printf("exec BINNN\n");
 	return (0);
 }
