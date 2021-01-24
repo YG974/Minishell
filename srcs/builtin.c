@@ -299,10 +299,41 @@ int		ft_export(t_mini *s, char **args)
 	return (0);
 }
 
+void	unset_value(t_mini *s, char *args)
+{
+	t_env	*env;
+	t_env	*tmp;
+	int		len;
+
+	env = s->env;
+	len = ft_strlen(args);
+	while (env->next)
+	{
+		if (ft_strncmp(env->next->name, args, len) == 0)
+		{
+			tmp = env->next->next;
+			free(env->next);
+			env->next = tmp;
+			return ;
+		}
+		env = env->next;
+	}
+}
+
 int		ft_unset(t_mini *s, char **args)
 {
-	(void)s;
-	(void)args;
+	int		i;
+	int		ret;
+
+	i = 1;
+	while (args[i])
+	{
+		if (!(ret = is_valid_env_name(args[i])))
+			error(s, ERR_INVALID_ENV_NAME);
+		else
+			unset_value(s, args[i]);
+		i++;
+	}
 	ft_printf("unset \n");
 	return (0);
 }
