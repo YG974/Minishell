@@ -107,7 +107,6 @@ typedef struct		s_mini
 	struct s_mini			*previous;
 }					t_mini;
 
-extern t_mini g_mini;
 /*
 **	minishell.c
 */
