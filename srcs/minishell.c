@@ -3,7 +3,9 @@
 
 void prompt(t_mini *s)
 {	
-	ft_printf("MINISHELL DU TURFU ---> ");
+	/*ft_printf("MINISHELL DU TURFU ---> ");*/
+	ft_putstr_fd("MINISHELL DU TURF ---> ", 1);
+	/*get_next_line(0, s->read.buf);*/
 	s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
 }
 
@@ -35,6 +37,7 @@ void	minishell(t_mini *s)
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
 		prompt(s);
+		/*if (ft_parse(s))*/
 		if (!s->status && ft_parse(s))
 			error(s, ERR_CALLOC);
 		free(s->read.buf);

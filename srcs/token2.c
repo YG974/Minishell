@@ -69,11 +69,11 @@ void	testtokkens(t_cmdl *cmd)
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
 	{
-		ft_printf("TEST TOKEN #%d : %s\n", i, cmd->token->str);
+		/*ft_printf("TEST TOKEN #%d : %s\n", i, cmd->token->str);*/
 		i++;
 		cmd->token = cmd->token->next;
 	}
-	ft_printf("Fin des tokens\n\n");
+	/*ft_printf("Fin des tokens\n\n");*/
 }
 
 int		ft_add_token(t_cmdl *cmd, int i)

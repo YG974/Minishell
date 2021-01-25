@@ -33,7 +33,7 @@ void    ft_testchainlist(t_mini *s)
     tmp = s->firstcmdl;
     while (tmp)
     {
-        ft_printf("CMD LINE %d : %s\n", i, tmp->str);
+        /*ft_printf("CMD LINE %d : %s\n", i, tmp->str);*/
         i++;
         tmp = tmp->next;
     }
@@ -45,7 +45,7 @@ int     ft_parse(t_mini *s)
 
     ret = 0;
     s->error = 0;
-    ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");
+    /*ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");*/
     if (ft_check_semicolons(s->read.buf))
         error(s, ERR_SEMCOL);
     if (!s->error && (ret = ft_get_cmd(s->read.buf, s)))
@@ -55,6 +55,6 @@ int     ft_parse(t_mini *s)
     ft_testchainlist(s);
 	break_cmdline_into_token(s);
     ret = ft_del_cmdline(s, 0);
-    ft_printf("===========> On sort de la fonction de PARSING <============\n");
+    /*ft_printf("===========> On sort de la fonction de PARSING <============\n");*/
     return (0);
 }

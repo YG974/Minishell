@@ -170,21 +170,21 @@ void break_cmdline_into_token(t_mini *s)
 	{
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
-		ft_printf("-----------\n", cmd->flag);
-		ft_printf("%s\n", cmd->flag);
-		ft_printf("%s\n", cmd->str);
+		/*ft_printf("-----------\n", cmd->flag);*/
+		/*ft_printf("%s\n", cmd->flag);*/
+		/*ft_printf("%s\n", cmd->str);*/
 		expand_dollars(s, cmd);
-		ft_printf("%s\n", cmd->flag);
-		ft_printf("%s\n", cmd->str);
+		/*ft_printf("%s\n", cmd->flag);*/
+		/*ft_printf("%s\n", cmd->str);*/
 		free(cmd->str);
 		free(cmd->flag);
 		cmd->str = cmd->buf;
 		check_quotes(s, cmd);
-		ft_printf("%s\n", cmd->flag);
-		ft_printf("%s\n", cmd->str);
+		/*ft_printf("%s\n", cmd->flag);*/
+		/*ft_printf("%s\n", cmd->str);*/
 		check_dollars(s, cmd);
-		ft_printf("%s\n", cmd->flag);
-		ft_printf("%s\n", cmd->str);
+		/*ft_printf("%s\n", cmd->flag);*/
+		/*ft_printf("%s\n", cmd->str);*/
 		ft_get_tokens(s, cmd);
 		/*ft_flag_assignement(s, cmd);*/
 		/* tab = put_env_in_tab(s); */

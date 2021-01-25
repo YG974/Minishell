@@ -300,7 +300,7 @@ int		ft_export(t_mini *s, char **args)
 			export_assignement(s, args[i]);
 		i++;
 	}
-	ft_printf("export \n");
+	/*ft_printf("export \n");*/
 	/*ft_printf("export \n");*/
 	return (ret);
 }

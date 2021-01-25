@@ -63,7 +63,7 @@ char	*find_bin_path(t_mini *s, char **args)
 	path = NULL;
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
-	ft_printf("cmd_path :%s|\n", path);
+	/*ft_printf("cmd_path :%s|\n", path);*/
 	/*print_tab(bin_paths);*/
 	/*if (!ft_strncmp(args[0], "env", 3))*/
 	/*if (!ft_strchr(args[0], '\\'))*/
@@ -76,24 +76,26 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	(void)cmd;
 	char *path;
 	char **env;
+	pid_t pid;
 
-	s->pid = fork();
-	if (s->pid == 0)
+	/*s->pid = 0;*/
+	/*s->pid = fork();*/
+	pid = fork();
+	if (pid == 0)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
 		cmd->ret = execve(path, args, env);
 		free(env);
 		free(path);
-		exit(0);
 	}
-	ft_printf("exec BINNN\n");
+	/*ft_printf("exec BINNN\n");*/
 	return (0);
 }
 
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
-	ft_printf("exec buliltin\n");
+	/*ft_printf("exec buliltin\n");*/
 	if (!ft_strncmp(args[0], "echo", 4))
 		cmd->ret = ft_echo(s, args);
 	if (!ft_strncmp(args[0], "cd", 2))
@@ -122,7 +124,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 		/*free(cmd->buf);*/
 	cmd->buf = ft_strdup("");
 	cmd->token = cmd->firsttoken;
-	ft_printf("parse_cmd_args\n");
+	/*ft_printf("parse_cmd_args\n");*/
 	while ((ft_strchr(cmd->token->str, '=')
 				|| (cmd->token->flag == 2 && cmd->token->str[0] == ' ')))
 		cmd->token = cmd->token->next;
@@ -165,7 +167,7 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
 	// (void)cmd;
-	ft_printf("apply assignement \n");
+	/*ft_printf("apply assignement \n");*/
 	return (cmd->ret);
 
 }
@@ -193,7 +195,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
 
 	char **args;
-    ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");
+    /*ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");*/
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
 	if (cmd_has_only_assignement(cmd))
@@ -207,5 +209,5 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		cmd->ret = exec_builtin(s, cmd, args);
 	else
 		cmd->ret = exec_bin(s,cmd, args);
-    ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");
+    /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }
