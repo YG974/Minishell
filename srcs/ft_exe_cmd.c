@@ -27,26 +27,66 @@ int		ft_is_builtin(char *str)
 	return (0);
 }
 
+char	*try_bin_path(char *bin_path, char *cmd_name)
+{
+	DIR		*folder;
+	struct	dirent *file;
+	char	*cmd_path;
+	int		len;
+
+	len = ft_strlen(cmd_name);
+	if (!(folder = opendir(bin_path)))
+		return (NULL);
+	cmd_path = NULL;
+	while ((file = readdir(folder)))
+	{
+		if (ft_strncmp(file->d_name, cmd_name, len + 1) == 0)
+		{
+			cmd_path = ft_strjoin(bin_path, "/");
+			cmd_path = ft_strjoin_free_s1(cmd_path, file->d_name);
+		}
+		if (cmd_path)
+			break;
+	}
+	closedir(folder);
+	return (cmd_path);
+}
 char	*find_bin_path(t_mini *s, char **args)
 {
-	/*char **bin_path;*/
-	char *cmd;
-	(void)s;
+	char	**bin_paths;
+	char	*path;
+	int		i;
 
-	cmd = args[0];
-	/*bin_path = ft_split(get_env_value(s, "PATH"), ':');*/
-	/*print_tab(bin_path);*/
-	return (cmd);
+	i = 0;
+	path = ft_strdup("PATH");
+	bin_paths = ft_split(get_env_value(s, path), ':');
+	path = NULL;
+	while (bin_paths[i] && !path)
+		path = try_bin_path(bin_paths[i++], args[0]);
+	ft_printf("cmd_path :%s|\n", path);
+	/*print_tab(bin_paths);*/
+	/*if (!ft_strncmp(args[0], "env", 3))*/
+	/*if (!ft_strchr(args[0], '\\'))*/
+	/*env_path = args[0];*/
+	return (path);
 }
 
 int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
-	(void)s;
 	(void)cmd;
-	(void)args;
 	char *path;
+	char **env;
 
-	path = find_bin_path(s, args);
+	s->pid = fork();
+	if (s->pid == 0)
+	{
+		env = put_env_in_tab(s);
+		path = find_bin_path(s, args);
+		cmd->ret = execve(path, args, env);
+		free(env);
+		free(path);
+		exit(0);
+	}
 	ft_printf("exec BINNN\n");
 	return (0);
 }

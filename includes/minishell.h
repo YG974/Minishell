@@ -102,6 +102,7 @@ typedef struct		s_mini
 	int				sig;
 	int				error;
 	int				i;
+	pid_t			pid;
 	struct s_mini			*next;
 	struct s_mini			*previous;
 }					t_mini;
