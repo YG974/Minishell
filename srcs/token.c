@@ -13,6 +13,9 @@
  * 4 : dollar expansion
  */
 
+	/*look for name variable in env*/
+	/*if variable name is found, return its value */
+	/*if name is not found, return empty string ""*/
 char *get_env_value(t_mini *s, char *name)
 {
 	char *value;
@@ -35,6 +38,7 @@ char *get_env_value(t_mini *s, char *name)
 	return (value);
 }
 
+	/*replace the env values ($NAME) by their value in cmd->buf*/
 void expand_dollars(t_mini *s, t_cmdl *cmd)
 {
 	char *tmp;
@@ -60,12 +64,12 @@ void expand_dollars(t_mini *s, t_cmdl *cmd)
 				j++;
 			tmp = ft_strdup_size(cmd->str, s->i + j - 1, s->i);
 		}
-		cmd->buf = ft_strjoin(cmd->buf, tmp);
+		cmd->buf = ft_strjoin_free_s1(cmd->buf, tmp);
 		//ne pas oublier de free buf dans strjoin
 		free(tmp);
 	}
 }
-
+	/*flag the dollars sign in the cmd->flag string with a '4'*/
 void check_dollars(t_mini *s, t_cmdl *cmd)
 {
 	s->i = 0;
