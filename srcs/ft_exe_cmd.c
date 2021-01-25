@@ -1,13 +1,9 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-int		ft_exit_test(t_tok *token)
-{
-	if (!ft_strncmp(token->str, "exit", 4))
-		return (1);
-	return (0);
-}
-
+	 /*check if the command is a builtin */
+	 /*return 1 if it's a builtin */
+	 /*return 0 if it's note*/
 int		ft_is_builtin(char *str)
 {
 	if (!ft_strncmp(str, "echo", 4))
@@ -27,6 +23,11 @@ int		ft_is_builtin(char *str)
 	return (0);
 }
 
+	 /*open each folder of PATH env variable*/
+	/*compare all files whit the cmd name */
+	 /*join the PATH whith "/" and with the cmd name -->absolut path*/
+	/*return the absolut path if found*/
+	/*return NULL if not found*/
 char	*try_bin_path(char *bin_path, char *cmd_name)
 {
 	DIR		*folder;
@@ -51,6 +52,10 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 	closedir(folder);
 	return (cmd_path);
 }
+
+	 /*try to find the binary file in each PATH env variable*/
+	 /*return path = the absolute path is found*/
+	 /*return NULL if the cmd is not find  in PATH ENV*/
 char	*find_bin_path(t_mini *s, char **args)
 {
 	char	**bin_paths;
@@ -63,6 +68,8 @@ char	*find_bin_path(t_mini *s, char **args)
 	path = NULL;
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
+	/*mieux faire la gestion d'erreur*/
+
 	/*ft_printf("cmd_path :%s|\n", path);*/
 	/*print_tab(bin_paths);*/
 	/*if (!ft_strncmp(args[0], "env", 3))*/
@@ -71,6 +78,7 @@ char	*find_bin_path(t_mini *s, char **args)
 	return (path);
 }
 
+/*exec the binary file if found in PATH env variable and return cmd->ret*/
 int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	(void)cmd;
@@ -93,6 +101,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	return (0);
 }
 
+	 /*exec the builtin and return the ret of the builtin*/
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	/*ft_printf("exec buliltin\n");*/
@@ -117,6 +126,9 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 	return (cmd->ret);
 }
 
+	/*parse the arguments into a string, without the meta, each token is */
+	/*delimited with '\n' in the string, in order to split it in a char **tab;*/
+	/*char **args = ft_split(str, '\n';)*/
 int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
@@ -171,6 +183,12 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 	return (cmd->ret);
 
 }
+
+	/*check if the command line has only assignement : name=value ...*/
+	/*return 0 if there is a command in the line (a string without '=')*/
+	/*return 1 if there is only assignements in the command line*/
+	/*(only strings that contains '=')*/
+
 int		cmd_has_only_assignement(t_cmdl *cmd)
 {
 	cmd->token = cmd->firsttoken;
@@ -183,7 +201,9 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 	cmd->token = cmd->firsttoken;
 	return (1);
 }
+
 /*
+ *  this functuin exec builtin, or binary or apply assignmenet
  * WARNING : the first argument is not always the command
  * -> if first argument is an assignement(contains "="), it looks forward for a
  * command
@@ -199,7 +219,10 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
 	if (cmd_has_only_assignement(cmd))
+	{
 		cmd->ret = apply_assignement(s, cmd);
+		return ;
+	}
 	else 
 		parse_cmd_args(s, cmd);
     /*ft_printf("str ok args :%s\n", cmd->buf);*/
