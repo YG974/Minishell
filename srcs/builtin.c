@@ -291,11 +291,11 @@ int		ft_export(t_mini *s, char **args)
 	{
 		if (!(ret = is_valid_env_name(args[i])))
 			error(s, ERR_INVALID_ENV_NAME);
-		else if (strchr(args[i], '='))
-		{
-			error(s, ERR_INVALID_ENV_NAME);
-			ret = 1;
-		}
+		/*else if (strchr(args[i], '='))*/
+		/*{*/
+			/*error(s, ERR_INVALID_ENV_NAME);*/
+			/*ret = 1;*/
+		/*}*/
 		else
 			export_assignement(s, args[i]);
 		i++;
