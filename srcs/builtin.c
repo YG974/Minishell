@@ -142,9 +142,11 @@ int		is_valid_env_name(char *str)
 
 int		print_sorted_env(t_mini *s)
 {
-	t_env	*env;
+	/*t_env	*env;*/
+	char **sorted;
 
-	env = s->env;
+	sorted = sorted_env(s);
+	print_tab(sorted);
 	ft_printf("sorted env\n");
 	return (0);
 

@@ -35,6 +35,43 @@ char	*ft_strjoin_free_s1(char const *s1, char const *s2)
 	return (str);
 }
 
+char **sorted_env(t_mini *s)
+{
+	t_env *tmp;
+	t_env *env;
+	t_env *cmp;
+	int ret;
+	char **sorted;
+	long i = 0;
+
+	env = s->env;
+	cmp = s->env->next;
+	while (env->name && cmp->name)
+	{
+		cmp = env->next;
+		while (cmp->name && env->name)
+		{
+			if ((ret = ft_strncmp(env->name, cmp->name, ft_strlen(env->name))) > 0)
+			{
+				tmp = cmp;
+				cmp = env;
+				env = tmp;
+				env->next = tmp->next;
+				cmp->next = tmp->next->next;
+			}
+			cmp = cmp->next;
+			/*cmp = cmp->next;*/
+			ft_printf("env :%s\ncmp:\n diff:%d\n", env->name,cmp->name, ret);
+		}
+		i = i + 1;
+		if (i == 1)
+			s->env = env;
+		env = env->next;
+	}
+	sorted = put_env_in_tab(s);
+	return (sorted);
+}
+
 char **put_env_in_tab(t_mini *s)
 {
 	t_env	*env;
