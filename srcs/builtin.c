@@ -171,6 +171,7 @@ char **sort_tab_env(char **s_env)
 	char	*tmp;
 	int		i;
 	int		min;
+	int		d;
 
 	i = 1;
 	min = 0;
@@ -178,7 +179,7 @@ char **sort_tab_env(char **s_env)
 	{
 		while (s_env[i])
 		{
-			if ((ft_strncmp(s_env[min], s_env[i], 100000000)) < 0)
+			if ( (d = ft_strncmp(s_env[min], s_env[i], ft_strlen(s_env[min]))) < 0)
 				i++;
 			/*else if ((ft_strncmp(s_env[min], s_env[i], SIZE_T_MAX) > 0))*/
 			else
@@ -187,10 +188,11 @@ char **sort_tab_env(char **s_env)
 				s_env[i] = s_env[min];
 				s_env[min]= tmp;
 				/*i = min + 2;*/
-				i++;
+				/*i++;*/
 			}
 		}
 		min++;
+		i = min + 1;
 	}
 	return (s_env);
 }
@@ -201,9 +203,9 @@ int		print_sorted_env(t_mini *s)
 
 	ft_printf("sorted env\n");
 	s_env = put_sorted_env_in_tab(s);
-	print_tab(s_env);
-	/*s_env = sort_tab_env(s_env);*/
 	/*print_tab(s_env);*/
+	s_env = sort_tab_env(s_env);
+	print_tab(s_env);
 	return (0);
 }
 
