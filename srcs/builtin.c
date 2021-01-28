@@ -179,16 +179,13 @@ char **sort_tab_env(char **s_env)
 	{
 		while (s_env[i])
 		{
-			if ( (d = ft_strncmp(s_env[min], s_env[i], ft_strlen(s_env[min]))) < 0)
+			if ((d = ft_strncmp(s_env[min], s_env[i], SIZE_T_MAX)) < 0)
 				i++;
-			/*else if ((ft_strncmp(s_env[min], s_env[i], SIZE_T_MAX) > 0))*/
 			else
 			{
 				tmp = s_env[i];
 				s_env[i] = s_env[min];
 				s_env[min]= tmp;
-				/*i = min + 2;*/
-				/*i++;*/
 			}
 		}
 		min++;
@@ -200,12 +197,30 @@ char **sort_tab_env(char **s_env)
 int		print_sorted_env(t_mini *s)
 {
 	char	**s_env;
+	int		i;
+	int		j;
 
-	ft_printf("sorted env\n");
+	i = 0;
+	j = 0;
 	s_env = put_sorted_env_in_tab(s);
-	/*print_tab(s_env);*/
 	s_env = sort_tab_env(s_env);
-	print_tab(s_env);
+	while (s_env[i])
+	{
+		ft_putstr_fd("declare -x ", s->std.out);
+		while (s_env[i][j - 1] != '=' && s_env[i][j])
+			write(s->std.out, &s_env[i][j++], 1);
+		if (s_env[i][j])
+		{
+			write(s->std.out, "\"", 1);
+			while (s_env[i][j])
+				write(s->std.out, &s_env[i][j++], 1);
+			write(s->std.out, "\"", 1);
+		}
+		write(s->std.out, "\n", 1);
+		j = 0;
+		i++;
+	}
+	/*print_tab(s_env);*/
 	return (0);
 }
 
