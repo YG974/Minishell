@@ -140,14 +140,71 @@ int		is_valid_env_name(char *str)
 	return (1);
 }
 
-int		print_sorted_env(t_mini *s)
+char **put_sorted_env_in_tab(t_mini *s)
 {
 	t_env	*env;
+	char	*env_str;
+	char	**env_tab;
 
 	env = s->env;
-	ft_printf("sorted env\n");
-	return (0);
+	env_str = strdup("");
+	// while (env && env->value)
+	while (env)
+	{
+		env_str = ft_strjoin_free_s1(env_str, env->name);
+		if (env->value)
+		{
+			env_str = ft_strjoin_free_s1(env_str, "=");
+			env_str = ft_strjoin_free_s1(env_str, env->value);
+		}
+		env_str = ft_strjoin_free_s1(env_str, "\n");
+		env = env->next;
+	}
+		/*printf("%s\n", env_str);*/
+	env_tab = ft_split(env_str, '\n');
+	free(env_str);
+	return (env_tab);
+}
 
+char **sort_tab_env(char **s_env)
+{
+	char	*tmp;
+	int		i;
+	int		min;
+
+	i = 1;
+	min = 0;
+	while (s_env[min])
+	{
+		while (s_env[i])
+		{
+			if ((ft_strncmp(s_env[min], s_env[i], 100000000)) < 0)
+				i++;
+			/*else if ((ft_strncmp(s_env[min], s_env[i], SIZE_T_MAX) > 0))*/
+			else
+			{
+				tmp = s_env[i];
+				s_env[i] = s_env[min];
+				s_env[min]= tmp;
+				/*i = min + 2;*/
+				i++;
+			}
+		}
+		min++;
+	}
+	return (s_env);
+}
+
+int		print_sorted_env(t_mini *s)
+{
+	char	**s_env;
+
+	ft_printf("sorted env\n");
+	s_env = put_sorted_env_in_tab(s);
+	print_tab(s_env);
+	/*s_env = sort_tab_env(s_env);*/
+	/*print_tab(s_env);*/
+	return (0);
 }
 
 int		ft_strchr_int(const char *s, int c)
@@ -210,7 +267,7 @@ void	create_export_value(t_mini *s, char *name, char *str, int pos)
 		return error(s, ERR_CALLOC);
 	tmp->name = name;
 	if (pos < 0)
-		return ;
+		tmp->value = NULL;
 	else
 	{
 		if (pos == ft_strlen(str))
@@ -260,11 +317,11 @@ void	export_assignement(t_mini *s, char *str)
 	tmp = get_name(str);
 	if (is_in_env(s, tmp) == 0)
 	{
-		if (pos < 0)
-			return ;
-		else if (pos == ft_strlen(str))
-			create_export_value(s, tmp, str, pos);
-		else
+		/*if (pos < 0)*/
+			/*return ;*/
+		/*else if (pos == ft_strlen(str))*/
+			/*create_export_value(s, tmp, str, pos);*/
+		/*else*/
 			create_export_value(s, tmp, str, pos);
 	}
 	else
