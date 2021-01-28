@@ -105,7 +105,7 @@ int     ft_get_cmd(char *line, t_mini *s)
             {
                 if (!(tmp = ft_create_cmdl(s)))
                     return (ft_del_cmdline(s, 1));
-                if (!(tmp->str = ft_strdup_size(line, i, j)))
+                if (!(tmp->str = ft_strdup_size(line, i + 1, j)))
                     return (ft_del_cmdline(s, 1));
                 i++;
                 j = i;

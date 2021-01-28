@@ -78,6 +78,20 @@ char	*find_bin_path(t_mini *s, char **args)
 	return (path);
 }
 
+void	ft_free_tab(char **env)
+{
+	int i;
+
+	i = 0;
+	while (env[i])
+	{
+		free(env[i]);
+		i++;
+	}
+	free(env[i]);
+	free(env);
+}
+
 /*exec the binary file if found in PATH env variable and return cmd->ret*/
 int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
@@ -94,7 +108,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
 		cmd->ret = execve(path, args, env);
-		free(env);
+		ft_free_tab(env);
 		free(path);
 	}
 	/*ft_printf("exec BINNN\n");*/
@@ -119,7 +133,7 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 		cmd->ret = ft_env(s, args);
 	if (!ft_strncmp(args[0], "exit", 4))
 	{
-		if ((s->i = ft_exit(s, args)) == 0)
+		if ((s->i = ft_exit(s, args)) == 2)
 			cmd->ret = ft_atoi(args[1]);
 		error(s, WANT_EXIT);
 	}
@@ -142,7 +156,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 		cmd->token = cmd->token->next;
 	while (cmd->token)
 	{
-		ft_printf("token :%s|\n", cmd->token->str);
+		//ft_printf("token :%s|\n", cmd->token->str);
 		if (cmd->token->flag != 2 && cmd->token)
 		{
 			cmd->buf = ft_strjoin_free_s1(cmd->buf, cmd->token->str);
@@ -202,6 +216,9 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 	return (1);
 }
 
+
+
+
 /*
  *  this functuin exec builtin, or binary or apply assignmenet
  * WARNING : the first argument is not always the command
@@ -232,6 +249,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		cmd->ret = exec_builtin(s, cmd, args);
 	else
 		cmd->ret = exec_bin(s,cmd, args);
+	ft_free_tab(args);
 	waitpid(-1, &s->status, 0);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }

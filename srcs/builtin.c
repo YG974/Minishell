@@ -31,6 +31,35 @@ int		count_args(char **args)
 	return (i);
 }
 
+void	ft_putstr_fd_echo(char *s, int fd)
+{
+	int	len;
+	int i;
+
+	if (fd < 0)
+		return ;
+	i = 0;
+	len = ft_strlen(s);
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		if (s[i] == '\"' && (i == 0 || i == len - 1))
+			i = i + 0;
+		else
+		{
+			if (s[i] == '\\' && s[i + 1] && s[i + 1] == '\"')
+			{
+				i++;
+				write(fd, &s[i], 1);
+			}
+			else
+				write(fd, &s[i], 1);
+		}
+		i++;
+	}
+}
+
 int		ft_echo(t_mini *s, char **args)
 {
 	int		n_flag;
@@ -48,7 +77,7 @@ int		ft_echo(t_mini *s, char **args)
 		}
 		while (args[i])
 		{
-			ft_putstr_fd(args[i], s->std.out);
+			ft_putstr_fd_echo(args[i], s->std.out);
 			i++;
 			if (args[i])
 				ft_putstr_fd(" ", s->std.out);
@@ -401,7 +430,7 @@ int		ft_exit(t_mini *s, char **args)
 		ft_printf("Ex : exit 4\n");
 		return (1);
 	}
-	if (!(i = str_is_digit(args[1])))
+	if (i == 2 && !(i = str_is_digit(args[1])))
 	{
 		ft_printf("Error: exit command allows only an numeric argument.\n");
 		ft_printf("Ex : exit 4\n");

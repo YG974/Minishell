@@ -4,7 +4,7 @@
 void prompt(t_mini *s)
 {	
 	/*ft_printf("MINISHELL DU TURFU ---> ");*/
-	ft_putstr_fd("MINISHELL DU TURF ---> ", 1);
+	ft_putstr_fd("MINISHELL DU TURFU ---> ", 1);
 	/*get_next_line(0, s->read.buf);*/
 	s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
 }
@@ -22,11 +22,25 @@ void init_mini(t_mini *s)
 	s->status = 0;
 	s->next = NULL;
 	s->previous = NULL;
-	s->firstcmdl->token = NULL;
 	s->read.fd = STDIN;
 	s->read.count = BUFF_SIZE;
 	s->parse.semcol = 0;
 	s->firstcmdl = NULL;
+}
+
+void	ft_free_env(t_env *env)
+{
+	t_env	*tmp;
+
+	while(env)
+	{
+		printf("TEST FREE ENV %s, %s\n", env->name, env->value);
+		tmp = env->next;
+		free(env->name);
+		free(env->value);
+		free(env);
+		env = tmp;
+	}
 }
 
 void	minishell(t_mini *s)
@@ -42,6 +56,8 @@ void	minishell(t_mini *s)
 			error(s, ERR_CALLOC);
 		free(s->read.buf);
 	}
+	ft_free_env(s->env);
+	s->env = NULL;
 }
 
 int		main(int ac, char **av, char **env)
@@ -53,7 +69,6 @@ int		main(int ac, char **av, char **env)
 
 	init_mini(&s);
 	init_env(&s, env);
-	/*s.sig = ft_printf("Yann a des gros hemorroides a cause de ses frequentations douteuses.\n");*/
 	minishell(&s);
 	ft_printf("END OF MINISHELL\n");
 	return (0);
