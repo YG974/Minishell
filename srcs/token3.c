@@ -35,6 +35,45 @@ int		ft_ismeta(char c)
 	return (0);
 }
 
+char	*ft_without_quotes(char *s)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*dest;
+	
+	i = 0;
+	j = 0;
+	len = ft_strlen(s);
+	dest = calloc(len + 1, sizeof(char));
+	if (!dest)
+		return (NULL);
+	while (s[i])
+	{
+		if ((s[i] == '\"' || s[i] == '\'') && (i == 0 || i == len - 1))
+			i++;
+		else
+		{
+			if (s[0] != '\'' && s[i] == '\\' && s[i + 1] && (s[i + 1] == '\"' || s[i + 1] == '$' || s[i + 1] == '\\' || s[i + 1] == '`' || s[i + 1] == '\n'))
+			{
+				i++;
+				dest[j] = s[i];
+				i++;
+				j++;
+			}
+			else
+			{
+				dest[j] = s[i];
+				i++;
+				j++;
+			}
+		}
+	}
+	dest[i] = '\0';
+	free(s);
+	return (dest);
+}
+
 char	*ft_strdup_quotes(char *src, char *flagstr, char c)
 {
 	int		i;
@@ -54,7 +93,7 @@ char	*ft_strdup_quotes(char *src, char *flagstr, char c)
 		i++;
 	}
 	dest[i] = '\0';
-	return (dest);
+	return (ft_without_quotes(dest));
 }
 
 int		ft_inc_i(char *str, char *flag, int i, char c)

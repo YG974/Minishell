@@ -34,7 +34,6 @@ void	ft_free_env(t_env *env)
 
 	while(env)
 	{
-		printf("TEST FREE ENV %s, %s\n", env->name, env->value);
 		tmp = env->next;
 		free(env->name);
 		free(env->value);
