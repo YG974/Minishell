@@ -140,32 +140,6 @@ int		is_valid_env_name(char *str)
 	return (1);
 }
 
-char **put_sorted_env_in_tab(t_mini *s)
-{
-	t_env	*env;
-	char	*env_str;
-	char	**env_tab;
-
-	env = s->env;
-	env_str = strdup("");
-	// while (env && env->value)
-	while (env)
-	{
-		env_str = ft_strjoin_free_s1(env_str, env->name);
-		if (env->value)
-		{
-			env_str = ft_strjoin_free_s1(env_str, "=");
-			env_str = ft_strjoin_free_s1(env_str, env->value);
-		}
-		env_str = ft_strjoin_free_s1(env_str, "\n");
-		env = env->next;
-	}
-		/*printf("%s\n", env_str);*/
-	env_tab = ft_split(env_str, '\n');
-	free(env_str);
-	return (env_tab);
-}
-
 char **sort_tab_env(char **s_env)
 {
 	char	*tmp;
@@ -194,6 +168,41 @@ char **sort_tab_env(char **s_env)
 	return (s_env);
 }
 
+char **put_sorted_env_in_tab(t_mini *s)
+{
+	t_env	*env;
+	char	*env_str;
+	char	**env_tab;
+
+	env = s->env;
+	env_str = strdup("");
+	while (env)
+	{
+		env_str = ft_strjoin_free_s1(env_str, env->name);
+		if (env->value)
+		{
+			env_str = ft_strjoin_free_s1(env_str, "=");
+			env_str = ft_strjoin_free_s1(env_str, env->value);
+		}
+		env_str = ft_strjoin_free_s1(env_str, "\n");
+		env = env->next;
+	}
+	env_tab = ft_split(env_str, '\n');
+	free(env_str);
+	env_tab = sort_tab_env(env_tab);
+	return (env_tab);
+}
+
+void	free_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+		free(tab[i++]);
+	free(tab);
+}
+
 int		print_sorted_env(t_mini *s)
 {
 	char	**s_env;
@@ -203,7 +212,6 @@ int		print_sorted_env(t_mini *s)
 	i = 0;
 	j = 0;
 	s_env = put_sorted_env_in_tab(s);
-	s_env = sort_tab_env(s_env);
 	while (s_env[i])
 	{
 		ft_putstr_fd("declare -x ", s->std.out);
@@ -220,6 +228,7 @@ int		print_sorted_env(t_mini *s)
 		j = 0;
 		i++;
 	}
+	free_tab(s_env);
 	/*print_tab(s_env);*/
 	return (0);
 }
