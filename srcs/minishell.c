@@ -18,10 +18,7 @@ void init_mini(t_mini *s)
 	s->read.count = 0;
 	s->read.fd = 0;
 	s->read.buf = NULL;
-	s->sig = 0;
 	s->status = 0;
-	s->next = NULL;
-	s->previous = NULL;
 	s->read.fd = STDIN;
 	s->read.count = BUFF_SIZE;
 	s->parse.semcol = 0;
