@@ -7,8 +7,8 @@ void prompt(t_mini *s)
 	ft_putstr_fd("MINISHELL DU TURFU ---> ", 1);
 	/*get_next_line(0, s->read.buf);*/
 	s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
-	/*if (s->read.ret == 0)*/
-		/*s->status = -1;*/
+	if (s->read.ret == 0)
+		s->status = -1;
 		/*ft_putstr_fd("\n", 2);*/
 
 		/*minishell(s);*/
@@ -51,8 +51,8 @@ void	minishell(t_mini *s)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
+		init_signal(s);
 		prompt(s);
-		/*init_signal(s);*/
 		/*if (ft_parse(s))*/
 		if (!s->status && ft_parse(s))
 			error(s, ERR_CALLOC);
@@ -71,7 +71,7 @@ int		main(int ac, char **av, char **env)
 
 	init_mini(&s);
 	init_env(&s, env);
-	init_signal(&s);
+	/*init_signal(&s);*/
 	minishell(&s);
 	ft_printf("END OF MINISHELL\n");
 	return (0);
