@@ -93,6 +93,7 @@ typedef	struct		s_sig
 	int				interrupt;
 	int				quit;
 	int				status;
+	pid_t			pid;
 }					t_sig;
 
 typedef struct		s_mini
@@ -107,7 +108,6 @@ typedef struct		s_mini
 	int				status;
 	int				error;
 	int				i;
-	pid_t			pid;
 }					t_mini;
 
 t_sig			sig;

@@ -97,15 +97,11 @@ void	ft_free_tab(char **env)
 /*exec the binary file if found in PATH env variable and return cmd->ret*/
 int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
-	(void)cmd;
 	char *path;
 	char **env;
-	pid_t pid;
 
-	/*s->pid = 0;*/
-	/*s->pid = fork();*/
-	pid = fork();
-	if (pid == 0)
+	sig.pid = fork();
+	if (sig.pid == 0)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
@@ -113,6 +109,9 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		ft_free_tab(env);
 		free(path);
 	}
+	waitpid(-1, &s->status, 0);
+	if (sig.interrupt == 1 || sig.quit == 1)
+		cmd->ret = sig.status;
 	/*ft_printf("exec BINNN\n");*/
 	return (0);
 }
@@ -252,6 +251,5 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	else
 		cmd->ret = exec_bin(s,cmd, args);
 	ft_free_tab(args);
-	waitpid(-1, &s->status, 0);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }

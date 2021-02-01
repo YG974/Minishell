@@ -3,10 +3,18 @@
 
 void	handle_sigint(int signum)
 {
-	(void)signum;
-	ft_putstr_fd("\b\b  \b\b", 1);
-	ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);
+	if (sig.pid == 0)
+	{
+		/*exit(128 + signum);*/
+		sig.status = -1;
+	}
+	else
+	{
+		ft_putstr_fd("\b\b  \b\b", 1);
+		ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);
 	/*ft_putstr_fd("\n", 1);*/
+	}
+	sig.status = 128 + signum;
 	sig.interrupt = 1;
 	/*exit (0);*/
 }
@@ -34,9 +42,10 @@ int     init_signal(t_mini *s)
     (void)s;
 	sig.interrupt = 0;
 	sig.quit = 0;
+	sig.pid = -1;
 	sig.status = 0;
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, handle_sigquit);
+	signal(SIGINT, &handle_sigint);
+	signal(SIGQUIT, &handle_sigquit);
 	/*printf("On est rentré dans la fonction INIT SIGNAL\n");*/
     /*printf("%d\n", sig.interrupt);*/
     return(0);
