@@ -70,8 +70,9 @@ char	*find_bin_path(t_mini *s, char **args)
 		return (args[0]);
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
+	if (!path)
+		ft_putstr_fd("command not found\n", s->std.err);
 	/*mieux faire la gestion d'erreur*/
-
 	/*ft_printf("cmd_path :%s|\n", path);*/
 	/*print_tab(bin_paths);*/
 	/*if (!ft_strncmp(args[0], "env", 3))*/
@@ -109,11 +110,12 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		ft_free_tab(env);
 		free(path);
 	}
-	waitpid(-1, &s->status, 0);
+	else
+		waitpid(sig.pid, &sig.status, 0);
 	if (sig.interrupt == 1 || sig.quit == 1)
 		cmd->ret = sig.status;
 	/*ft_printf("exec BINNN\n");*/
-	return (0);
+	return (cmd->ret);
 }
 
 	 /*exec the builtin and return the ret of the builtin*/
@@ -250,6 +252,8 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		cmd->ret = exec_builtin(s, cmd, args);
 	else
 		cmd->ret = exec_bin(s,cmd, args);
+	waitpid(-1, &sig.status, 0);
+	sig.status = WEXITSTATUS(sig.status);
 	ft_free_tab(args);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }
