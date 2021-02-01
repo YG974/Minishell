@@ -12,6 +12,9 @@
 # include <limits.h>
 # include <errno.h>
 # include <signal.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+
 
 # define STDIN 0
 # define STDOUT 1

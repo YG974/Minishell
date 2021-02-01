@@ -53,6 +53,28 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 	return (cmd_path);
 }
 
+void	check_bin_right(char *path)
+{
+	struct stat		file;
+	int				mode;
+
+	mode = 0;
+	if ((stat(path, &file)))
+	/*if ((mode = file.st_mode & S_IXUSR))*/
+		ft_putstr_fd("stat\n", STDERR);
+	/*if (mode == 64)*/
+		/*ft_putstr_fd("ouais t'as les rights\n", STDERR);*/
+	/*else*/
+		/*ft_putstr_fd("LOOOOSE\n", STDERR);*/
+	/*[>ft_printf("mode : %d\n", mode);<]*/
+	/*[>if ((file.st_mode & S_IXGRP) != 1)<]*/
+		/*[>ft_printf("yes\n");<]*/
+	/*ft_printf("mode : %d\n", file.st_mode);*/
+	/*S_IXGRP     00010   group has execute permission*/
+
+
+}
+
 	 /*try to find the binary file in each PATH env variable*/
 	 /*return path = the absolute path is found*/
 	 /*return NULL if the cmd is not find  in PATH ENV*/
@@ -106,6 +128,8 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
+		if (path)
+				check_bin_right(path);
 		cmd->ret = execve(path, args, env);
 		ft_free_tab(env);
 		free(path);
