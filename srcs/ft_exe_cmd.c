@@ -6,19 +6,19 @@
 	 /*return 0 if it's note*/
 int		ft_is_builtin(char *str)
 {
-	if (!ft_strncmp(str, "echo", ft_strlen(str)))
+	if (!ft_strncmp(str, "echo", 4))
 		return (1);
-	if (!ft_strncmp(str, "cd", ft_strlen(str)))
+	if (!ft_strncmp(str, "cd", 2))
 		return (1);
-	if (!ft_strncmp(str, "pwd", ft_strlen(str)))
+	if (!ft_strncmp(str, "pwd", 3))
 		return (1);
-	if (!ft_strncmp(str, "export", ft_strlen(str)))
+	if (!ft_strncmp(str, "export", 6))
 		return (1);
-	if (!ft_strncmp(str, "unset", ft_strlen(str)))
+	if (!ft_strncmp(str, "unset", 5))
 		return (1);
-	if (!ft_strncmp(str, "env", ft_strlen(str)))
+	if (!ft_strncmp(str, "env", 3))
 		return (1);
-	if (!ft_strncmp(str, "exit", ft_strlen(str)))
+	if (!ft_strncmp(str, "exit", 4))
 		return (1);
 	return (0);
 }
@@ -59,15 +59,16 @@ void	check_bin_right(char *path)
 	int				mode;
 
 	mode = 0;
-	stat(path, &file);
-	mode = file.st_mode & S_IXUSR;
+	if ((stat(path, &file)))
+	/*if ((mode = file.st_mode & S_IXUSR))*/
+		ft_putstr_fd("stat\n", STDERR);
 	/*if (mode == 64)*/
 		/*ft_putstr_fd("ouais t'as les rights\n", STDERR);*/
 	/*else*/
 		/*ft_putstr_fd("LOOOOSE\n", STDERR);*/
-	/*ft_printf("mode : %d\n", mode);*/
-	/*if ((file.st_mode & S_IXGRP) != 1)*/
-		/*ft_printf("yes\n");*/
+	/*[>ft_printf("mode : %d\n", mode);<]*/
+	/*[>if ((file.st_mode & S_IXGRP) != 1)<]*/
+		/*[>ft_printf("yes\n");<]*/
 	/*ft_printf("mode : %d\n", file.st_mode);*/
 	/*S_IXGRP     00010   group has execute permission*/
 
@@ -121,32 +122,23 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	char *path;
 	char **env;
-	int		status;
 
 	sig.pid = fork();
-	/*ft_putstr_fd("--------------\n", s->std.err);*/
-	/*ft_printf("pid : %d\n", sig.pid);*/
-	status = 0;
 	if (sig.pid == 0)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
 		if (path)
-				check_bin_right(path);
-	/*ft_putstr_fd("--------------\n", s->std.err);*/
-	/*ft_printf("pid : %d\n", sig.pid);*/
+			check_bin_right(path);
 		cmd->ret = execve(path, args, env);
-	/*ft_putstr_fd("--------------\n", s->std.err);*/
-		ft_putstr_fd(strerror(errno), STDERR);
 		ft_free_tab(env);
 		free(path);
 	}
 	else
-		waitpid(sig.pid, &status, 0);
-	/*if (sig.interrupt == 1 || sig.quit == 1)*/
-	/*ft_printf("ret : %d\n", cmd->ret);*/
-	cmd->ret = status % 255;
-	ft_printf("ret : %d\n", cmd->ret);
+		waitpid(sig.pid, &sig.status, 0);
+	if (sig.interrupt == 1 || sig.quit == 1)
+		cmd->ret = sig.status;
+	/*ft_printf("exec BINNN\n");*/
 	return (cmd->ret);
 }
 
@@ -154,19 +146,19 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	/*ft_printf("exec buliltin\n");*/
-	if (!ft_strncmp(args[0], "echo", ft_strlen(args[0])))
+	if (!ft_strncmp(args[0], "echo", 4))
 		cmd->ret = ft_echo(s, args);
-	if (!ft_strncmp(args[0], "cd", ft_strlen(args[0])))
+	if (!ft_strncmp(args[0], "cd", 2))
 		cmd->ret = ft_cd(s, args);
-	if (!ft_strncmp(args[0], "pwd", ft_strlen(args[0])))
+	if (!ft_strncmp(args[0], "pwd", 3))
 		cmd->ret = ft_pwd(s, args);
-	if (!ft_strncmp(args[0], "export", ft_strlen(args[0])))
+	if (!ft_strncmp(args[0], "export", 6))
 		cmd->ret = ft_export(s, args);
-	if (!ft_strncmp(args[0], "unset", ft_strlen(args[0])))
+	if (!ft_strncmp(args[0], "unset", 5))
 		cmd->ret = ft_unset(s, args);
-	if (!ft_strncmp(args[0], "env", ft_strlen(args[0])))
+	if (!ft_strncmp(args[0], "env", 3))
 		cmd->ret = ft_env(s, args);
-	if (!ft_strncmp(args[0], "exit", ft_strlen(args[0])))
+	if (!ft_strncmp(args[0], "exit", 4))
 	{
 		if ((s->i = ft_exit(s, args)) == 2)
 			cmd->ret = ft_atoi(args[1]);
@@ -262,6 +254,25 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
  * -> if there is a command, it doesnt apply the assignement and try to run cmd
  * -> if there is only an assignement in the command line, it applies it.
  */
+void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
+{
+	(void)s;
+	cmd->token = cmd->firsttoken;
+	while (cmd->token)
+	{
+		if (cmd->token->str[0] == '$' && cmd->token->str[1] == '?'
+			&& cmd->token->str[3] == '\0')
+		{
+			free(cmd->token->str);
+			cmd->token->str = ft_itoa(sig.status);
+			//remplacer par la bonne variable qui contiendra le retour de la
+			//commande precedente
+		}
+		cmd->token = cmd->token->next;
+	}
+	cmd->token = cmd->firsttoken;
+	return ;
+}
 
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
@@ -270,7 +281,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
     /*ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");*/
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
-	/*handle_dollar_question_mark(s, cmd);*/
+	handle_dollar_question_mark(s, cmd);
 	if (cmd_has_only_assignement(cmd))
 	{
 		cmd->ret = apply_assignement(s, cmd);
@@ -281,14 +292,10 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
     /*ft_printf("str ok args :%s\n", cmd->buf);*/
 	args = ft_split(cmd->buf, '\n');
 	/*print_tab(args);*/
-	errno = 0;
-	/*ft_printf("pid : %d\n", sig.pid);*/
 	if (ft_is_builtin(args[0]))
 		cmd->ret = exec_builtin(s, cmd, args);
 	else
 		cmd->ret = exec_bin(s,cmd, args);
-	/*ft_putstr_fd(strerror(errno), 2);*/
-	/*ft_printf("pid : %d\n", sig.pid);*/
 	waitpid(-1, &sig.status, 0);
 	/*sig.status = WEXITSTATUS(sig.status);*/
 	ft_free_tab(args);
