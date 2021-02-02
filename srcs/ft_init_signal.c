@@ -32,7 +32,7 @@ void	handle_sigint(int signum)
 	else
 	{
 		ft_putstr_fd("\n", STDERR);
-		sig.status = 130;
+		/*sig.status = 130;*/
 	}
 	sig.interrupt = 1;
 }
@@ -54,7 +54,7 @@ void	handle_sigquit(int signum)
 	{
 		ft_putstr_fd("Quit: ", STDERR);
 		ft_putendl_fd(nbr, STDERR);
-		sig.status = 131;
+		/*sig.status = 131;*/
 		sig.quit = 1;
 	}
 	else
