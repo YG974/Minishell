@@ -129,7 +129,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
 		if (path)
-				check_bin_right(path);
+			check_bin_right(path);
 		cmd->ret = execve(path, args, env);
 		ft_free_tab(env);
 		free(path);
@@ -254,6 +254,25 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
  * -> if there is a command, it doesnt apply the assignement and try to run cmd
  * -> if there is only an assignement in the command line, it applies it.
  */
+void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
+{
+	(void)s;
+	cmd->token = cmd->firsttoken;
+	while (cmd->token)
+	{
+		if (cmd->token->str[0] == '$' && cmd->token->str[1] == '?'
+			&& cmd->token->str[3] == '\0')
+		{
+			free(cmd->token->str);
+			cmd->token->str = ft_itoa(sig.status);
+			//remplacer par la bonne variable qui contiendra le retour de la
+			//commande precedente
+		}
+		cmd->token = cmd->token->next;
+	}
+	cmd->token = cmd->firsttoken;
+	return ;
+}
 
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
@@ -262,6 +281,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
     /*ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");*/
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
+	handle_dollar_question_mark(s, cmd);
 	if (cmd_has_only_assignement(cmd))
 	{
 		cmd->ret = apply_assignement(s, cmd);
@@ -277,7 +297,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	else
 		cmd->ret = exec_bin(s,cmd, args);
 	waitpid(-1, &sig.status, 0);
-	sig.status = WEXITSTATUS(sig.status);
+	/*sig.status = WEXITSTATUS(sig.status);*/
 	ft_free_tab(args);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }
