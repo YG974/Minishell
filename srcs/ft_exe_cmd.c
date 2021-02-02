@@ -6,19 +6,19 @@
 	 /*return 0 if it's note*/
 int		ft_is_builtin(char *str)
 {
-	if (!ft_strncmp(str, "echo", 4))
+	if (!ft_strncmp(str, "echo", ft_strlen(str)))
 		return (1);
-	if (!ft_strncmp(str, "cd", 2))
+	if (!ft_strncmp(str, "cd", ft_strlen(str)))
 		return (1);
-	if (!ft_strncmp(str, "pwd", 3))
+	if (!ft_strncmp(str, "pwd", ft_strlen(str)))
 		return (1);
-	if (!ft_strncmp(str, "export", 6))
+	if (!ft_strncmp(str, "export", ft_strlen(str)))
 		return (1);
-	if (!ft_strncmp(str, "unset", 5))
+	if (!ft_strncmp(str, "unset", ft_strlen(str)))
 		return (1);
-	if (!ft_strncmp(str, "env", 3))
+	if (!ft_strncmp(str, "env", ft_strlen(str)))
 		return (1);
-	if (!ft_strncmp(str, "exit", 4))
+	if (!ft_strncmp(str, "exit", ft_strlen(str)))
 		return (1);
 	return (0);
 }
@@ -154,19 +154,19 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	/*ft_printf("exec buliltin\n");*/
-	if (!ft_strncmp(args[0], "echo", 4))
+	if (!ft_strncmp(args[0], "echo", ft_strlen(args[0])))
 		cmd->ret = ft_echo(s, args);
-	if (!ft_strncmp(args[0], "cd", 2))
+	if (!ft_strncmp(args[0], "cd", ft_strlen(args[0])))
 		cmd->ret = ft_cd(s, args);
-	if (!ft_strncmp(args[0], "pwd", 3))
+	if (!ft_strncmp(args[0], "pwd", ft_strlen(args[0])))
 		cmd->ret = ft_pwd(s, args);
-	if (!ft_strncmp(args[0], "export", 6))
+	if (!ft_strncmp(args[0], "export", ft_strlen(args[0])))
 		cmd->ret = ft_export(s, args);
-	if (!ft_strncmp(args[0], "unset", 5))
+	if (!ft_strncmp(args[0], "unset", ft_strlen(args[0])))
 		cmd->ret = ft_unset(s, args);
-	if (!ft_strncmp(args[0], "env", 3))
+	if (!ft_strncmp(args[0], "env", ft_strlen(args[0])))
 		cmd->ret = ft_env(s, args);
-	if (!ft_strncmp(args[0], "exit", 4))
+	if (!ft_strncmp(args[0], "exit", ft_strlen(args[0])))
 	{
 		if ((s->i = ft_exit(s, args)) == 2)
 			cmd->ret = ft_atoi(args[1]);
