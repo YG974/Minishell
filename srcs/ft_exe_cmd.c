@@ -124,27 +124,29 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	int		status;
 
 	sig.pid = fork();
-	ft_putstr_fd("--------------\n", s->std.err);
-	ft_printf("pid : %d\n", sig.pid);
+	/*ft_putstr_fd("--------------\n", s->std.err);*/
+	/*ft_printf("pid : %d\n", sig.pid);*/
+	status = 0;
 	if (sig.pid == 0)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
 		if (path)
 				check_bin_right(path);
-	ft_putstr_fd("--------------\n", s->std.err);
-	ft_printf("pid : %d\n", sig.pid);
+	/*ft_putstr_fd("--------------\n", s->std.err);*/
+	/*ft_printf("pid : %d\n", sig.pid);*/
 		cmd->ret = execve(path, args, env);
-	ft_putstr_fd("--------------\n", s->std.err);
+	/*ft_putstr_fd("--------------\n", s->std.err);*/
 		ft_putstr_fd(strerror(errno), STDERR);
 		ft_free_tab(env);
 		free(path);
 	}
 	else
 		waitpid(sig.pid, &status, 0);
-	if (sig.interrupt == 1 || sig.quit == 1)
-		cmd->ret = status;
-	/*ft_printf("exec BINNN\n");*/
+	/*if (sig.interrupt == 1 || sig.quit == 1)*/
+	/*ft_printf("ret : %d\n", cmd->ret);*/
+	cmd->ret = status % 255;
+	ft_printf("ret : %d\n", cmd->ret);
 	return (cmd->ret);
 }
 
@@ -268,6 +270,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
     /*ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");*/
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
+	/*handle_dollar_question_mark(s, cmd);*/
 	if (cmd_has_only_assignement(cmd))
 	{
 		cmd->ret = apply_assignement(s, cmd);
