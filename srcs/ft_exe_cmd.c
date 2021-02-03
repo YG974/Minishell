@@ -135,8 +135,9 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	}
 	else
 		waitpid(sig.pid, &status, 0);
+	cmd->ret = status;
 	if (sig.interrupt == 1 || sig.quit == 1)
-		cmd->ret = sig.status;
+		cmd->ret = sig.ret;
 	/*ft_printf("exec BINNN\n");*/
 	return (cmd->ret);
 }
@@ -145,25 +146,26 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	/*ft_printf("exec buliltin\n");*/
+	(void)cmd;
 	if (!ft_strncmp(args[0], "echo", ft_strlen(args[0])))
-		cmd->ret = ft_echo(s, args);
+		sig.ret = ft_echo(s, args);
 	if (!ft_strncmp(args[0], "cd", ft_strlen(args[0])))
-		cmd->ret = ft_cd(s, args);
+		sig.ret = ft_cd(s, args);
 	if (!ft_strncmp(args[0], "pwd", ft_strlen(args[0])))
-		cmd->ret = ft_pwd(s, args);
+		sig.ret = ft_pwd(s, args);
 	if (!ft_strncmp(args[0], "export", ft_strlen(args[0])))
-		cmd->ret = ft_export(s, args);
+		sig.ret = ft_export(s, args);
 	if (!ft_strncmp(args[0], "unset", ft_strlen(args[0])))
-		cmd->ret = ft_unset(s, args);
+		sig.ret = ft_unset(s, args);
 	if (!ft_strncmp(args[0], "env", ft_strlen(args[0])))
-		cmd->ret = ft_env(s, args);
+		sig.ret = ft_env(s, args);
 	if (!ft_strncmp(args[0], "exit", ft_strlen(args[0])))
 	{
 		if ((s->i = ft_exit(s, args)) == 2)
-			cmd->ret = ft_atoi(args[1]);
+			sig.ret = ft_atoi(args[1]);
 		error(s, WANT_EXIT);
 	}
-	return (cmd->ret);
+	return (sig.ret);
 }
 
 	/*parse the arguments into a string, without the meta, each token is */
@@ -201,7 +203,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 		}
 	}
 	/*cmd->token = cmd->firsttoken;*/
-	return (cmd->ret);
+	return (0);
 }
 
 
@@ -269,7 +271,7 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 			&& cmd->token->str[3] == '\0')
 		{
 			free(cmd->token->str);
-			cmd->token->str = ft_itoa(sig.status);
+			cmd->token->str = ft_itoa(sig.ret);
 			//remplacer par la bonne variable qui contiendra le retour de la
 			//commande precedente
 		}
@@ -303,7 +305,8 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	else
 		cmd->ret = exec_bin(s,cmd, args);
 	waitpid(-1, &status, 0);
-	status = WEXITSTATUS(status);
+	sig.ret = cmd->ret % 255;
+	/*status = WEXITSTATUS(status);*/
 	ft_free_tab(args);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }

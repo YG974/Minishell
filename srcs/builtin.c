@@ -66,7 +66,11 @@ int		go_to_path(t_mini *s, char **args)
 
 	i = chdir(args[1]);
 	if (i != 0)
-		ft_putstr_fd("Error, couldn't change dir", 2);
+	{
+		ft_putstr_fd(strerror(errno), s->std.err);
+		ft_putstr_fd("\n", s->std.err);
+	}
+		/*ft_putstr_fd("Error, couldn't change dir", 2);*/
 	return (i);
 }
 
@@ -84,7 +88,10 @@ int		go_to_home_path(t_mini *s)
 	}
 	i = chdir(path);
 	if (i != 0)
-		ft_putstr_fd("Error, couldn't change dir", 2);
+	{
+		ft_putstr_fd(strerror(errno), s->std.err);
+		ft_putstr_fd("\n", s->std.err);
+	}
 	return (i);
 }
 
@@ -114,12 +121,14 @@ int		ft_pwd(t_mini *s, char **args)
 	cwd = getcwd(args[1], PATH_MAX);
 	if (!cwd)
 	{
-		ft_putstr_fd("Error, couldn't get current dir", 2);
+		ft_putstr_fd(strerror(errno), s->std.err);
+		ft_putstr_fd("\n", s->std.out);
 		return (1);
 	}
 	ft_putstr_fd(cwd, s->std.out);
 	ft_putstr_fd("\n", s->std.out);
 	/*ft_printf("pwd \n");*/
+	free(cwd);
 	return (0);
 }
 
@@ -415,16 +424,24 @@ int		ft_unset(t_mini *s, char **args)
 	int		ret;
 
 	i = 1;
+	ret = 0;
 	while (args[i])
 	{
-		if (!(ret = is_valid_env_name(args[i])))
-			error(s, ERR_INVALID_ENV_NAME);
+		if (!(is_valid_env_name(args[i])))
+		{
+			ret++;
+			ft_putstr_fd("unset : ", s->std.err);
+			ft_putstr_fd(args[i], s->std.err);
+			ft_putstr_fd(" not a valid identifier\n", s->std.err);
+		}
+			/*error(s, ERR_INVALID_ENV_NAME);*/
 		else
 			unset_value(s, args[i]);
 		i++;
 	}
-	ft_printf("unset \n");
-	return (1);
+	if (ret > 0)
+		ret = 1;
+	return (ret);
 }
 
 int		ft_env(t_mini *s, char **args)
