@@ -166,7 +166,13 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 		else if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' && cmd->token)
 			cmd->token = cmd->token->next;
 		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' ' && cmd->token)
-			break;
+		{
+			cmd->token = cmd->token->next;
+			if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' && cmd->token)
+				cmd->token = cmd->token->next->next;
+			else
+			cmd->token = cmd->token->next;
+		}
 	}
 	/*cmd->token = cmd->firsttoken;*/
 	return (cmd->ret);
