@@ -135,11 +135,11 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	}
 	else
 		waitpid(sig.pid, &status, 0);
-	cmd->ret = status;
+	sig.ret = status;
 	if (sig.interrupt == 1 || sig.quit == 1)
-		cmd->ret = sig.ret;
+		sig.ret = sig.ret + 128;
 	/*ft_printf("exec BINNN\n");*/
-	return (cmd->ret);
+	return (sig.ret);
 }
 
 	 /*exec the builtin and return the ret of the builtin*/
