@@ -163,6 +163,10 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 	{
 		if ((s->i = ft_exit(s, args)) == 2)
 			sig.ret = ft_atoi(args[1]);
+		else if (s->i == 0)
+			sig.ret = 0;
+		else
+			sig.ret = 1;
 		error(s, WANT_EXIT);
 	}
 	return (sig.ret);
@@ -301,11 +305,11 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	args = ft_split(cmd->buf, '\n');
 	/*print_tab(args);*/
 	if (ft_is_builtin(args[0]))
-		cmd->ret = exec_builtin(s, cmd, args);
+		sig.ret = exec_builtin(s, cmd, args);
 	else
-		cmd->ret = exec_bin(s,cmd, args);
+		sig.ret = exec_bin(s,cmd, args);
 	waitpid(-1, &status, 0);
-	sig.ret = cmd->ret % 255;
+	sig.ret = sig.ret % 255;
 	/*status = WEXITSTATUS(status);*/
 	ft_free_tab(args);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/

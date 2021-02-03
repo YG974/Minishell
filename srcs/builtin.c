@@ -499,14 +499,18 @@ int		ft_exit(t_mini *s, char **args)
 		return (0);
 	if (i > 2)
 	{
-		ft_printf("Error: exit command allows only an numeric argument.\n");
-		ft_printf("Ex : exit 4\n");
+		ft_putstr_fd(args[0], s->std.err);
+		ft_printf(": ");
+		/*ft_putstr_fd(args[1], s->std.err);*/
+		ft_putstr_fd(": too many arguments\n", s->std.err);
 		return (1);
 	}
 	if (i == 2 && !(i = str_is_digit(args[1])))
 	{
-		ft_printf("Error: exit command allows only an numeric argument.\n");
-		ft_printf("Ex : exit 4\n");
+		ft_putstr_fd(args[0], s->std.err);
+		ft_printf(": ");
+		ft_putstr_fd(args[1], s->std.err);
+		ft_printf(": numeric argument required\n");
 		return (1);
 	}
 	return (2);
