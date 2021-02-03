@@ -27,8 +27,7 @@ char *get_env_value(t_mini *s, char *name)
 	i = ft_strlen(name);
 	while (env)
 	{
-		if (ft_strncmp(env->name, name, i) == 0
-				&& i == ft_strlen(env->name))
+		if (ft_strncmp(env->name, name, i) == 0 && i == ft_strlen(env->name))
 			value = ft_strdup(env->value);
 		env = env->next;
 	}

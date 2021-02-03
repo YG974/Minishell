@@ -96,6 +96,7 @@ typedef	struct		s_sig
 	int				interrupt;
 	int				quit;
 	int				status;
+	int				ret;
 	pid_t			pid;
 }					t_sig;
 

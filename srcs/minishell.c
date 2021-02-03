@@ -8,7 +8,7 @@ void prompt(t_mini *s)
 	/*get_next_line(0, s->read.buf);*/
 	s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
 	if (s->read.ret == 0)
-		sig.status = -1;
+		s->error = 2;
 		/*ft_putstr_fd("\n", 2);*/
 
 		/*minishell(s);*/
@@ -47,20 +47,19 @@ void	ft_free_env(t_env *env)
 
 void	minishell(t_mini *s)
 {
-	while(!sig.status && s->error != 2)
+	while(!s->status && s->error != 2)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
 		init_signal(s);
 		prompt(s);
 		/*if (ft_parse(s))*/
-		if (!sig.status && ft_parse(s))
+		if (!s->status && ft_parse(s) && s->error != 2)
 			error(s, ERR_CALLOC);
 		free(s->read.buf);
 	}
 	ft_free_env(s->env);
 	s->env = NULL;
-	init_signal(s);
 }
 
 int		main(int ac, char **av, char **env)
@@ -72,7 +71,6 @@ int		main(int ac, char **av, char **env)
 
 	init_mini(&s);
 	init_env(&s, env);
-	/*init_signal(&s);*/
 	minishell(&s);
 	ft_printf("END OF MINISHELL\n");
 	return (0);

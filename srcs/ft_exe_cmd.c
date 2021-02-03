@@ -122,8 +122,10 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
 	char *path;
 	char **env;
+	int		status;
 
 	sig.pid = fork();
+	status = 0;
 	if (sig.pid == 0)
 	{
 		env = put_env_in_tab(s);
@@ -135,7 +137,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		free(path);
 	}
 	else
-		waitpid(sig.pid, &sig.status, 0);
+		waitpid(sig.pid, &status, 0);
 	if (sig.interrupt == 1 || sig.quit == 1)
 		cmd->ret = sig.status;
 	/*ft_printf("exec BINNN\n");*/
@@ -193,7 +195,13 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 		else if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' && cmd->token)
 			cmd->token = cmd->token->next;
 		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' ' && cmd->token)
-			break;
+		{
+			cmd->token = cmd->token->next;
+			if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' && cmd->token)
+				cmd->token = cmd->token->next->next;
+			else
+				cmd->token = cmd->token->next;
+		}
 	}
 	/*cmd->token = cmd->firsttoken;*/
 	return (cmd->ret);
@@ -278,6 +286,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
 
 	char **args;
+	int		status;
     /*ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");*/
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
@@ -296,8 +305,8 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		cmd->ret = exec_builtin(s, cmd, args);
 	else
 		cmd->ret = exec_bin(s,cmd, args);
-	waitpid(-1, &sig.status, 0);
-	/*sig.status = WEXITSTATUS(sig.status);*/
+	waitpid(-1, &status, 0);
+	status = WEXITSTATUS(status);
 	ft_free_tab(args);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }

@@ -3,25 +3,6 @@
 
 void	handle_sigint(int signum)
 {
-	/*ft_printf("\npid %d\n", sig.pid);*/
-	/*ft_printf("\nstatus %d\n", sig.status);*/
-	/*ft_printf("\nsigint %d\n", sig.interrupt);*/
-	/*ft_printf("\nsigquit %d\n", sig.quit);*/
-	/*if (sig.pid == 0)*/
-	/*{*/
-		/*exit(128 + signum);*/
-		/*ft_putstr_fd("\n", 1);*/
-		/*sig.status = 1;*/
-	/*}*/
-	/*else*/
-	/*{*/
-		/*ft_putstr_fd("\b\b  \b\b", 1);*/
-		/*ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);*/
-	/*ft_putstr_fd("\n", 1);*/
-	/*}*/
-	/*sig.status = 128 + signum;*/
-	/*sig.interrupt = 1;*/
-	/*exit (0);*/
 	(void)signum;
 	if (sig.pid == 0)
 	{
@@ -60,22 +41,6 @@ void	handle_sigquit(int signum)
 	else
 		ft_putstr_fd("\b\b  \b\b", STDERR);
 
-
-	/*ft_printf("\npid %d\n", sig.pid);*/
-	/*ft_printf("\nstatus %d\n", sig.status);*/
-	/*ft_printf("\nsigint %d\n", sig.interrupt);*/
-	/*ft_printf("\nsigquit %d\n", sig.quit);*/
-	/*if (sig.pid != 0)*/
-	/*{*/
-		/*ft_putstr_fd("Quit : ", 1);*/
-		/*ft_putstr_fd("3\n", 1);*/
-		/*sig.status = 128 + signum;*/
-	/*}*/
-	/*else*/
-		/*ft_putstr_fd("\b\b  \b\b", 1);*/
-	/*ft_putstr_fd("\b", 2);*/
-	/*sig.quit = 1;*/
-	/*sigprompt();*/
 }
 
 int     init_signal(t_mini *s)

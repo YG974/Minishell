@@ -478,6 +478,8 @@ int		ft_exit(t_mini *s, char **args)
 	int		i;
 
 	i = count_args(args);
+	if (i == 1)
+		return (0);
 	if (i > 2)
 	{
 		ft_printf("Error: exit command allows only an numeric argument.\n");
@@ -490,5 +492,5 @@ int		ft_exit(t_mini *s, char **args)
 		ft_printf("Ex : exit 4\n");
 		return (1);
 	}
-	return (0);
+	return (2);
 }
