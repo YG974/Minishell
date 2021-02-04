@@ -55,9 +55,9 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 
 int		check_bin_right(char *path)
 {
-	(void)path;
 	struct stat		file;
 	int				mode;
+	DIR				*folder;
 
 	mode = 0;
 	stat(path, &file);
@@ -66,6 +66,14 @@ int		check_bin_right(char *path)
 	{
 		ft_putstr_fd(path, STDERR);
 		ft_putstr_fd(" : permission denied\n", STDERR);
+		sig.ret = 126;
+		return (0);
+	}
+	if ((folder = opendir(path)))
+	{
+		ft_putstr_fd(path, STDERR);
+		ft_putstr_fd(" : is a directory\n", STDERR);
+		sig.ret = 126;
 		return (0);
 	}
 	return (1);
@@ -89,7 +97,10 @@ char	*find_bin_path(t_mini *s, char **args)
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
 	if (!path)
+	{
 		ft_putstr_fd("command not found\n", s->std.err);
+		sig.ret = 127;
+	}
 	/*mieux faire la gestion d'erreur*/
 	/*ft_printf("cmd_path :%s|\n", path);*/
 	/*print_tab(bin_paths);*/
@@ -129,7 +140,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		if (path && check_bin_right(path))
 			cmd->ret = execve(path, args, env);
 		else 
-			exit (1);
+			exit (sig.ret);
 		ft_free_tab(env);
 		free(path);
 	}
