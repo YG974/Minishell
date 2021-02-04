@@ -142,13 +142,13 @@ int		is_valid_env_name(char *str)
 	while (str[i] && str[i] != '=')
 	{
 		if (ft_isdigit(str[0]) == 1)
-			return (0);
+			return (1);
 		if (ft_isalnum(str[i]) == 0 && str[i] != '_')
-			return (0);
+			return (1);
 		i++;
 	}
 	/*ft_printf("export \n");*/
-	return (1);
+	return (0);
 }
 
 char **sort_tab_env(char **s_env)
@@ -381,9 +381,10 @@ int		ft_export(t_mini *s, char **args)
 	i = 1;
 	if ((ret = count_args(args)) == 1)
 		return (print_sorted_env(s));
+	ret = 0;
 	while (args[i])
 	{
-		if (!(ret = is_valid_env_name(args[i])))
+		if ((ret += is_valid_env_name(args[i])))
 			error(s, ERR_INVALID_ENV_NAME);
 		/*else if (strchr(args[i], '='))*/
 		/*{*/
@@ -394,6 +395,8 @@ int		ft_export(t_mini *s, char **args)
 			export_assignement(s, args[i]);
 		i++;
 	}
+	if (ret > 0)
+		ret = 1;
 	/*ft_printf("export \n");*/
 	/*ft_printf("export \n");*/
 	return (ret);

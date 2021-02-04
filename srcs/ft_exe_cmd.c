@@ -316,7 +316,6 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
-
 	char **args;
 	int		status;
     /*ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");*/
