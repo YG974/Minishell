@@ -18,14 +18,16 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 				close(s->std.out);
 			s->std.out = open(tmp->str, O_WRONLY | O_CREAT | O_APPEND, 00644);
 			tok = tok->next;
-			dup2(s->std.out, 1);
+			if (s->std.in > 0)
+				dup2(s->std.out, 1);
 		}
 		else
 		{
 			if (s->std.out > 1)
 				close(s->std.out);
 			s->std.out = open(tmp->str, O_WRONLY | O_CREAT | O_TRUNC, 00644);
-			dup2(s->std.out, 1);
+			if (s->std.in > 0)
+				dup2(s->std.out, 1);
 		}
 	}
 	if (tok->str[0] == '<')
@@ -33,7 +35,8 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 		if (s->std.in > 0)
 			close(s->std.in);
 		s->std.in = open(tmp->str, O_RDONLY);
-		dup2(s->std.in, 0);
+		if (s->std.in > 0)
+			dup2(s->std.in, 0);
 	}
 	return (0);
 }
