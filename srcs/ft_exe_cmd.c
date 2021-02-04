@@ -1,5 +1,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+#include <sys/_types/_s_ifmt.h>
 
 	 /*check if the command is a builtin */
 	 /*return 1 if it's a builtin */
@@ -53,29 +54,32 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 	return (cmd_path);
 }
 
+int		ft_bin_error(char *path, char *str, int ret)
+{
+	sig.ret = ret;
+	(void)str;
+	ft_putstr_fd("Minishell : ", STDERR);
+	ft_putstr_fd(path, STDERR);
+	ft_putstr_fd(" : ", STDERR);
+	/*ft_putstr_fd(strerror(errno), STDERR);*/
+	ft_putstr_fd(str, STDERR);
+	ft_putstr_fd("\n", STDERR);
+	return (-1);
+}
+	/*problem si execution d'un fichier qui n'est pas un executable*/
+	/*je n'ai pas trouve de solution*/
 int		check_bin_right(char *path)
 {
 	struct stat		file;
-	int				mode;
-	DIR				*folder;
 
-	mode = 0;
-	stat(path, &file);
-	mode = file.st_mode & S_IXUSR;
-	if (mode == 0)
-	{
-		ft_putstr_fd(path, STDERR);
-		ft_putstr_fd(" : permission denied\n", STDERR);
-		sig.ret = 126;
-		return (0);
-	}
-	if ((folder = opendir(path)))
-	{
-		ft_putstr_fd(path, STDERR);
-		ft_putstr_fd(" : is a directory\n", STDERR);
-		sig.ret = 126;
-		return (0);
-	}
+	if (!path)
+		return (ft_bin_error(path, "command not found", CMD_NOT_FOUND));
+	if ((stat(path, &file)) == -1)
+		return (ft_bin_error(path, "no such file or directory", NOT_EXEC));
+	if(S_ISDIR(file.st_mode))
+		return (ft_bin_error(path, "is a directory", NOT_EXEC));
+	else if ((file.st_mode & S_IXUSR) == 0)
+		return (ft_bin_error(path, "permission denied", NOT_EXEC));
 	return (1);
 }
 
@@ -96,11 +100,6 @@ char	*find_bin_path(t_mini *s, char **args)
 		return (args[0]);
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
-	if (!path)
-	{
-		ft_putstr_fd("command not found\n", s->std.err);
-		sig.ret = 127;
-	}
 	/*mieux faire la gestion d'erreur*/
 	/*ft_printf("cmd_path :%s|\n", path);*/
 	/*print_tab(bin_paths);*/
@@ -137,12 +136,17 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
-		if (path && check_bin_right(path))
-			cmd->ret = execve(path, args, env);
-		else 
+		if ((check_bin_right(path) == 1))
+		{
+			if (!(execve(path, args, env)))
+				ft_putstr_fd("error\n", STDERR);
+			/*cmd->ret = execve(path, args, env);*/
+		}
+		else
 			exit (sig.ret);
-		ft_free_tab(env);
+		/*ft_free_tab(env);*/
 		free(path);
+		cmd->ret = cmd->ret;
 	}
 	else
 		waitpid(sig.pid, &status, 0);

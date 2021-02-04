@@ -45,6 +45,9 @@
 # define FLAG_STR 4
 # define FLAG_ASSIGNEMENT 5
 
+# define NOT_EXEC 126
+# define CMD_NOT_FOUND 127
+
 typedef struct		s_tok
 {
 	char			*str;
