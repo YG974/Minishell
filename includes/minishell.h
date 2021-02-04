@@ -138,6 +138,7 @@ void	init_env(t_mini *s, char **env);
 void	copy_env(t_mini *s, char **env);
 void	check_env_validity(t_mini *s);
 char	*ft_strjoin_free_s1(char const *s1, char const *s2);
+char	*ft_strjoin_free_s2(char const *s1, char const *s2);
 
 /*
 **	ft_parse.c

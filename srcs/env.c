@@ -5,6 +5,35 @@
 **and don't begin with numbers
 */
 #include "../libft/libft.h"
+char	*ft_strjoin_free_s2(char const *s1, char const *s2)
+{
+	int		len1;
+	int		len2;
+	int		i;
+	char	*str;
+
+	if (!(s2 && s1))
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	i = 0;
+	if (!(str = malloc(sizeof(char) * (len1 + len2 + 1))))
+		return (NULL);
+	while (i < len1)
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (i < len1 + len2)
+	{
+		str[i] = s2[i - len1];
+		i++;
+	}
+	str[len1 + len2] = '\0';
+	free((void *)s1);
+	return (str);
+}
+
 
 char	*ft_strjoin_free_s1(char const *s1, char const *s2)
 {

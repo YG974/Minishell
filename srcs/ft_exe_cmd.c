@@ -245,8 +245,22 @@ int		ft_exe_tokens(t_mini *s, t_cmdl *cmd)
 int		apply_assignement(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
-	// (void)cmd;
-	/*ft_printf("apply assignement \n");*/
+	char **args;
+	cmd->buf = ft_strdup("walou");
+	cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
+	cmd->token = cmd->firsttoken;
+	/*ft_printf("parse_cmd_args\n");*/
+	while (cmd->token)
+	{
+		if (ft_strchr(cmd->token->str, '='))
+		{
+			cmd->buf = ft_strjoin_free_s1(cmd->buf, cmd->token->str);
+			cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
+		}
+		cmd->token = cmd->token->next;
+	}		
+	args = ft_split(cmd->buf, '\n');
+	cmd->ret = ft_export(s, args);
 	return (cmd->ret);
 
 }
@@ -309,16 +323,14 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
 	handle_dollar_question_mark(s, cmd);
+	/*print_tab(args);*/
 	if (cmd_has_only_assignement(cmd))
 	{
-		cmd->ret = apply_assignement(s, cmd);
+		sig.ret = apply_assignement(s, cmd);
 		return ;
 	}
-	else 
-		parse_cmd_args(s, cmd);
-    /*ft_printf("str ok args :%s\n", cmd->buf);*/
+	parse_cmd_args(s, cmd);
 	args = ft_split(cmd->buf, '\n');
-	/*print_tab(args);*/
 	if (ft_is_builtin(args[0]))
 		sig.ret = exec_builtin(s, cmd, args);
 	else
