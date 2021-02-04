@@ -30,13 +30,10 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 	}
 	if (tok->str[0] == '<')
 	{
-		printf("TEST %s\n", "caca");
 		if (s->std.in > 0)
 			close(s->std.in);
 		s->std.in = open(tmp->str, O_RDONLY);
 		dup2(s->std.in, 0);
-		close(s->std.in);
-		s->std.in = 0;
 	}
 	return (0);
 }
