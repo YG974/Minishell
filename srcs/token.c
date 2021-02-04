@@ -164,7 +164,25 @@ void check_quotes(t_mini *s, t_cmdl *cmd)
 	}
 }
 
-void break_cmdline_into_token(t_mini *s)
+void	ft_closefd(t_mini *s)
+{
+	printf("TEST %d\n", 5);
+	if (s->std.in > 0)
+		close(s->std.in);
+	printf("TEST %d\n", 6);
+	if (s->std.out > 1)
+		close(s->std.out);
+	printf("TEST %d\n", 7);
+	s->std.in = 0;
+	s->std.out = 0;
+	dup2(0, 0);
+	printf("TEST %d\n", 8);
+	// if (s->std.out)
+	dup2(0, 1);
+	printf("TEST %d\n", 9);
+}
+
+void	break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
 	/*char	**tab;*/
@@ -193,8 +211,15 @@ void break_cmdline_into_token(t_mini *s)
 		/*ft_flag_assignement(s, cmd);*/
 		/* tab = put_env_in_tab(s); */
 		/* print_tab(tab); */
+		printf("TEST %d\n", 1);
+		ft_redirection(s, cmd);
+		printf("TEST %d\n", 2);
 		ft_exe_cmd(s, cmd);
+		printf("TEST %d\n", 3);
 		ft_del_tokens(cmd, 0);
+		printf("TEST %d\n", 4);
+		ft_closefd(s);
+		printf("TEST %d\n", 10);
 		cmd = cmd->next;
 	}
 }

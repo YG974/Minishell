@@ -66,8 +66,6 @@ char	*find_bin_path(t_mini *s, char **args)
 	path = ft_strdup("PATH");
 	bin_paths = ft_split(get_env_value(s, path), ':');
 	path = NULL;
-	if ((path = ft_strchr(args[0], '/')))
-		return (args[0]);
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
 	/*mieux faire la gestion d'erreur*/

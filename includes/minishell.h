@@ -88,12 +88,6 @@ typedef	struct		s_cmdl
 	struct s_cmdl	*next;
 }					t_cmdl;
 
-typedef	struct		s_sig
-{
-	int				interrupt;
-	int				quit;
-	int				status;
-}					t_sig;
 
 typedef struct		s_mini
 {
@@ -105,12 +99,13 @@ typedef struct		s_mini
 	t_cmdl			*currentcmdl;
 	char			**line;
 	int				status;
+	int				sig;
 	int				error;
 	int				i;
 	pid_t			pid;
+	struct s_mini			*next;
+	struct s_mini			*previous;
 }					t_mini;
-
-t_sig			sig;
 
 /*
 **	minishell.c
@@ -151,13 +146,11 @@ int     ft_get_cmd(char *line, t_mini *s);
 **	ft_init_signal.c
 */
 int     init_signal(t_mini *s);
-void	handle_sigint(int signum);
-void	handle_sigquit(int signum);
 
 /*
 **	ft_redirection.c
 */
-int     ft_redirection(t_mini *s);
+int     ft_redirection(t_mini *s, t_cmdl *cmd);
 
 /*
 **	ft_exe_cmd.c

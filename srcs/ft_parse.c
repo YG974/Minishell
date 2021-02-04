@@ -33,7 +33,7 @@ void    ft_testchainlist(t_mini *s)
     tmp = s->firstcmdl;
     while (tmp)
     {
-        /*ft_printf("CMD LINE %d : %s\n", i, tmp->str);*/
+        ft_printf("CMD LINE %d : %s\n", i, tmp->str);
         i++;
         tmp = tmp->next;
     }
@@ -52,7 +52,7 @@ int     ft_parse(t_mini *s)
         error(s, ret);
     /* test chain list cmdlines
     */
-    ft_testchainlist(s);
+    //ft_testchainlist(s);
 	break_cmdline_into_token(s);
     ret = ft_del_cmdline(s, 0);
     /*ft_printf("===========> On sort de la fonction de PARSING <============\n");*/
