@@ -70,6 +70,8 @@ int		go_to_path(t_mini *s, char **args)
 		ft_putstr_fd(strerror(errno), s->std.err);
 		ft_putstr_fd("\n", s->std.err);
 	}
+	if (i < 0)
+		i = -i;
 		/*ft_putstr_fd("Error, couldn't change dir", 2);*/
 	return (i);
 }
