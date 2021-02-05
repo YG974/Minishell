@@ -248,7 +248,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	if (ft_is_builtin(args[0]))
 		cmd->ret = exec_builtin(s, cmd, args);
 	else
-		cmd->ret = exec_bin(s,cmd, args);
+		cmd->ret = exec_bin(s, cmd, args);
 	ft_free_tab(args);
 	waitpid(-1, &s->status, 0);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/

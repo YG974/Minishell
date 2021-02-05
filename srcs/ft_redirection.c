@@ -47,14 +47,6 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 	return (0);
 }
 
-int		ft_pipe(t_mini *s, t_tok *tmp)
-{
-	(void)s;
-	(void)tmp;
-	ft_putstr_fd("this is a pipe\n", 0);
-	return (0);
-}
-
 int     ft_redirection(t_mini *s, t_cmdl *cmd)
 {
     t_tok   *tmp;
@@ -66,9 +58,6 @@ int     ft_redirection(t_mini *s, t_cmdl *cmd)
     {
         if (tmp->str[0] == '>' || tmp->str[0] == '<')
             if (ft_change_fd(s, tmp))
-				return (1);
-		if (tmp->str[0] == '|')
-			if (ft_pipe(s, tmp))
 				return (1);
 		if (tmp->str[0] == '>' && tmp->next && tmp->next->str[0] == '>')
 			tmp = tmp->next->next;
