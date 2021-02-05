@@ -67,8 +67,13 @@ int		go_to_path(t_mini *s, char **args)
 	i = chdir(args[1]);
 	if (i != 0)
 	{
-		ft_putstr_fd(strerror(errno), s->std.err);
-		ft_putstr_fd("\n", s->std.err);
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd("Minishell: cd: ", STDERR);
+		ft_putstr_fd(args[1], STDERR);
+		ft_putstr_fd(": ", STDERR);
+		ft_putstr_fd(strerror(errno), STDERR);
+		ft_putstr_fd("\n", STDERR);
+		ft_putstr_fd(RESET, STDERR);
 	}
 	if (i < 0)
 		i = -i;
@@ -85,16 +90,22 @@ int		go_to_home_path(t_mini *s)
 	path = get_env_value(s, path);
 	if ((i = ft_strlen(path)) < 1)
 	{
-		ft_putstr_fd("HOME is not defined\n", 2);
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd("Minishell: cd: ", STDERR);
+		ft_putstr_fd("HOME not set\n", 2);
+		ft_putstr_fd(RESET, STDERR);
 		return (1);
 	}
 	i = chdir(path);
 	if (i != 0)
 	{
-		ft_putstr_fd(strerror(errno), s->std.err);
-		ft_putstr_fd("\n", s->std.err);
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd("Minishell: cd: ", STDERR);
+		ft_putstr_fd(strerror(errno), STDERR);
+		ft_putstr_fd("\n", STDERR);
+		ft_putstr_fd(RESET, STDERR);
 	}
-	return (i);
+	return (-i);
 }
 
 int		ft_cd(t_mini *s, char **args)
@@ -123,13 +134,14 @@ int		ft_pwd(t_mini *s, char **args)
 	cwd = getcwd(args[1], PATH_MAX);
 	if (!cwd)
 	{
-		ft_putstr_fd(strerror(errno), s->std.err);
-		ft_putstr_fd("\n", s->std.out);
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd(strerror(errno), STDERR);
+		ft_putstr_fd("\n", STDERR);
+		ft_putstr_fd(RESET, STDERR);
 		return (1);
 	}
 	ft_putstr_fd(cwd, s->std.out);
 	ft_putstr_fd("\n", s->std.out);
-	/*ft_printf("pwd \n");*/
 	free(cwd);
 	return (0);
 }
@@ -432,14 +444,15 @@ int		ft_unset(t_mini *s, char **args)
 	ret = 0;
 	while (args[i])
 	{
-		if (!(is_valid_env_name(args[i])))
+		if ((is_valid_env_name(args[i])) == 1)
 		{
 			ret++;
-			ft_putstr_fd("unset : ", s->std.err);
-			ft_putstr_fd(args[i], s->std.err);
-			ft_putstr_fd(" not a valid identifier\n", s->std.err);
+			ft_putstr_fd(RED, STDERR);
+			ft_putstr_fd("Minishell: unset: ", STDERR);
+			ft_putstr_fd(args[i], STDERR);
+			ft_putstr_fd(" not a valid identifier\n", STDERR);
+			ft_putstr_fd(RESET, STDERR);
 		}
-			/*error(s, ERR_INVALID_ENV_NAME);*/
 		else
 			unset_value(s, args[i]);
 		i++;
@@ -504,18 +517,18 @@ int		ft_exit(t_mini *s, char **args)
 		return (0);
 	if (i > 2)
 	{
-		ft_putstr_fd(args[0], s->std.err);
+		ft_putstr_fd(args[0], STDERR);
 		ft_printf(": ");
 		/*ft_putstr_fd(args[1], s->std.err);*/
-		ft_putstr_fd(": too many arguments\n", s->std.err);
+		ft_putstr_fd(": too many arguments\n", STDERR);
 		return (1);
 	}
 	if (i == 2 && !(i = str_is_digit(args[1])))
 	{
-		ft_putstr_fd(args[0], s->std.err);
-		ft_printf(": ");
-		ft_putstr_fd(args[1], s->std.err);
-		ft_printf(": numeric argument required\n");
+		ft_putstr_fd(args[0], STDERR);
+		ft_putstr_fd(": ", STDERR);
+		ft_putstr_fd(args[1], STDERR);
+		ft_putstr_fd(": numeric argument required\n", STDERR);
 		return (1);
 	}
 	return (2);

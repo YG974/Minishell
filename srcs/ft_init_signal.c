@@ -1,14 +1,20 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
+void	sigprompt(void)
+{
+	ft_putstr_fd(CYAN, STDOUT);
+	ft_putstr_fd("\nMINISHELL DU TURFU -> ", STDOUT);
+	ft_putstr_fd(RESET, STDOUT);
+}
+
 void	handle_sigint(int signum)
 {
 	(void)signum;
 	if (sig.pid == 0)
 	{
 		ft_putstr_fd("\b\b  ", STDERR);
-		ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);
-		/*sig.status = 1;*/
+		sigprompt();
 	}
 	else
 	{
@@ -18,23 +24,15 @@ void	handle_sigint(int signum)
 	sig.interrupt = 1;
 }
 
-void	sigprompt(void)
-{
-
-	ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);
-	/*ft_putstr_fd("\n", 1);*/
-}
-
 void	handle_sigquit(int signum)
 {
 	(void)signum;
-		char	*nbr;
 
-	nbr = ft_itoa(signum);
 	if (sig.pid != 0)
 	{
-		ft_putstr_fd("Quit: ", STDERR);
-		ft_putendl_fd(nbr, STDERR);
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd("Quit: 3\n", STDERR);
+		ft_putstr_fd(RESET, STDERR);
 		/*sig.status = 131;*/
 		sig.quit = 1;
 	}

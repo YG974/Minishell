@@ -48,6 +48,11 @@
 # define NOT_EXEC 126
 # define CMD_NOT_FOUND 127
 
+//colors
+#define CYAN "\x1b[36m"
+#define RESET "\x1b[0m"
+#define RED "\x1b[31m"
+
 typedef struct		s_tok
 {
 	char			*str;
@@ -67,7 +72,7 @@ typedef struct		s_read
 {
 	ssize_t			ret;
 	size_t			count;
-	void			*buf;
+	char			*buf;
 	int				fd;
 }					t_read;
 

@@ -54,32 +54,34 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 	return (cmd_path);
 }
 
-int		ft_bin_error(char *path, char *str, int ret)
+int		ft_str_error(char *path, char *str, int ret)
 {
 	sig.ret = ret;
 	(void)str;
-	ft_putstr_fd("Minishell : ", STDERR);
+	ft_putstr_fd(RED, STDERR);
+	ft_putstr_fd("Minishell: ", STDERR);
 	ft_putstr_fd(path, STDERR);
-	ft_putstr_fd(" : ", STDERR);
+	ft_putstr_fd(": ", STDERR);
 	/*ft_putstr_fd(strerror(errno), STDERR);*/
 	ft_putstr_fd(str, STDERR);
 	ft_putstr_fd("\n", STDERR);
+	ft_putstr_fd(RESET, STDERR);
 	return (-1);
 }
 	/*problem si execution d'un fichier qui n'est pas un executable*/
 	/*je n'ai pas trouve de solution*/
-int		check_bin_right(char *path)
+int		check_bin_right(char *path, char **args)
 {
 	struct stat		file;
 
 	if (!path)
-		return (ft_bin_error(path, "command not found", CMD_NOT_FOUND));
+		return (ft_str_error(args[0], "command not found", CMD_NOT_FOUND));
 	if ((stat(path, &file)) == -1)
-		return (ft_bin_error(path, "no such file or directory", NOT_EXEC));
+		return (ft_str_error(path, "no such file or directory", NOT_EXEC));
 	if(S_ISDIR(file.st_mode))
-		return (ft_bin_error(path, "is a directory", NOT_EXEC));
+		return (ft_str_error(path, "is a directory", NOT_EXEC));
 	else if ((file.st_mode & S_IXUSR) == 0)
-		return (ft_bin_error(path, "permission denied", NOT_EXEC));
+		return (ft_str_error(path, "permission denied", NOT_EXEC));
 	return (1);
 }
 
@@ -136,7 +138,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
-		if ((check_bin_right(path) == 1))
+		if ((check_bin_right(path, args) == 1))
 		{
 			if (!(execve(path, args, env)))
 				ft_putstr_fd("error\n", STDERR);
@@ -273,6 +275,8 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 int		cmd_has_only_assignement(t_cmdl *cmd)
 {
 	cmd->token = cmd->firsttoken;
+	if (cmd->token == NULL)
+		return (0);
 	while (cmd->token)
 	{
 		if (!(ft_strchr(cmd->token->str, '=')) && cmd->token->flag != 2)
@@ -328,6 +332,8 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		sig.ret = apply_assignement(s, cmd);
 		return ;
 	}
+	if (cmd->token == NULL)
+		return;
 	parse_cmd_args(s, cmd);
 	args = ft_split(cmd->buf, '\n');
 	if (ft_is_builtin(args[0]))
