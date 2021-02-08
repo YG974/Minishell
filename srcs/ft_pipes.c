@@ -8,14 +8,6 @@ t_tok	*ft_prev_sep(t_tok *tok)
 	return (tok);
 }
 
-t_tok	*ft_next_sep(t_tok *tok)
-{
-	while (tok && tok->flag != FLAG_PIPE)
-		tok = tok->next;
-	if (tok && tok->next)
-		return (tok->next);
-	return (tok);
-}
 
 int		ft_create_pipe(t_mini *s)
 {
@@ -97,6 +89,15 @@ void	redir_and_exec(t_mini *mini, t_token *token)
 
 */
 
+t_tok	*ft_next_sep(t_tok *tok)
+{
+	while (tok && tok->flag != FLAG_PIPE)
+		tok = tok->next;
+	if (tok && tok->next)
+		return (tok->next);
+	return (tok);
+}
+
 int		ft_pipe(t_mini *s, t_cmdl *cmd)
 {
 	t_tok	*next;
@@ -116,8 +117,8 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 		ft_redirection(s, cmd);
 		ft_exe_cmd(s, cmd);
 		close(fd[1]);
-		exit(0);
-	} else
+		exit(s->status);
+	} else // ls -l | grep 42 | grep 12
 	{
 		close(fd[1]);
 		s->std.in = fd[0];

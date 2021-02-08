@@ -21,11 +21,13 @@ int main(int argc, char **argv)
 	t_truc	test;
 	int fd[2];
 	int fdtwo[2];
+	int *p;
 	int i;
 	char	buffer[BUFFER_SIZE + 1];
 	// fd 0 read
 	// fd 1 write
 
+	p = &i;
 	ft_bzero(&buffer, BUFFER_SIZE + 1);
 	test.buf = ft_strdup("test1 test2");
 	test.str = ft_split(test.buf, ' ');
@@ -37,7 +39,7 @@ int main(int argc, char **argv)
 	{
 		close(fd[0]);
 		ft_putstr_fd(test.str[0], fd[1]);
-		printf("ceci est l'enfant et sa phrase est : %s\n", test.str[0]);
+		printf("ceci est l'enfant et sa phrase est : %s\npointeur = %p\n", test.str[0], p);
 		close(fd[1]);
 		//printf("TESTTEST\n");
 	} else
@@ -54,7 +56,7 @@ int main(int argc, char **argv)
 			read(fd[0], buffer, BUFFER_SIZE);
 			i = printf("Ceci est le parent, on lit donc la phrase de l'enfant : %s\nEt la phrase du parent : %s\n", buffer, test.str[1]);
 			write(fdtwo[1], &i, sizeof(int));
-			printf("On envoie maintenant le retour de printf au deuxieme parent.\n");
+			printf("On envoie maintenant le retour de printf au deuxieme parent.\npointeur = %p\n", p);
 			close(fdtwo[1]);
 		} else
 		{
