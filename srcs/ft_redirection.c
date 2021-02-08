@@ -54,7 +54,7 @@ int     ft_redirection(t_mini *s, t_cmdl *cmd)
     tmp = cmd->firsttoken;
     //printf("%d\n%d\n", s->std.in, s->std.out);
     //checker si il y a un < ou >. Si oui, il faut changer stdin et/ou stdout.
-    while (tmp)
+    while (tmp && tmp->flag != FLAG_PIPE)
     {
         if (tmp->str[0] == '>' || tmp->str[0] == '<')
             if (ft_change_fd(s, tmp))

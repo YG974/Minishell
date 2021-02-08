@@ -39,9 +39,11 @@ int main(int argc, char **argv)
 		ft_putstr_fd(test.str[0], fd[1]);
 		printf("ceci est l'enfant et sa phrase est : %s\n", test.str[0]);
 		close(fd[1]);
+		//printf("TESTTEST\n");
 	} else
 	{
 		close(fd[1]);
+		//kill(pid, SIGKILL);
 		waitpid(pid, NULL, 0);
 		if (pipe(fdtwo) == -1)
 			return (1);

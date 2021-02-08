@@ -12,6 +12,8 @@ t_tok	*ft_next_sep(t_tok *tok)
 {
 	while (tok && tok->flag != FLAG_PIPE)
 		tok = tok->next;
+	if (tok && tok->next)
+		return (tok->next);
 	return (tok);
 }
 
@@ -95,23 +97,47 @@ void	redir_and_exec(t_mini *mini, t_token *token)
 
 */
 
-int		ft_pipe(t_mini *s, t_tok *tok, t_cmdl *cmd)
+int		ft_pipe(t_mini *s, t_cmdl *cmd)
 {
-	t_tok	*prev;
 	t_tok	*next;
-	int		pipe;
+	int		fd[2];
+	int		pid;
 
-	prev = ft_prev_sep(tok);
-	next = ft_next_sep(tok);
-	pipe = 0;
-	if (prev && prev->flag == FLAG_PIPE)
-		pipe = ft_createpipe(s);
-	if (next && pipe != 1)
-		ft_pipe(s, next);
-	ft_exe_cmd(s, cmd)
+	next = ft_next_sep(cmd->firsttoken);
+	if (pipe(fd) == -1)
+		return (1);
+	//RETOUR PIPE ERREUR
+	pid = fork();
+	if (pid == 0)
+	{
+		close(fd[0]);
+		s->std.out = fd[1];
+		dup2(fd[1], 1);
+		ft_redirection(s, cmd);
+		ft_exe_cmd(s, cmd);
+		close(fd[1]);
+		exit(0);
+	} else
+	{
+		close(fd[1]);
+		s->std.in = fd[0];
+		dup2(fd[0], 0);
+		cmd->firsttoken = next;
+		waitpid(pid, NULL, 0);
+		if (!thereisapipe(cmd))
+			ft_pipe(s, cmd);
+		else
+		{
+			ft_redirection(s, cmd);
+			ft_exe_cmd(s, cmd);
+		}
+		close(fd[0]);
+	}
+	return (0);
 }
 
-int		thereisapipe(t_mini *s, t_cmdl *cmd)
+
+int		thereisapipe(t_cmdl *cmd)
 {
 	t_tok	*tmp;
 
@@ -119,10 +145,7 @@ int		thereisapipe(t_mini *s, t_cmdl *cmd)
 	while (tmp)
 	{
 		if (tmp->flag == FLAG_PIPE)
-		{
-			ft_pipe(s, tmp, cmd);
-			return (0);
-		}
+			return(0);
 		tmp = tmp->next;
 	}
 	return (1);

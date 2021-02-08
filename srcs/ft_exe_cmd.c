@@ -154,7 +154,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 	while ((ft_strchr(cmd->token->str, '=')
 				|| (cmd->token->flag == 2 && cmd->token->str[0] == ' ')))
 		cmd->token = cmd->token->next;
-	while (cmd->token)
+	while (cmd->token && cmd->token->flag != FLAG_PIPE)
 	{
 		//ft_printf("token :%s|\n", cmd->token->str);
 		if (cmd->token->flag != 2 && cmd->token)

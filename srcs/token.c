@@ -207,11 +207,12 @@ void	break_cmdline_into_token(t_mini *s)
 		/*ft_flag_assignement(s, cmd);*/
 		/* tab = put_env_in_tab(s); */
 		/* print_tab(tab); */
-		if (thereisapipe(s, cmd))
+		if (thereisapipe(cmd))
 		{
 			ft_redirection(s, cmd);
 			ft_exe_cmd(s, cmd);
-		}
+		} else
+			ft_pipe(s, cmd);
 		ft_closefd(s);
 		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;

@@ -5,8 +5,7 @@ int		ft_wich_meta(char c)
 {
 	if (c == '>' || c == '<' || c == ' ')
 		return (FLAG_SPACE);
-	else if (c == '|')
-		return (FLAG_PIPE);
+	return (FLAG_PIPE);
 }
 
 void	ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c)
@@ -55,6 +54,8 @@ int		ft_del_tokens(t_cmdl *cmd, int ret)
 	t_tok	*todel;
 
 	todel = cmd->firsttoken;
+	while (todel->prev)
+		todel = todel->prev;
 	while (todel)
 	{
 		tmp = todel->next;
