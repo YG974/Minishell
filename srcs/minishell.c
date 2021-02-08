@@ -3,31 +3,32 @@
 
 void prompt(t_mini *s)
 {	
-	/*ft_printf("MINISHELL DU TURFU ---> ");*/
-	ft_putstr_fd(CYAN, STDOUT);
-	ft_putstr_fd("MINISHELL DU TURFU -> ", STDOUT);
-	ft_putstr_fd(RESET, STDOUT);
-	/*get_next_line(0, s->read.buf);*/
 	while(1)
 	{
-	s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
-	/*s->read.buf[s->read.ret] = '\n';*/
-	/*ft_printf("ret:%d\n", s->read.ret);*/
-	if (s->read.ret == 0 && strlen(s->read.buf) == 0)
-	{
-		s->error = 2;
-		exit(0);
-		break;
-	}
-	if (s->read.ret == 0 && strlen(s->read.buf) > 0)
-		ft_putstr_fd("  \b\b", 1);
-	/*if(s->read.buf[s->read.ret -1] == '\n')*/
-	if (s->read.buf[ft_strlen(s->read.buf) - 1] == '\n')
-		break;
+		ft_putstr_fd(CYAN, STDOUT);
+		ft_putstr_fd("MINISHELL DU TURFU -> ", STDOUT);
+		ft_putstr_fd(RESET, STDOUT);
+		s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
+		if (s->read.ret)
+		{
+			while (s->read.buf[s->read.ret - 1] != '\n')
+			{
+				ft_putstr_fd("  \b\b", 1);
+				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret], s->read.count);
+			}
+			s->read.buf[s->read.ret] = '\0';
+		}
+		else
+		{
+			s->error = 2;
+			exit(errno);
+		}
+		/*ft_putstr_fd("  \b\b", 1);*/
+		return ;
 	}
 
-		/*minishell(s);*/
-		/*ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);*/
+	/*minishell(s);*/
+	/*ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);*/
 }
 
 void init_mini(t_mini *s)
@@ -63,7 +64,7 @@ void	ft_free_env(t_env *env)
 
 void	minishell(t_mini *s)
 {
-	init_signal(s);
+	/*init_signal(s);*/
 	while(!s->status && s->error != 2)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
