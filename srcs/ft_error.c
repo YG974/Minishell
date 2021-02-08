@@ -21,6 +21,7 @@ void error(t_mini *s, int error)
 	if (error == WANT_EXIT)
 	{
 		s->error = 2;
-		ret = ft_printf("EXIT MINISHELL, GOOD BYE <3 (yann grosse suceuse)\n");
+		if (sig.pid == -1)
+			ret = ft_printf("EXIT MINISHELL, GOOD BYE <3\n");
 	}
 }

@@ -14,14 +14,13 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 {
 	t_tok	*next;
 	int		fd[2];
-	int		pid;
 
 	next = ft_next_sep(cmd->firsttoken);
 	if (pipe(fd) == -1)
 		return (1);
 	//RETOUR PIPE ERREUR
-	pid = fork();
-	if (pid == 0)
+	sig.pid = fork();
+	if (sig.pid == 0)
 	{
 		close(fd[0]);
 		s->std.out = fd[1];
@@ -29,26 +28,48 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 		ft_redirection(s, cmd);
 		ft_exe_cmd(s, cmd);
 		close(fd[1]);
-		exit(s->status);
-	} else // ls -l | grep 42 | grep 12
+		exit(sig.ret);
+	} else
 	{
 		close(fd[1]);
 		s->std.in = fd[0];
 		dup2(fd[0], 0);
 		cmd->firsttoken = next;
-		waitpid(pid, NULL, 0);
+		waitpid(sig.pid, &sig.ret, 0);
 		if (!thereisapipe(cmd))
 			ft_pipe(s, cmd);
 		else
 		{
 			ft_redirection(s, cmd);
 			ft_exe_cmd(s, cmd);
+			exit(sig.ret);
 		}
 		close(fd[0]);
 	}
 	return (0);
 }
 
+int		ft_firstpipe(t_mini *s, t_cmdl *cmd)
+{
+	int	fd[2];
+
+	if (pipe(fd) == -1)
+		return (1);
+	sig.pid = fork();
+	if (sig.pid == 0)
+	{
+		close(fd[0]);
+		ft_pipe(s, cmd);
+		close(fd[1]);
+	} else
+	{
+		close(fd[1]);
+		waitpid(sig.pid, &sig.ret, 0);
+		close(fd[0]);
+	}
+	close(fd[1]);
+	return (0);
+}
 
 int		thereisapipe(t_cmdl *cmd)
 {

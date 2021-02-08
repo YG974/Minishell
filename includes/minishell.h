@@ -177,6 +177,7 @@ int     ft_redirection(t_mini *s, t_cmdl *cmd);
 **	ft_pipes.c
 */
 int		thereisapipe(t_cmdl *cmd);
+int		ft_firstpipe(t_mini *s, t_cmdl *cmd);
 int		ft_pipe(t_mini *s, t_cmdl *cmd);
 
 /*
