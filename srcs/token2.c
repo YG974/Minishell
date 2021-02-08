@@ -1,13 +1,20 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
+int		ft_wich_meta(char c)
+{
+	if (c == '>' || c == '<' || c == ' ')
+		return (FLAG_SPACE);
+	return (FLAG_PIPE);
+}
+
 void	ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c)
 {
 	t_tok	*tmp;
 
 	tmp = firsttoken;
 	if (ft_ismeta(c))
-		tok->flag = FLAG_SPACE;
+		tok->flag = ft_wich_meta(c);
 	else
 		tok->flag = FLAG_STR;
 	while (tmp->next)
@@ -47,6 +54,8 @@ int		ft_del_tokens(t_cmdl *cmd, int ret)
 	t_tok	*todel;
 
 	todel = cmd->firsttoken;
+	while (todel->prev)
+		todel = todel->prev;
 	while (todel)
 	{
 		tmp = todel->next;

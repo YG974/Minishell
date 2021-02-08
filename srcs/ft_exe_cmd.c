@@ -98,8 +98,6 @@ char	*find_bin_path(t_mini *s, char **args)
 	path = ft_strdup("PATH");
 	bin_paths = ft_split(get_env_value(s, path), ':');
 	path = NULL;
-	if ((path = ft_strchr(args[0], '/')))
-		return (args[0]);
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
 	/*mieux faire la gestion d'erreur*/
@@ -203,7 +201,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 	while ((ft_strchr(cmd->token->str, '=')
 				|| (cmd->token->flag == 2 && cmd->token->str[0] == ' ')))
 		cmd->token = cmd->token->next;
-	while (cmd->token)
+	while (cmd->token && cmd->token->flag != FLAG_PIPE)
 	{
 		//ft_printf("token :%s|\n", cmd->token->str);
 		if (cmd->token->flag != 2 && cmd->token)

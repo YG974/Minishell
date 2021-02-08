@@ -44,6 +44,7 @@
 # define FLAG_LIT_CHAR 3
 # define FLAG_STR 4
 # define FLAG_ASSIGNEMENT 5
+# define FLAG_PIPE 6
 
 # define NOT_EXEC 126
 # define CMD_NOT_FOUND 127
@@ -112,17 +113,19 @@ typedef struct		s_mini
 {
 	struct s_env	*env;
 	t_std			std;
+	t_std			pipe;
 	t_read			read;
 	t_forparse		parse;
 	t_cmdl			*firstcmdl;
 	t_cmdl			*currentcmdl;
 	char			**line;
 	int				status;
+	int				sig;
 	int				error;
 	int				i;
 }					t_mini;
 
-t_sig			sig;
+t_sig	sig;
 
 /*
 **	minishell.c
@@ -164,13 +167,17 @@ int     ft_get_cmd(char *line, t_mini *s);
 **	ft_init_signal.c
 */
 int     init_signal(t_mini *s);
-void	handle_sigint(int signum);
-void	handle_sigquit(int signum);
 
 /*
 **	ft_redirection.c
 */
-int     ft_redirection(t_mini *s);
+int     ft_redirection(t_mini *s, t_cmdl *cmd);
+
+/*
+**	ft_pipes.c
+*/
+int		thereisapipe(t_cmdl *cmd);
+int		ft_pipe(t_mini *s, t_cmdl *cmd);
 
 /*
 **	ft_exe_cmd.c

@@ -163,7 +163,21 @@ void check_quotes(t_mini *s, t_cmdl *cmd)
 	}
 }
 
-void break_cmdline_into_token(t_mini *s)
+void	ft_closefd(t_mini *s)
+{
+	if (s->std.out > 1)
+		dup2(0, 1);
+	if (s->std.in > 0)
+		close(s->std.in);
+	if (s->std.out > 1)
+		close(s->std.out);
+	s->std.in = 0;
+	s->std.out = 1;
+	dup2(1, 1);
+	dup2(1, 0);
+}
+
+void	break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
 	/*char	**tab;*/
@@ -192,7 +206,13 @@ void break_cmdline_into_token(t_mini *s)
 		/*ft_flag_assignement(s, cmd);*/
 		/* tab = put_env_in_tab(s); */
 		/* print_tab(tab); */
-		ft_exe_cmd(s, cmd);
+		if (thereisapipe(cmd))
+		{
+			ft_redirection(s, cmd);
+			ft_exe_cmd(s, cmd);
+		} else
+			ft_pipe(s, cmd);
+		ft_closefd(s);
 		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;
 	}

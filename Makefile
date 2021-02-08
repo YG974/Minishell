@@ -25,6 +25,7 @@ SRCS			= 	minishell \
 					token3 \
 					ft_init_signal \
 					ft_redirection \
+					ft_pipes \
 					ft_exe_cmd \
 					ft_error \
 

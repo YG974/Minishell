@@ -1,7 +1,7 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 #include <string.h>
-#include <sys/syslimits.h>
+//#include <sys/syslimits.h>
 
 int		echo_flag_on(char *str)
 {
@@ -163,97 +163,14 @@ int		is_valid_env_name(char *str)
 	return (0);
 }
 
-char **sort_tab_env(char **s_env)
-{
-	char	*tmp;
-	int		i;
-	int		min;
-	int		d;
-
-	i = 1;
-	min = 0;
-	while (s_env[min])
-	{
-		while (s_env[i])
-		{
-			if ((d = ft_strncmp(s_env[min], s_env[i], SIZE_T_MAX)) < 0)
-				i++;
-			else
-			{
-				tmp = s_env[i];
-				s_env[i] = s_env[min];
-				s_env[min]= tmp;
-			}
-		}
-		min++;
-		i = min + 1;
-	}
-	return (s_env);
-}
-
-char **put_sorted_env_in_tab(t_mini *s)
-{
-	t_env	*env;
-	char	*env_str;
-	char	**env_tab;
-
-	env = s->env;
-	env_str = strdup("");
-	while (env)
-	{
-		env_str = ft_strjoin_free_s1(env_str, env->name);
-		if (env->value)
-		{
-			env_str = ft_strjoin_free_s1(env_str, "=");
-			env_str = ft_strjoin_free_s1(env_str, env->value);
-		}
-		env_str = ft_strjoin_free_s1(env_str, "\n");
-		env = env->next;
-	}
-	env_tab = ft_split(env_str, '\n');
-	free(env_str);
-	env_tab = sort_tab_env(env_tab);
-	return (env_tab);
-}
-
-void	free_tab(char **tab)
-{
-	int i;
-
-	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
-}
-
 int		print_sorted_env(t_mini *s)
 {
-	char	**s_env;
-	int		i;
-	int		j;
+	t_env	*env;
 
-	i = 0;
-	j = 0;
-	s_env = put_sorted_env_in_tab(s);
-	while (s_env[i])
-	{
-		ft_putstr_fd("declare -x ", s->std.out);
-		while (s_env[i][j - 1] != '=' && s_env[i][j])
-			write(s->std.out, &s_env[i][j++], 1);
-		if (s_env[i][j])
-		{
-			write(s->std.out, "\"", 1);
-			while (s_env[i][j])
-				write(s->std.out, &s_env[i][j++], 1);
-			write(s->std.out, "\"", 1);
-		}
-		write(s->std.out, "\n", 1);
-		j = 0;
-		i++;
-	}
-	free_tab(s_env);
-	/*print_tab(s_env);*/
+	env = s->env;
+	ft_printf("sorted env\n");
 	return (0);
+
 }
 
 int		ft_strchr_int(const char *s, int c)
@@ -316,7 +233,7 @@ void	create_export_value(t_mini *s, char *name, char *str, int pos)
 		return error(s, ERR_CALLOC);
 	tmp->name = name;
 	if (pos < 0)
-		tmp->value = NULL;
+		return ;
 	else
 	{
 		if (pos == ft_strlen(str))
@@ -366,11 +283,11 @@ void	export_assignement(t_mini *s, char *str)
 	tmp = get_name(str);
 	if (is_in_env(s, tmp) == 0)
 	{
-		/*if (pos < 0)*/
-			/*return ;*/
-		/*else if (pos == ft_strlen(str))*/
-			/*create_export_value(s, tmp, str, pos);*/
-		/*else*/
+		if (pos < 0)
+			return ;
+		else if (pos == ft_strlen(str))
+			create_export_value(s, tmp, str, pos);
+		else
 			create_export_value(s, tmp, str, pos);
 	}
 	else

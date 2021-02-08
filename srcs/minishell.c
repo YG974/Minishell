@@ -39,6 +39,7 @@ void init_mini(t_mini *s)
 	s->read.count = 0;
 	s->read.fd = 0;
 	s->read.buf = NULL;
+	s->sig = 0;
 	s->status = 0;
 	s->read.fd = STDIN;
 	s->read.count = BUFF_SIZE;
@@ -62,6 +63,7 @@ void	ft_free_env(t_env *env)
 
 void	minishell(t_mini *s)
 {
+	init_signal(s);
 	while(!s->status && s->error != 2)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
