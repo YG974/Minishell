@@ -86,28 +86,34 @@ char	*ft_strdup_quotes(char *src, char *flagstr, char c)
 	return (ft_without_quotes(dest, 0, 0));
 }
 
+int		paco_mange_tes_morts(char *str, int i)
+{
+	i++;
+	while (str[i] && str[i] != '\'')
+		i++;
+	i++;
+	return (i);
+}
+
+int		extreme(char *str, int i)
+{
+	i++;
+	while (str[i] && str[i] != '\"')
+	{
+		if (str[i] == '\\')
+			i++;
+		i++;
+	}
+	i++;
+	return (i);
+}
+
 int		ft_inc_i(char *str, char *flag, int i, char c)
 {
 	if (c == '1')
-	{
-		i++;
-		while (str[i] && str[i] != '\'')
-			i++;
-		i++;
-		return (i);
-	}
+		return (paco_mange_tes_morts(str, i));
 	else if (c == '2')
-	{
-		i++;
-		while (str[i] && str[i] != '\"')
-		{
-			if (str[i] == '\\')
-				i++;
-			i++;
-		}
-		i++;
-		return (i);
-	}
+		return (extreme(str, i));
 	if (str[i] == ' ')
 	{
 		while (str[i] && str[i] == ' ')
