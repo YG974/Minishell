@@ -46,7 +46,7 @@ int     init_signal(t_mini *s)
     (void)s;
 	sig.interrupt = 0;
 	sig.quit = 0;
-	sig.pid = 0;
+	sig.pid = -1;
 	sig.status = 0;
 	signal(SIGINT, &handle_sigint);
 	signal(SIGQUIT, &handle_sigquit);

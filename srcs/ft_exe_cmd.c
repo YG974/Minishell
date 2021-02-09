@@ -339,7 +339,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	else
 		sig.ret = exec_bin(s,cmd, args);
 	waitpid(-1, &status, 0);
-	sig.ret = sig.ret % 255;
+	//sig.ret = sig.ret % 255;
 	/*status = WEXITSTATUS(status);*/
 	ft_free_tab(args);
     /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
