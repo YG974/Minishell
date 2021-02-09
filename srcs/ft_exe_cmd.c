@@ -205,6 +205,16 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 **	char **args = ft_split(str, '\n';)
 */
 
+void	parse_cmd_args2(t_cmdl *cmd)
+{
+	cmd->token = cmd->token->next;
+	if (cmd->token->flag == 2 && cmd->token->str[0] == ' '
+			&& cmd->token)
+		cmd->token = cmd->token->next->next;
+	else
+		cmd->token = cmd->token->next;
+}
+
 int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
@@ -226,14 +236,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 			cmd->token = cmd->token->next;
 		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' '
 				&& cmd->token)
-		{
-			cmd->token = cmd->token->next;
-			if (cmd->token->flag == 2 && cmd->token->str[0] == ' '
-					&& cmd->token)
-				cmd->token = cmd->token->next->next;
-			else
-				cmd->token = cmd->token->next;
-		}
+			parse_cmd_args2(cmd);
 	}
 	return (0);
 }
