@@ -222,8 +222,6 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 			cmd->token = cmd->token->next;
 		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' ' && cmd->token)
 			cmd->token = norme_chlag(cmd->token);
-		{
-		}
 	}
 	return (0);
 }
