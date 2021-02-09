@@ -1,25 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 16:45:47 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 16:51:46 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
 /*
- ** cmd->str = command line;
- * cmd->flag = flags or comments;
- * cmd->str[i] = char i of the line;
- * cmd->flag[i] = flags or comments on char i;
- * flags :
- * 1 : inside simpled quotes
- * 2 : inside double quotes
- * 3 : escaped by backslash
- * 4 : dollar expansion
- */
+**	cmd->str = command line;
+**	cmd->flag = flags or comments;
+**	cmd->str[i] = char i of the line;
+**	cmd->flag[i] = flags or comments on char i;
+**	flags :
+**	1 : inside simpled quotes
+**	2 : inside double quotes
+**	3 : escaped by backslash
+**	4 : dollar expansion
+**
+**	look for name variable in env
+**	if variable name is found, return its value
+**	if name is not found, return empty string ""
+*/
 
-	/*look for name variable in env*/
-	/*if variable name is found, return its value */
-	/*if name is not found, return empty string ""*/
-char *get_env_value(t_mini *s, char *name)
+char	*get_env_value(t_mini *s, char *name)
 {
-	char *value;
-	t_env *env;
+	char	*value;
+	t_env	*env;
 	int		i;
 
 	value = NULL;
@@ -37,39 +50,44 @@ char *get_env_value(t_mini *s, char *name)
 	return (value);
 }
 
-	/*replace the env values ($NAME) by their value in cmd->buf*/
-void expand_dollars(t_mini *s, t_cmdl *cmd)
-{
-	char *tmp;
+/*
+**	replace the env values ($NAME) by their value in cmd->buf
+*/
 
-	int j;
+void	expand_dollars(t_mini *s, t_cmdl *cmd)
+{
+	char	*tmp;
+
 	s->i = 0;
-	j = 0;
+	s->j = 0;
 	cmd->buf = ft_strdup("");
 	while (cmd->str[s->i])
 	{
-		s->i = s->i + j;
-		j = 0;
-		if (cmd->flag[s->i] == '4' )
+		s->i = s->i + s->j;
+		s->j = 0;
+		if (cmd->flag[s->i] == '4')
 		{
-			while (cmd->flag[s->i + j] == '4' && cmd->str[s->i + j])
-				j++;
-			tmp = ft_strdup_size(cmd->str, s->i + j, s->i);
+			while (cmd->flag[s->i + s->j] == '4' && cmd->str[s->i + s->j])
+				s->j++;
+			tmp = ft_strdup_size(cmd->str, s->i + s->j, s->i);
 			tmp = get_env_value(s, tmp);
 		}
 		else
 		{
-			while (cmd->flag[s->i + j] != '4' && cmd->str[s->i + j])
-				j++;
-			tmp = ft_strdup_size(cmd->str, s->i + j - 1, s->i);
+			while (cmd->flag[s->i + s->j] != '4' && cmd->str[s->i + s->j])
+				s->j++;
+			tmp = ft_strdup_size(cmd->str, s->i + s->j - 1, s->i);
 		}
 		cmd->buf = ft_strjoin_free_s1(cmd->buf, tmp);
-		//ne pas oublier de free buf dans strjoin
 		free(tmp);
 	}
 }
-	/*flag the dollars sign in the cmd->flag string with a '4'*/
-void check_dollars(t_mini *s, t_cmdl *cmd)
+
+/*
+**	flag the dollars sign in the cmd->flag string with a '4'
+*/
+
+void	check_dollars(t_mini *s, t_cmdl *cmd)
 {
 	s->i = 0;
 	while (cmd->str[s->i])
@@ -77,11 +95,10 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 		if (cmd->str[s->i] == '$' && cmd->flag[s->i] != '1'
 				&& cmd->str[s->i - 1] != '\\')
 		{
-				//cmd->flag[s->i++] = '4';
-				s->i++;
+			s->i++;
 			while (cmd->str[s->i]
 					&& (ft_isalnum(cmd->str[s->i])
-					|| cmd->str[s->i] == '_'))
+						|| cmd->str[s->i] == '_'))
 				cmd->flag[s->i++] = '4';
 		}
 		else
@@ -89,8 +106,7 @@ void check_dollars(t_mini *s, t_cmdl *cmd)
 	}
 }
 
-
-void check_double_quotes(t_mini *s, t_cmdl *cmd)
+void	check_double_quotes(t_mini *s, t_cmdl *cmd)
 {
 	if (cmd->str[s->i - 1] == '\\')
 	{
@@ -106,13 +122,13 @@ void check_double_quotes(t_mini *s, t_cmdl *cmd)
 			if (cmd->str[s->i - 1] == '\\' && cmd->str[s->i] != '\0')
 				cmd->flag[s->i++] = '2';
 			if (cmd->str[s->i] == '\0')
-				error (s, ERR_QUOTES);
+				error(s, ERR_QUOTES);
 		}
 		cmd->flag[s->i++] = '2';
 	}
 }
 
-void check_simple_quotes(t_mini *s, t_cmdl *cmd)
+void	check_simple_quotes(t_mini *s, t_cmdl *cmd)
 {
 	if (cmd->str[s->i - 1] == '\\')
 	{
@@ -126,13 +142,13 @@ void check_simple_quotes(t_mini *s, t_cmdl *cmd)
 		{
 			cmd->flag[s->i++] = '1';
 			if (cmd->str[s->i] == '\0')
-				error (s, ERR_QUOTES);
+				error(s, ERR_QUOTES);
 		}
 		cmd->flag[s->i++] = '1';
 	}
 }
 
-void check_lit_char(t_mini *s, t_cmdl *cmd)
+void	check_lit_char(t_mini *s, t_cmdl *cmd)
 {
 	cmd->flag[s->i] = '3';
 	s->i++;
@@ -141,7 +157,7 @@ void check_lit_char(t_mini *s, t_cmdl *cmd)
 	s->i++;
 }
 
-void check_quotes(t_mini *s, t_cmdl *cmd)
+void	check_quotes(t_mini *s, t_cmdl *cmd)
 {
 	int i;
 
@@ -180,37 +196,25 @@ void	ft_closefd(t_mini *s)
 void	break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
-	/*char	**tab;*/
 
 	cmd = s->firstcmdl;
 	while (cmd && !s->error)
 	{
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
-		/*ft_printf("-----------\n", cmd->flag);*/
-		/*ft_printf("%s\n", cmd->flag);*/
-		/*ft_printf("%s\n", cmd->str);*/
 		expand_dollars(s, cmd);
-		/*ft_printf("%s\n", cmd->flag);*/
-		/*ft_printf("%s\n", cmd->str);*/
 		free(cmd->str);
 		free(cmd->flag);
 		cmd->str = cmd->buf;
 		check_quotes(s, cmd);
-		/*ft_printf("%s\n", cmd->flag);*/
-		/*ft_printf("%s\n", cmd->str);*/
 		check_dollars(s, cmd);
-		/*ft_printf("%s\n", cmd->flag);*/
-		/*ft_printf("%s\n", cmd->str);*/
 		ft_get_tokens(s, cmd);
-		/*ft_flag_assignement(s, cmd);*/
-		/* tab = put_env_in_tab(s); */
-		/* print_tab(tab); */
 		if (thereisapipe(cmd))
 		{
 			ft_redirection(s, cmd);
 			ft_exe_cmd(s, cmd);
-		} else
+		}
+		else
 			ft_firstpipe(s, cmd);
 		ft_closefd(s);
 		ft_del_tokens(cmd, 0);
@@ -220,7 +224,7 @@ void	break_cmdline_into_token(t_mini *s)
 
 void	print_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	printf("print tab \n");
@@ -228,18 +232,18 @@ void	print_tab(char **tab)
 		printf("%s\n", tab[i]);
 }
 
-int is_char_set(int c, const char *char_set)
+int		is_char_set(int c, const char *char_set)
 {
-        int i;
-        int len;
+	int	i;
+	int	len;
 
-        i = 0;
-        len = ft_strlen(char_set);
-        while (i < len)
-        {
-                if (c == char_set[i])
-                        return (1);
-                i++;
-        }
-        return (0);
+	i = 0;
+	len = ft_strlen(char_set);
+	while (i < len)
+	{
+		if (c == char_set[i])
+			return (1);
+		i++;
+	}
+	return (0);
 }

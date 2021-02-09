@@ -1,0 +1,31 @@
+-rw-r--r--   1 pcoureau  2019_paris  1141 Feb  8 14:51 Makefilei				ok
+-rw-r--r--   1 pcoureau  2019_paris  1014 Feb  8 10:42 Makefile_cub_yann_le_bg		ok
+-rw-r--r--   1 pcoureau  2019_paris  1883 Feb  8 10:42 Makefilepaco				ok
+drwxr-xr-x   4 pcoureau  2019_paris   136 Feb  8 10:42 Minishell_documentation		ok
+-rw-r--r--   1 pcoureau  2019_paris    23 Feb  9 13:00 ONBRANCH.txt				ok
+-rw-r--r--   1 pcoureau  2019_paris    22 Feb  8 10:42 README.md				ok
+-rwxr-xr-x   1 pcoureau  2019_paris  1212 Feb  8 14:51 Roadmap					ok
+drwxr-xr-x   3 pcoureau  2019_paris   102 Feb  9 12:54 includes					ok
+drwxr-xr-x  70 pcoureau  2019_paris  2380 Feb  9 12:59 libft					ok
+drwxr-xr-x  16 pcoureau  2019_paris   544 Feb  9 12:54 srcs					
+-rw-r--r--   1 pcoureau  2019_paris   299 Feb  8 15:00 test					ok
+-rw-r--r--   1 pcoureau  2019_paris  1634 Feb  8 14:51 test.c					ok
+-rw-r--r--   1 pcoureau  2019_paris    28 Feb  8 14:51 test1					ok
+
+
+
+SRCS												
+-rw-r--r--  1 pcoureau  2019_paris  7478 Feb  9 12:53 builtin.c					OK Need to split, too many functions
+-rw-r--r--  1 pcoureau  2019_paris  3115 Feb  8 14:51 env.c					OK need to split too many functions
+-rw-r--r--  1 pcoureau  2019_paris   719 Feb  9 12:54 ft_error.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  8941 Feb  9 12:54 ft_exe_cmd.c				too many functions, function parse_cmd_args has 29 :(
+-rw-r--r--  1 pcoureau  2019_paris  2542 Feb  8 10:42 ft_get_cmd_lines.c			ok
+-rw-r--r--  1 pcoureau  2019_paris   908 Feb  9 12:57 ft_init_signal.c				
+-rw-r--r--  1 pcoureau  2019_paris  1291 Feb  8 14:51 ft_parse.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  1342 Feb  9 12:54 ft_pipes.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  1454 Feb  8 14:51 ft_redirection.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  1671 Feb  9 12:53 minishell.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  4841 Feb  9 12:54 token.c					ok too many functions
+-rw-r--r--  1 pcoureau  2019_paris  2604 Feb  8 14:51 token2.c					ok too many functions
+-rw-r--r--  1 pcoureau  2019_paris  2174 Feb  8 10:42 token3.c					
+

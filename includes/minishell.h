@@ -140,6 +140,7 @@ typedef struct		s_mini
 	int				sig;
 	int				error;
 	int				i;
+	int				j;
 }					t_mini;
 
 t_sig	g_sig;

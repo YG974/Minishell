@@ -6,7 +6,7 @@
 /*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 16:03:47 by pcoureau          #+#    #+#             */
-/*   Updated: 2021/02/09 16:08:07 by pcoureau         ###   ########.fr       */
+/*   Updated: 2021/02/09 16:17:59 by pcoureau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,23 @@ t_tok	*ft_next_sep(t_tok *tok)
 	if (tok && tok->next)
 		return (tok->next);
 	return (tok);
+}
+
+void	ft_pipe2(t_mini *s, t_cmdl *cmd, int fd, t_tok *next)
+{
+	s->std.in = fd;
+	dup2(fd, 0);
+	cmd->firsttoken = next;
+	waitpid(g_sig.pid, &g_sig.ret, 0);
+	if (!thereisapipe(cmd))
+		ft_pipe(s, cmd);
+	else
+	{
+		ft_redirection(s, cmd);
+		ft_exe_cmd(s, cmd);
+		exit(g_sig.ret);
+	}
+	close(fd);
 }
 
 int		ft_pipe(t_mini *s, t_cmdl *cmd)
@@ -44,19 +61,7 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 	else
 	{
 		close(fd[1]);
-		s->std.in = fd[0];
-		dup2(fd[0], 0);
-		cmd->firsttoken = next;
-		waitpid(g_sig.pid, &g_sig.ret, 0);
-		if (!thereisapipe(cmd))
-			ft_pipe(s, cmd);
-		else
-		{
-			ft_redirection(s, cmd);
-			ft_exe_cmd(s, cmd);
-			exit(g_sig.ret);
-		}
-		close(fd[0]);
+		ft_pipe2(s, cmd, fd[0], next);
 	}
 	return (0);
 }

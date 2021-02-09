@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 16:19:44 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 16:42:14 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-void prompt(t_mini *s)
-{	
-	while(1)
+void	prompt(t_mini *s)
+{
+	while (1)
 	{
 		ft_putstr_fd(CYAN, STDOUT);
 		ft_putstr_fd("MINISHELL DU TURFU -> ", STDOUT);
@@ -14,7 +26,8 @@ void prompt(t_mini *s)
 			while (s->read.buf[s->read.ret - 1] != '\n')
 			{
 				ft_putstr_fd("  \b\b", 1);
-				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret], s->read.count);
+				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret],
+						s->read.count);
 			}
 			s->read.buf[s->read.ret] = '\0';
 		}
@@ -23,15 +36,11 @@ void prompt(t_mini *s)
 			s->error = 2;
 			exit(errno);
 		}
-		/*ft_putstr_fd("  \b\b", 1);*/
 		return ;
 	}
-
-	/*minishell(s);*/
-	/*ft_putstr_fd("\nMINISHELL DU TURFU ---> ", 1);*/
 }
 
-void init_mini(t_mini *s)
+void	init_mini(t_mini *s)
 {
 	s->std.in = STDIN;
 	s->std.out = STDOUT;
@@ -52,7 +61,7 @@ void	ft_free_env(t_env *env)
 {
 	t_env	*tmp;
 
-	while(env)
+	while (env)
 	{
 		tmp = env->next;
 		free(env->name);
@@ -64,14 +73,12 @@ void	ft_free_env(t_env *env)
 
 void	minishell(t_mini *s)
 {
-	/*init_signal(s);*/
-	while(!s->status && s->error != 2)
+	while (!s->status && s->error != 2)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
 		init_signal(s);
 		prompt(s);
-		/*if (ft_parse(s))*/
 		if (!s->status && s->error != 2 && ft_parse(s))
 			error(s, ERR_CALLOC);
 		free(s->read.buf);
@@ -86,7 +93,6 @@ int		main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-
 	init_mini(&s);
 	init_env(&s, env);
 	minishell(&s);
