@@ -9,6 +9,7 @@ void prompt(t_mini *s)
 		ft_putstr_fd("MINISHELL DU TURFU -> ", STDOUT);
 		ft_putstr_fd(RESET, STDOUT);
 		s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
+		init_signal(s);
 		if (s->read.ret)
 		{
 			while (s->read.buf[s->read.ret - 1] != '\n')
@@ -20,6 +21,7 @@ void prompt(t_mini *s)
 		}
 		else
 		{
+			ft_putstr_fd("  \b\bexit\n", 1);
 			s->error = 2;
 			exit(errno);
 		}
