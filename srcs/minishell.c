@@ -1,23 +1,33 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+#include <sys/syslimits.h>
 
 void prompt(t_mini *s)
 {	
+	char	buf[MAX_INPUT];
+	int		ret;
 	while(1)
 	{
 		ft_putstr_fd(CYAN, STDOUT);
 		ft_putstr_fd("MINISHELL DU TURFU -> ", STDOUT);
 		ft_putstr_fd(RESET, STDOUT);
-		s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
-		init_signal(s);
-		if (s->read.ret)
+		ret = read(s->read.fd, buf, s->read.count);
+		/*printf("str:%d|%d%d%d%d|\n", buf[0], buf[1], buf[2], buf[3], buf[4]);*/
+		/*ft_printf("str:%s|\n", buf);*/
+		/*ft_printf("ret:%d|\n", ret);*/
+		if (ret)
 		{
-			while (s->read.buf[s->read.ret - 1] != '\n')
+		/*ft_printf("str:%s|\n", buf);*/
+		/*ft_printf("ret:%d|\n", ret);*/
+			while (buf[ret - 1] != '\n')
 			{
 				ft_putstr_fd("  \b\b", 1);
-				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret], s->read.count);
+				ret += read(s->read.fd, &buf[ret], s->read.count);
+				/*ft_printf("str%s\n", buf);*/
+				/*ft_printf("ret%d\n", ret);*/
 			}
-			s->read.buf[s->read.ret] = '\0';
+			buf[ret] = '\0';
+			s->read.buf = ft_strdup(buf);
 		}
 		else
 		{
@@ -25,6 +35,8 @@ void prompt(t_mini *s)
 			s->error = 2;
 			exit(errno);
 		}
+		/*printf("str:%d|%d%d%d%d|\n", buf[0], buf[1], buf[2], buf[3], buf[4]);*/
+		/*ft_printf("str:%c%c%c%c%c|\n", buf[0], buf[1], buf[2], buf[3], buf[4]);*/
 		/*ft_putstr_fd("  \b\b", 1);*/
 		return ;
 	}
@@ -66,12 +78,11 @@ void	ft_free_env(t_env *env)
 
 void	minishell(t_mini *s)
 {
-	/*init_signal(s);*/
 	while(!s->status && s->error != 2)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
-		init_signal(s);
+	init_signal(s);
 		prompt(s);
 		/*if (ft_parse(s))*/
 		if (!s->status && s->error != 2 && ft_parse(s))
