@@ -6,7 +6,7 @@ int		ft_lit_char(t_cmdl *cmd, int i)
 	t_tok	*tmp;
 	t_tok	*current;
 
-	if (!(tmp = calloc(1, sizeof(t_tok))))
+	if (!(tmp = ft_calloc(1, sizeof(t_tok))))
 		return (1);
 	tmp->flag = FLAG_LIT_CHAR;
 	tmp->next = NULL;
@@ -20,7 +20,7 @@ int		ft_lit_char(t_cmdl *cmd, int i)
 		current->next = tmp;
 		tmp->prev = current;
 	}
-	if (!(tmp->str = calloc(3, sizeof(char))))
+	if (!(tmp->str = ft_calloc(3, sizeof(char))))
 		return (1);
 	tmp->str[0] = '\\';
 	tmp->str[1] = cmd->str[i + 1];
@@ -35,18 +35,13 @@ int		ft_ismeta(char c)
 	return (0);
 }
 
-char	*ft_without_quotes(char *s)
+char	*ft_without_quotes(char *s, int i, int j)
 {
-	int		i;
-	int		j;
 	int		len;
 	char	*dest;
-	
-	i = 0;
-	j = 0;
+
 	len = ft_strlen(s);
-	dest = calloc(len + 1, sizeof(char));
-	if (!dest)
+	if (!(dest = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
 	while (s[i])
 	{
@@ -54,22 +49,17 @@ char	*ft_without_quotes(char *s)
 			i++;
 		else
 		{
-			if (s[0] != '\'' && s[i] == '\\' && s[i + 1] && (s[i + 1] == '\"' || s[i + 1] == '$' || s[i + 1] == '\\' || s[i + 1] == '`' || s[i + 1] == '\n'))
+			if (s[0] != '\'' && s[i] == '\\' && s[i + 1] &&
+					(s[i + 1] == '\"' || s[i + 1] == '$' || s[i + 1] == '\\' ||
+					s[i + 1] == '`' || s[i + 1] == '\n'))
 			{
 				i++;
-				dest[j] = s[i];
-				i++;
-				j++;
+				dest[j++] = s[i++];
 			}
 			else
-			{
-				dest[j] = s[i];
-				i++;
-				j++;
-			}
+				dest[j++] = s[i++];
 		}
 	}
-	dest[i] = '\0';
 	free(s);
 	return (dest);
 }
@@ -85,7 +75,7 @@ char	*ft_strdup_quotes(char *src, char *flagstr, char c)
 	while (flagstr[len] && flagstr[len] == c)
 		len++;
 	len = ft_inc_i(src, src, 0, c);
-	if (!(dest = calloc(len, sizeof(char))))
+	if (!(dest = ft_calloc(len, sizeof(char))))
 		return (NULL);
 	while (i < len)
 	{
@@ -93,7 +83,7 @@ char	*ft_strdup_quotes(char *src, char *flagstr, char c)
 		i++;
 	}
 	dest[i] = '\0';
-	return (ft_without_quotes(dest));
+	return (ft_without_quotes(dest, 0, 0));
 }
 
 int		ft_inc_i(char *str, char *flag, int i, char c)
@@ -102,14 +92,11 @@ int		ft_inc_i(char *str, char *flag, int i, char c)
 	{
 		i++;
 		while (str[i] && str[i] != '\'')
-		{
-			// if (str[i] == '\\')
-			// 	i++;
 			i++;
-		}
 		i++;
 		return (i);
-	} else if (c == '2')
+	}
+	else if (c == '2')
 	{
 		i++;
 		while (str[i] && str[i] != '\"')
