@@ -38,7 +38,6 @@ void	handle_sigquit(int signum)
 	}
 	else
 		ft_putstr_fd("\b\b  \b\b", STDERR);
-
 }
 
 int     init_signal(t_mini *s)
