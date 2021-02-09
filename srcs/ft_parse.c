@@ -45,6 +45,8 @@ int     ft_parse(t_mini *s)
 
     ret = 0;
     s->error = 0;
+	if (s->read.buf[0] == '\n')
+		return (0);
     /*ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");*/
     if (ft_check_semicolons(s->read.buf))
         error(s, ERR_SEMCOL);
