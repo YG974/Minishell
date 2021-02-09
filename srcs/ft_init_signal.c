@@ -50,7 +50,6 @@ int     init_signal(t_mini *s)
 	sig.status = 0;
 	signal(SIGINT, &handle_sigint);
 	signal(SIGQUIT, &handle_sigquit);
-	printf("On est rentré dans la fonction INIT SIGNAL\n");
     /*printf("%d\n", sig.interrupt);*/
     return(0);
 }
