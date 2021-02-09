@@ -1,40 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_exe_cmd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 14:41:58 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 15:39:42 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 #include <sys/_types/_s_ifmt.h>
 
-	 /*check if the command is a builtin */
-	 /*return 1 if it's a builtin */
-	 /*return 0 if it's note*/
 int		ft_is_builtin(char *str)
 {
-	if (!ft_strncmp(str, "echo", ft_strlen(str)))
+	if (ft_strlen(str) == 4 && !ft_strncmp(str, "echo", 4))
 		return (1);
-	if (!ft_strncmp(str, "cd", ft_strlen(str)))
+	if (ft_strlen(str) == 2 && !ft_strncmp(str, "cd", 2))
 		return (1);
-	if (!ft_strncmp(str, "pwd", ft_strlen(str)))
+	if (ft_strlen(str) == 3 && !ft_strncmp(str, "pwd", 3))
 		return (1);
-	if (!ft_strncmp(str, "export", ft_strlen(str)))
+	if (ft_strlen(str) == 6 && !ft_strncmp(str, "export", 6))
 		return (1);
-	if (!ft_strncmp(str, "unset", ft_strlen(str)))
+	if (ft_strlen(str) == 5 && !ft_strncmp(str, "unset", 5))
 		return (1);
-	if (!ft_strncmp(str, "env", ft_strlen(str)))
+	if (ft_strlen(str) == 3 && !ft_strncmp(str, "env", 3))
 		return (1);
-	if (!ft_strncmp(str, "exit", ft_strlen(str)))
+	if (ft_strlen(str) == 4 && !ft_strncmp(str, "exit", 4))
 		return (1);
 	return (0);
 }
 
-	 /*open each folder of PATH env variable*/
-	/*compare all files whit the cmd name */
-	 /*join the PATH whith "/" and with the cmd name -->absolut path*/
-	/*return the absolut path if found*/
-	/*return NULL if not found*/
+/*
+**	open each folder of PATH env variable
+**	compare all files whit the cmd name
+**	join the PATH whith "/" and with the cmd name -->absolut path
+**	return the absolut path if found
+**	return NULL if not found
+*/
+
 char	*try_bin_path(char *bin_path, char *cmd_name)
 {
-	DIR		*folder;
-	struct	dirent *file;
-	char	*cmd_path;
-	int		len;
+	DIR				*folder;
+	struct dirent	*file;
+	char			*cmd_path;
+	int				len;
 
 	len = ft_strlen(cmd_name);
 	if (!(folder = opendir(bin_path)))
@@ -48,7 +60,7 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 			cmd_path = ft_strjoin_free_s1(cmd_path, file->d_name);
 		}
 		if (cmd_path)
-			break;
+			break ;
 	}
 	closedir(folder);
 	return (cmd_path);
@@ -56,20 +68,23 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 
 int		ft_str_error(char *path, char *str, int ret)
 {
-	sig.ret = ret;
+	g_sig.ret = ret;
 	(void)str;
 	ft_putstr_fd(RED, STDERR);
 	ft_putstr_fd("Minishell: ", STDERR);
 	ft_putstr_fd(path, STDERR);
 	ft_putstr_fd(": ", STDERR);
-	/*ft_putstr_fd(strerror(errno), STDERR);*/
 	ft_putstr_fd(str, STDERR);
 	ft_putstr_fd("\n", STDERR);
 	ft_putstr_fd(RESET, STDERR);
 	return (-1);
 }
-	/*problem si execution d'un fichier qui n'est pas un executable*/
-	/*je n'ai pas trouve de solution*/
+
+/*
+**	problem si execution d un fichier qui n'est pas un executable
+**	je n'ai pas trouve de solution
+*/
+
 int		check_bin_right(char *path, char **args)
 {
 	struct stat		file;
@@ -78,16 +93,19 @@ int		check_bin_right(char *path, char **args)
 		return (ft_str_error(args[0], "command not found", CMD_NOT_FOUND));
 	if ((stat(path, &file)) == -1)
 		return (ft_str_error(path, "no such file or directory", NOT_EXEC));
-	if(S_ISDIR(file.st_mode))
+	if (S_ISDIR(file.st_mode))
 		return (ft_str_error(path, "is a directory", NOT_EXEC));
 	else if ((file.st_mode & S_IXUSR) == 0)
 		return (ft_str_error(path, "permission denied", NOT_EXEC));
 	return (1);
 }
 
-	 /*try to find the binary file in each PATH env variable*/
-	 /*return path = the absolute path is found*/
-	 /*return NULL if the cmd is not find  in PATH ENV*/
+/*
+**	try to find the binary file in each PATH env variable
+**	return path = the absolute path is found
+**	return NULL if the cmd is not find  in PATH ENV
+*/
+
 char	*find_bin_path(t_mini *s, char **args)
 {
 	char	**bin_paths;
@@ -100,12 +118,6 @@ char	*find_bin_path(t_mini *s, char **args)
 	path = NULL;
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
-	/*mieux faire la gestion d'erreur*/
-	/*ft_printf("cmd_path :%s|\n", path);*/
-	/*print_tab(bin_paths);*/
-	/*if (!ft_strncmp(args[0], "env", 3))*/
-	/*if (!ft_strchr(args[0], '\\'))*/
-	/*env_path = args[0];*/
 	return (path);
 }
 
@@ -123,16 +135,17 @@ void	ft_free_tab(char **env)
 	free(env);
 }
 
-/*exec the binary file if found in PATH env variable and return cmd->ret*/
+/*
+**	exec the binary file if found in PATH env variable and return cmd->ret
+*/
+
 int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 {
-	char *path;
-	char **env;
-	int		status;
+	char	*path;
+	char	**env;
 
-	sig.pid = fork();
-	status = 0;
-	if (sig.pid == 0)
+	g_sig.pid = fork();
+	if (g_sig.pid == 0)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
@@ -140,91 +153,90 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		{
 			if (!(execve(path, args, env)))
 				ft_putstr_fd("error\n", STDERR);
-			/*cmd->ret = execve(path, args, env);*/
 		}
 		else
-			exit (sig.ret);
-		/*ft_free_tab(env);*/
+			exit(g_sig.ret);
 		free(path);
 		cmd->ret = cmd->ret;
 	}
 	else
-		waitpid(sig.pid, &status, 0);
-	sig.ret = status;
-	if (sig.interrupt == 1 || sig.quit == 1)
-		sig.ret = sig.ret + 128;
-	/*ft_printf("exec BINNN\n");*/
-	return (sig.ret);
+		waitpid(g_sig.pid, &g_sig.ret, 0);
+	g_sig.ret = WEXITSTATUS(g_sig.ret);
+	if (g_sig.interrupt == 1 || g_sig.quit == 1)
+		g_sig.ret = g_sig.ret + 128;
+	return (g_sig.ret);
 }
 
-	 /*exec the builtin and return the ret of the builtin*/
+/*
+**	exec the builtin and return the ret of the builtin
+*/
+
 int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 {
-	/*ft_printf("exec buliltin\n");*/
 	(void)cmd;
-	if (!ft_strncmp(args[0], "echo", ft_strlen(args[0])))
-		sig.ret = ft_echo(s, args);
-	if (!ft_strncmp(args[0], "cd", ft_strlen(args[0])))
-		sig.ret = ft_cd(s, args);
-	if (!ft_strncmp(args[0], "pwd", ft_strlen(args[0])))
-		sig.ret = ft_pwd(s, args);
-	if (!ft_strncmp(args[0], "export", ft_strlen(args[0])))
-		sig.ret = ft_export(s, args);
-	if (!ft_strncmp(args[0], "unset", ft_strlen(args[0])))
-		sig.ret = ft_unset(s, args);
-	if (!ft_strncmp(args[0], "env", ft_strlen(args[0])))
-		sig.ret = ft_env(s, args);
-	if (!ft_strncmp(args[0], "exit", ft_strlen(args[0])))
+	if (ft_strlen(args[0]) == 4 && !ft_strncmp(args[0], "echo", 4))
+		g_sig.ret = ft_echo(s, args);
+	if (ft_strlen(args[0]) == 2 && !ft_strncmp(args[0], "cd", 2))
+		g_sig.ret = ft_cd(s, args);
+	if (ft_strlen(args[0]) == 3 && !ft_strncmp(args[0], "pwd", 3))
+		g_sig.ret = ft_pwd(s, args);
+	if (ft_strlen(args[0]) == 6 && !ft_strncmp(args[0], "export", 6))
+		g_sig.ret = ft_export(s, args);
+	if (ft_strlen(args[0]) == 5 && !ft_strncmp(args[0], "unset", 5))
+		g_sig.ret = ft_unset(s, args);
+	if (ft_strlen(args[0]) == 3 && !ft_strncmp(args[0], "env", 3))
+		g_sig.ret = ft_env(s, args);
+	if (ft_strlen(args[0]) == 4 && !ft_strncmp(args[0], "exit", 4))
 	{
 		if ((s->i = ft_exit(s, args)) == 2)
-			sig.ret = ft_atoi(args[1]);
+			g_sig.ret = ft_atoi(args[1]);
 		else if (s->i == 0)
-			sig.ret = 0;
+			g_sig.ret = 0;
 		else
-			sig.ret = 1;
+			g_sig.ret = 1;
 		error(s, WANT_EXIT);
 	}
-	return (sig.ret);
+	return (g_sig.ret);
 }
 
-	/*parse the arguments into a string, without the meta, each token is */
-	/*delimited with '\n' in the string, in order to split it in a char **tab;*/
-	/*char **args = ft_split(str, '\n';)*/
+/*
+**	parse the arguments into a string, without the meta, each token is
+**	delimited with '\n' in the string, in order to split it in a char **tab;
+**	char **args = ft_split(str, '\n';)
+*/
+
 int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
-	/*if (cmd->buf)*/
-		/*free(cmd->buf);*/
 	cmd->buf = ft_strdup("");
 	cmd->token = cmd->firsttoken;
-	/*ft_printf("parse_cmd_args\n");*/
 	while ((ft_strchr(cmd->token->str, '=')
 				|| (cmd->token->flag == 2 && cmd->token->str[0] == ' ')))
 		cmd->token = cmd->token->next;
 	while (cmd->token && cmd->token->flag != FLAG_PIPE)
 	{
-		//ft_printf("token :%s|\n", cmd->token->str);
 		if (cmd->token->flag != 2 && cmd->token)
 		{
 			cmd->buf = ft_strjoin_free_s1(cmd->buf, cmd->token->str);
 			cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
 			cmd->token = cmd->token->next;
 		}
-		else if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' && cmd->token)
+		else if (cmd->token->flag == 2 && cmd->token->str[0] == ' '
+				&& cmd->token)
 			cmd->token = cmd->token->next;
-		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' ' && cmd->token)
+		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' '
+				&& cmd->token)
 		{
 			cmd->token = cmd->token->next;
-			if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' && cmd->token)
+			if (cmd->token->flag == 2 && cmd->token->str[0] == ' '
+					&& cmd->token)
 				cmd->token = cmd->token->next->next;
 			else
 				cmd->token = cmd->token->next;
 		}
 	}
-	/*cmd->token = cmd->firsttoken;*/
 	return (0);
 }
-
 
 int		ft_exe_tokens(t_mini *s, t_cmdl *cmd)
 {
@@ -235,21 +247,20 @@ int		ft_exe_tokens(t_mini *s, t_cmdl *cmd)
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
 	{
-        /*printf("------- TOKEN #%d\n\tline : %s\n\tflag : %d\n-------\n\n", i, cmd->token->str, cmd->token->flag);*/
 		cmd->token = cmd->token->next;
 		i++;
 	}
-    return (0);
+	return (0);
 }
 
 int		apply_assignement(t_mini *s, t_cmdl *cmd)
 {
-	(void)s;
 	char **args;
+
+	(void)s;
 	cmd->buf = ft_strdup("walou");
 	cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
 	cmd->token = cmd->firsttoken;
-	/*ft_printf("parse_cmd_args\n");*/
 	while (cmd->token)
 	{
 		if (ft_strchr(cmd->token->str, '='))
@@ -258,17 +269,18 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 			cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
 		}
 		cmd->token = cmd->token->next;
-	}		
+	}
 	args = ft_split(cmd->buf, '\n');
 	cmd->ret = ft_export(s, args);
 	return (cmd->ret);
-
 }
 
-	/*check if the command line has only assignement : name=value ...*/
-	/*return 0 if there is a command in the line (a string without '=')*/
-	/*return 1 if there is only assignements in the command line*/
-	/*(only strings that contains '=')*/
+/*
+**	check if the command line has only assignement : name=value ...
+**	return 0 if there is a command in the line (a string without '=')
+**	return 1 if there is only assignements in the command line
+**	(only strings that contains '=')
+*/
 
 int		cmd_has_only_assignement(t_cmdl *cmd)
 {
@@ -285,17 +297,17 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 	return (1);
 }
 
-
-
-
 /*
- *  this functuin exec builtin, or binary or apply assignmenet
- * WARNING : the first argument is not always the command
- * -> if first argument is an assignement(contains "="), it looks forward for a
- * command
- * -> if there is a command, it doesnt apply the assignement and try to run cmd
- * -> if there is only an assignement in the command line, it applies it.
- */
+**	this functuin exec builtin, or binary or apply assignmenet
+**	WARNING : the first argument is not always the command
+**	-> if first argument is an assignement(contains "="),
+**	it looks forward for a
+**	command
+**	-> if there is a command, it doesnt apply the assignement
+**	and try to run cmd
+**	-> if there is only an assignement in the command line, it applies it.
+*/
+
 void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
@@ -306,7 +318,7 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 			&& cmd->token->str[3] == '\0')
 		{
 			free(cmd->token->str);
-			cmd->token->str = ft_itoa(sig.ret);
+			cmd->token->str = ft_itoa(g_sig.ret);
 			//remplacer par la bonne variable qui contiendra le retour de la
 			//commande precedente
 		}
@@ -318,29 +330,25 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
-	char **args;
+	char	**args;
 	int		status;
-    /*ft_printf("=============>On est rentré dans la fonction d'EXECUTION COMMANDES\n");*/
+
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
 	handle_dollar_question_mark(s, cmd);
-	/*print_tab(args);*/
 	if (cmd_has_only_assignement(cmd))
 	{
-		sig.ret = apply_assignement(s, cmd);
+		g_sig.ret = apply_assignement(s, cmd);
 		return ;
 	}
 	if (cmd->token == NULL)
-		return;
+		return ;
 	parse_cmd_args(s, cmd);
 	args = ft_split(cmd->buf, '\n');
 	if (ft_is_builtin(args[0]))
-		sig.ret = exec_builtin(s, cmd, args);
+		g_sig.ret = exec_builtin(s, cmd, args);
 	else
-		sig.ret = exec_bin(s,cmd, args);
+		g_sig.ret = exec_bin(s, cmd, args);
 	waitpid(-1, &status, 0);
-	//sig.ret = sig.ret % 255;
-	/*status = WEXITSTATUS(status);*/
 	ft_free_tab(args);
-    /*ft_printf("=============>On est sorti de la fonction d'EXECUTION COMMANDES\n");*/
 }

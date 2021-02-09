@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 13:07:14 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 14:20:59 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -14,7 +26,6 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-
 
 # define STDIN 0
 # define STDOUT 1
@@ -33,12 +44,16 @@
 # define ERR_EXEC_CMD 17
 # define WANT_EXIT 18
 
-/* FLAGS ON EVERY CHAR OF COMMAND LINE FOR THE PARSING */
+/*
+**	FLAGS ON EVERY CHAR OF COMMAND LINE FOR THE PARSING
+*/
 # define S_QUOTED 1
 # define D_QUOTED 2
 # define ESCAPED 3
 
-/* FLAGS FOR TOKENS */
+/*
+**	FLAGS FOR TOKENS
+*/
 # define FLAG_CMD 1
 # define FLAG_SPACE 2
 # define FLAG_LIT_CHAR 3
@@ -49,10 +64,12 @@
 # define NOT_EXEC 126
 # define CMD_NOT_FOUND 127
 
-//colors
-#define CYAN "\x1b[36m"
-#define RESET "\x1b[0m"
-#define RED "\x1b[31m"
+/*
+**	COLOR
+*/
+# define CYAN "\x1b[36m"
+# define RESET "\x1b[0m"
+# define RED "\x1b[31m"
 
 typedef struct		s_tok
 {
@@ -125,121 +142,106 @@ typedef struct		s_mini
 	int				i;
 }					t_mini;
 
-t_sig	sig;
+t_sig	g_sig;
 
 /*
 **	minishell.c
 */
-void	init_mini(t_mini *s);
-void	minishell(t_mini *s);
-void	prompt(t_mini *s);
+void				init_mini(t_mini *s);
+void				minishell(t_mini *s);
+void				prompt(t_mini *s);
 
 /*
-**	buliltin.c
+**	builtin.c
 */
-int		is_valid_env_name(char *str);
+int					is_valid_env_name(char *str);
 
 /*
 **	env.c
 */
-void	init_env(t_mini *s, char **env);
-void	copy_env(t_mini *s, char **env);
-void	check_env_validity(t_mini *s);
-char	*ft_strjoin_free_s1(char const *s1, char const *s2);
-char	*ft_strjoin_free_s2(char const *s1, char const *s2);
+void				init_env(t_mini *s, char **env);
+void				copy_env(t_mini *s, char **env);
+void				check_env_validity(t_mini *s);
+char				*ft_strjoin_free_s1(char const *s1, char const *s2);
+char				*ft_strjoin_free_s2(char const *s1, char const *s2);
 
 /*
 **	ft_parse.c
 */
-int     ft_check_semicolons(char *line);
-int     ft_parse(t_mini *s);
+int					ft_check_semicolons(char *line);
+int					ft_parse(t_mini *s);
 
 /*
 **	ft_get_cmd_lines.c
 */
-int     ft_not_quoted(char *line, int i);
-char    *ft_strdup_size(char *line, int end, int start);
-t_cmdl    *ft_create_cmdl(t_mini *s);
-int     ft_del_cmdline(t_mini *s, int ret);
-int     ft_get_cmd(char *line, t_mini *s);
+int					ft_not_quoted(char *line, int i);
+char				*ft_strdup_size(char *line, int end, int start);
+t_cmdl				*ft_create_cmdl(t_mini *s);
+int					ft_del_cmdline(t_mini *s, int ret);
+int					ft_get_cmd(char *line, t_mini *s);
 
 /*
 **	ft_init_signal.c
 */
-int     init_signal(t_mini *s);
+int					init_signal(t_mini *s);
 
 /*
 **	ft_redirection.c
 */
-int     ft_redirection(t_mini *s, t_cmdl *cmd);
+int					ft_redirection(t_mini *s, t_cmdl *cmd);
 
 /*
 **	ft_pipes.c
 */
-int		thereisapipe(t_cmdl *cmd);
-int		ft_firstpipe(t_mini *s, t_cmdl *cmd);
-int		ft_pipe(t_mini *s, t_cmdl *cmd);
+int					thereisapipe(t_cmdl *cmd);
+int					ft_firstpipe(t_mini *s, t_cmdl *cmd);
+int					ft_pipe(t_mini *s, t_cmdl *cmd);
 
 /*
 **	ft_exe_cmd.c
 */
-void	ft_exe_cmd(t_mini *s, t_cmdl *cmd);
-void	print_tab(char **tab);
-char	**put_env_in_tab(t_mini *s);
+void				ft_exe_cmd(t_mini *s, t_cmdl *cmd);
+void				print_tab(char **tab);
+char				**put_env_in_tab(t_mini *s);
 
 /*
 **	ft_exe_cmd.c
 */
-int		ft_echo(t_mini *s, char **args);
-int		ft_cd(t_mini *s, char **args);
-int		ft_pwd(t_mini *s, char **args);
-int		ft_export(t_mini *s, char **args);
-int		ft_unset(t_mini *s, char **args);
-int		ft_env(t_mini *s, char **args);
-int		ft_exit(t_mini *s, char **args);
+int					ft_echo(t_mini *s, char **args);
+int					ft_cd(t_mini *s, char **args);
+int					ft_pwd(t_mini *s, char **args);
+int					ft_export(t_mini *s, char **args);
+int					ft_unset(t_mini *s, char **args);
+int					ft_env(t_mini *s, char **args);
+int					ft_exit(t_mini *s, char **args);
 
 /*
 **	ft_error.c
 */
-void	error(t_mini *s, int error);
+void				error(t_mini *s, int error);
 
 /*
 **	token.c
 */
-void	break_cmdline_into_token(t_mini *s);
-int		is_char_set(int c, const char *char_set);
-char *get_env_value(t_mini *s, char *name);
+void				break_cmdline_into_token(t_mini *s);
+int					is_char_set(int c, const char *char_set);
+char				*get_env_value(t_mini *s, char *name);
 
 /*
 **	token2.c
 */
-int     ft_get_tokens(t_mini *s, t_cmdl *cmd);
-int		ft_add_token(t_cmdl *cmd, int i);
-int		ft_del_tokens(t_cmdl *cmd, int ret);
-char	*ft_strdup_meta(char *src, char *flagstr);
-void	ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c);
-void	testtokkens(t_cmdl *cmd);//function to del
+int					ft_get_tokens(t_mini *s, t_cmdl *cmd);
+int					ft_add_token(t_cmdl *cmd, int i);
+int					ft_del_tokens(t_cmdl *cmd, int ret);
+char				*ft_strdup_meta(char *src, char *flagstr);
+void				ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c);
 
 /*
 **	token3.c
 */
-int		ft_lit_char(t_cmdl *cmd, int i);
-char	*ft_strdup_quotes(char *src, char *flagstr, char c);
-int		ft_inc_i(char *str, char *flag, int i, char c);
-int		ft_ismeta(char c);
-
-
+int					ft_lit_char(t_cmdl *cmd, int i);
+char				*ft_strdup_quotes(char *src, char *flagstr, char c);
+int					ft_inc_i(char *str, char *flag, int i, char c);
+int					ft_ismeta(char c);
 
 #endif
-
-/*
-**	if quotes are not even -> error
-**	if ";;" error 
-**	operator or word
-**	boolean to know if quoted, control operator, redir etc
-**	delete space tab etc
-**	
-*/
-
-
-    //ft_printf("===========> On est rentré dans la fonction de PARSING <============\n");

@@ -16,7 +16,6 @@ LIB_FT			= $(addprefix $(LIB_DIR),libft.a)
 # FILES
 SRCS			= 	minishell \
 					ft_parse \
-					ft_parse2 \
 					ft_get_cmd_lines \
 					env \
 					builtin \

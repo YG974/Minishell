@@ -11,7 +11,7 @@ void	sigprompt(void)
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	if (sig.pid == 0)
+	if (g_sig.pid == 0)
 	{
 		ft_putstr_fd("\b\b  ", STDERR);
 		sigprompt();
@@ -19,22 +19,22 @@ void	handle_sigint(int signum)
 	else
 	{
 		ft_putstr_fd("\n", STDERR);
-		/*sig.status = 130;*/
+		/*g_sig.status = 130;*/
 	}
-	sig.interrupt = 1;
+	g_sig.interrupt = 1;
 }
 
 void	handle_sigquit(int signum)
 {
 	(void)signum;
 
-	if (sig.pid != 0)
+	if (g_sig.pid != 0)
 	{
 		ft_putstr_fd(RED, STDERR);
 		ft_putstr_fd("Quit: 3\n", STDERR);
 		ft_putstr_fd(RESET, STDERR);
-		/*sig.status = 131;*/
-		sig.quit = 1;
+		/*g_sig.status = 131;*/
+		g_sig.quit = 1;
 	}
 	else
 		ft_putstr_fd("\b\b  \b\b", STDERR);
@@ -44,12 +44,12 @@ void	handle_sigquit(int signum)
 int     init_signal(t_mini *s)
 {
     (void)s;
-	sig.interrupt = 0;
-	sig.quit = 0;
-	sig.pid = -1;
-	sig.status = 0;
+	g_sig.interrupt = 0;
+	g_sig.quit = 0;
+	g_sig.pid = -1;
+	g_sig.status = 0;
 	signal(SIGINT, &handle_sigint);
 	signal(SIGQUIT, &handle_sigquit);
-    /*printf("%d\n", sig.interrupt);*/
+    /*printf("%d\n", g_sig.interrupt);*/
     return(0);
 }

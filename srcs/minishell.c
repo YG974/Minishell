@@ -91,5 +91,5 @@ int		main(int ac, char **av, char **env)
 	init_env(&s, env);
 	minishell(&s);
 	ft_printf("END OF MINISHELL\n");
-	return (sig.ret);
+	return (g_sig.ret);
 }
