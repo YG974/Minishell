@@ -65,6 +65,7 @@ int		ft_firstpipe(t_mini *s, t_cmdl *cmd)
 	{
 		close(fd[1]);
 		waitpid(sig.pid, &sig.ret, 0);
+		sig.ret = WEXITSTATUS(sig.ret);
 		close(fd[0]);
 	}
 	close(fd[1]);
