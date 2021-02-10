@@ -54,26 +54,46 @@ int		ft_pwd(t_mini *s, char **args)
 
 int		is_valid_env_name(char *str)
 {
-	int		i;
+		int		i;
 
 	i = 0;
 	while (str[i] && str[i] != '=')
 	{
 		if (ft_isdigit(str[0]) == 1)
-			return (1);
+			return (0);
 		if (ft_isalnum(str[i]) == 0 && str[i] != '_')
-			return (1);
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int		print_sorted_env(t_mini *s)
 {
-	t_env	*env;
+	char	**s_env;
+	int		i;
+	int		j;
 
-	env = s->env;
-	ft_printf("sorted env\n");
+	i = 0;
+	j = 0;
+	s_env = put_sorted_env_in_tab(s);
+	s_env = sort_tab_env(s_env);
+	while (s_env[i])
+	{
+		ft_putstr_fd("declare -x ", s->std.out);
+		while (s_env[i][j - 1] != '=' && s_env[i][j])
+			write(s->std.out, &s_env[i][j++], 1);
+		if (s_env[i][j])
+		{
+			write(s->std.out, "\"", 1);
+			while (s_env[i][j])
+				write(s->std.out, &s_env[i][j++], 1);
+			write(s->std.out, "\"", 1);
+		}
+		write(s->std.out, "\n", 1);
+		j = 0;
+		i++;
+	}
 	return (0);
 }
 

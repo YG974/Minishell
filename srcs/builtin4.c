@@ -15,24 +15,21 @@
 #include <string.h>
 
 int		ft_export(t_mini *s, char **args)
-{
+	{
 	int		i;
 	int		ret;
 
 	i = 1;
 	if ((ret = count_args(args)) == 1)
 		return (print_sorted_env(s));
-	ret = 0;
 	while (args[i])
 	{
-		if ((ret += is_valid_env_name(args[i])))
+		if (!(ret = is_valid_env_name(args[i])))
 			error(s, ERR_INVALID_ENV_NAME);
 		else
 			export_assignement(s, args[i]);
 		i++;
 	}
-	if (ret > 0)
-		ret = 1;
 	return (ret);
 }
 

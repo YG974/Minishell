@@ -192,6 +192,9 @@ int					str_is_digit(char *str);
 **	builtin5.c
 */
 int		ft_exit(t_mini *s, char **args);
+char **put_sorted_env_in_tab(t_mini *s);
+char **sort_tab_env(char **s_env);
+int		print_sorted_env(t_mini *s);
 
 /*
 **	env.c

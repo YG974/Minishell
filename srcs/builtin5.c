@@ -49,3 +49,57 @@ int		ft_exit(t_mini *s, char **args)
 	}
 	return (2);
 }
+
+char **put_sorted_env_in_tab(t_mini *s)
+{
+	t_env	*env;
+	char	*env_str;
+	char	**env_tab;
+
+	env = s->env;
+	env_str = strdup("");
+	// while (env && env->value)
+	while (env)
+	{
+		env_str = ft_strjoin_free_s1(env_str, env->name);
+		if (env->value)
+		{
+			env_str = ft_strjoin_free_s1(env_str, "=");
+			env_str = ft_strjoin_free_s1(env_str, env->value);
+		}
+		env_str = ft_strjoin_free_s1(env_str, "\n");
+		env = env->next;
+	}
+		/*printf("%s\n", env_str);*/
+	env_tab = ft_split(env_str, '\n');
+	free(env_str);
+	return (env_tab);
+}
+
+char **sort_tab_env(char **s_env)
+{
+	char	*tmp;
+	int		i;
+	int		min;
+	int		d;
+
+	i = 1;
+	min = 0;
+	while (s_env[min])
+	{
+		while (s_env[i])
+		{
+			if ((d = ft_strncmp(s_env[min], s_env[i], SIZE_T_MAX)) < 0)
+				i++;
+			else
+			{
+				tmp = s_env[i];
+				s_env[i] = s_env[min];
+				s_env[min]= tmp;
+			}
+		}
+		min++;
+		i = min + 1;
+	}
+	return (s_env);
+}
