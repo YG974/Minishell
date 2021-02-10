@@ -142,6 +142,7 @@ void	split_env_value(t_mini *s)
 		env->value = ft_strdup_size(tmp, ft_strlen(tmp), pos + 1);
 		if (env->value == NULL)
 			env->value = ft_strdup("");
+		free(tmp);
 		env = env->next;
 	}
 }
