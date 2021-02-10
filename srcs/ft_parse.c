@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/09 16:01:40 by pcoureau          #+#    #+#             */
-/*   Updated: 2021/02/09 16:02:48 by pcoureau         ###   ########.fr       */
+/*   Created: 2021/02/10 10:53:01 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/10 10:53:03 by pcoureau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ int		ft_parse(t_mini *s)
 {
 	int	ret;
 
-    ret = 0;
-    s->error = 0;
+	ret = 0;
+	s->error = 0;
 	if (s->read.buf[0] == '\n')
 		return (0);
-    if (ft_check_semicolons(s->read.buf))
-        error(s, ERR_SEMCOL);
-    if (!s->error && (ret = ft_get_cmd(s->read.buf, s)))
-        error(s, ret);
+	if (ft_check_semicolons(s->read.buf))
+		error(s, ERR_SEMCOL);
+	if (!s->error && (ret = ft_get_cmd(s->read.buf, s)))
+		error(s, ret);
 	break_cmdline_into_token(s);
 	ret = ft_del_cmdline(s, 0);
 	return (0);

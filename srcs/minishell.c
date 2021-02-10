@@ -6,7 +6,7 @@
 /*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 16:19:44 by pcoureau          #+#    #+#             */
-/*   Updated: 2021/02/09 16:42:14 by pcoureau         ###   ########.fr       */
+/*   Updated: 2021/02/10 10:49:32 by pcoureau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../includes/minishell.h"
 #include <sys/syslimits.h>
 
-void prompt(t_mini *s)
+void	prompt(t_mini *s)
 {	
 	char	buf[MAX_INPUT];
 	int		ret;
