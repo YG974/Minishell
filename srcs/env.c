@@ -129,14 +129,17 @@ void	check_env_variable_name(t_mini *s)
 void	split_env_value(t_mini *s)
 {
 	t_env	*env;
-	char	**tab;
+	char	*tmp;
+	int		pos;
 
 	env = s->env;
 	while (env)
 	{
-		tab = ft_split(env->value, '=');
-		env->name = tab[0];
-		env->value = tab[1];
+		tmp = ft_strdup(env->value);
+		free(env->value);
+		pos = ft_strchrgnl(tmp, '=');
+		env->name = ft_strdup_size(env->value, pos - 1, 0);
+		env->value = ft_strdup_size(tmp, ft_strlen(tmp), pos + 1);
 		if (env->value == NULL)
 			env->value = ft_strdup("");
 		env = env->next;
@@ -166,11 +169,8 @@ void	copy_env(t_mini *s, char **env)
 		new->value = ft_strdup(env[i]);
 		old->next = new;
 		old = old->next;
-		/*ft_putstr_fd(old->value, 2);*/
-		/*ft_putstr_fd("\n", 2);*/
 		i++;
 	}
-	/*free(old->value);*/
 }
 
 void	init_env(t_mini *s, char **env)
