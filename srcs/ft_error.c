@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 14:41:20 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 14:41:48 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-void error(t_mini *s, int error)
+void	error(t_mini *s, int error)
 {
 	int	ret;
 
@@ -21,7 +33,7 @@ void error(t_mini *s, int error)
 	if (error == WANT_EXIT)
 	{
 		s->error = 2;
-		if (sig.pid == -1)
+		if (g_sig.pid == -1)
 			ret = ft_printf("EXIT MINISHELL, GOOD BYE <3\n");
 	}
 }

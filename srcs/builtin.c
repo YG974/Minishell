@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 14:23:26 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 14:38:42 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 #include <string.h>
-//#include <sys/syslimits.h>
 
 int		echo_flag_on(char *str)
 {
@@ -61,9 +72,9 @@ int		ft_echo(t_mini *s, char **args)
 
 int		go_to_path(t_mini *s, char **args)
 {
-	(void)s;
 	int		i;
 
+	(void)s;
 	i = chdir(args[1]);
 	if (i != 0)
 	{
@@ -77,7 +88,6 @@ int		go_to_path(t_mini *s, char **args)
 	}
 	if (i < 0)
 		i = -i;
-		/*ft_putstr_fd("Error, couldn't change dir", 2);*/
 	return (i);
 }
 
@@ -110,9 +120,9 @@ int		go_to_home_path(t_mini *s)
 
 int		ft_cd(t_mini *s, char **args)
 {
-	(void)s;
 	int		i;
 
+	(void)s;
 	i = count_args(args);
 	if (i == 1)
 		return (go_to_home_path(s));
@@ -122,9 +132,9 @@ int		ft_cd(t_mini *s, char **args)
 
 int		ft_pwd(t_mini *s, char **args)
 {
-	(void)s;
 	char *cwd;
 
+	(void)s;
 	cwd = ft_calloc(PATH_MAX, sizeof(char));
 	if (!cwd)
 	{
@@ -159,7 +169,6 @@ int		is_valid_env_name(char *str)
 			return (1);
 		i++;
 	}
-	/*ft_printf("export \n");*/
 	return (0);
 }
 
@@ -170,7 +179,6 @@ int		print_sorted_env(t_mini *s)
 	env = s->env;
 	ft_printf("sorted env\n");
 	return (0);
-
 }
 
 int		ft_strchr_int(const char *s, int c)
@@ -206,7 +214,10 @@ int		is_in_env(t_mini *s, char *str)
 	return (0);
 }
 
-/*secure the return for the name of the env var without = */
+/*
+**	secure the return for the name of the env var without =
+*/
+
 char	*get_name(char *str)
 {
 	int		pos;
@@ -219,6 +230,7 @@ char	*get_name(char *str)
 		tmp = ft_strdup_size(str, pos, 0);
 	return (tmp);
 }
+
 void	create_export_value(t_mini *s, char *name, char *str, int pos)
 {
 	t_env	*env;
@@ -230,7 +242,7 @@ void	create_export_value(t_mini *s, char *name, char *str, int pos)
 	while (env->next)
 		env = env->next;
 	if (!(tmp = ft_calloc(1, sizeof(t_env))))
-		return error(s, ERR_CALLOC);
+		return (error(s, ERR_CALLOC));
 	tmp->name = name;
 	if (pos < 0)
 		return ;
@@ -245,7 +257,6 @@ void	create_export_value(t_mini *s, char *name, char *str, int pos)
 	tmp->next = NULL;
 	return ;
 }
-
 
 void	modify_export_value(t_mini *s, char *name, char *str, int pos)
 {
@@ -301,7 +312,6 @@ void	export_assignement(t_mini *s, char *str)
 	}
 }
 
-
 int		ft_export(t_mini *s, char **args)
 {
 	int		i;
@@ -315,19 +325,12 @@ int		ft_export(t_mini *s, char **args)
 	{
 		if ((ret += is_valid_env_name(args[i])))
 			error(s, ERR_INVALID_ENV_NAME);
-		/*else if (strchr(args[i], '='))*/
-		/*{*/
-			/*error(s, ERR_INVALID_ENV_NAME);*/
-			/*ret = 1;*/
-		/*}*/
 		else
 			export_assignement(s, args[i]);
 		i++;
 	}
 	if (ret > 0)
 		ret = 1;
-	/*ft_printf("export \n");*/
-	/*ft_printf("export \n");*/
 	return (ret);
 }
 
@@ -395,10 +398,10 @@ int		ft_env(t_mini *s, char **args)
 	{
 		if (env->value)
 		{
-		ft_putstr_fd(env->name, s->std.out);
-		ft_putstr_fd("=", s->std.out);
-		ft_putstr_fd(env->value, s->std.out);
-		ft_putstr_fd("\n", s->std.out);
+			ft_putstr_fd(env->name, s->std.out);
+			ft_putstr_fd("=", s->std.out);
+			ft_putstr_fd(env->value, s->std.out);
+			ft_putstr_fd("\n", s->std.out);
 		}
 		env = env->next;
 	}
@@ -410,7 +413,7 @@ int		str_is_digit(char *str)
 	int		i;
 
 	i = 0;
-	if (str[i] == '-' || str[i] == '+' )
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
 	{
@@ -420,15 +423,19 @@ int		str_is_digit(char *str)
 	}
 	return (1);
 }
-// si on veut peaufiner, bien checker a verifier si un seul argument, et que 
-// cest un nombre, dans ce cas, return ce nombre, sinon renvoyer de dernier
-// retour cmd->ret
-// Dans le sujet c'est ecrit, sans option, mais pas sans argument.
+
+/*
+**	si on veut peaufiner, bien checker a verifier si un seul argument, et que
+**	cest un nombre, dans ce cas, return ce nombre, sinon renvoyer de dernier
+**	retour cmd->ret
+**	Dans le sujet c'est ecrit, sans option, mais pas sans argument.
+*/
+
 int		ft_exit(t_mini *s, char **args)
 {
-	(void)s;
 	int		i;
 
+	(void)s;
 	i = count_args(args);
 	if (i == 1)
 		return (0);

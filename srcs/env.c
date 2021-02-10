@@ -1,10 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 14:38:47 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 14:41:04 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
+#include "../libft/libft.h"
 
 /*
 ** check if name variable contains only letters, numbers, underscores "_"
 **and don't begin with numbers
 */
-#include "../libft/libft.h"
+
 char	*ft_strjoin_free_s2(char const *s1, char const *s2)
 {
 	int		len1;
@@ -33,7 +46,6 @@ char	*ft_strjoin_free_s2(char const *s1, char const *s2)
 	free((void *)s1);
 	return (str);
 }
-
 
 char	*ft_strjoin_free_s1(char const *s1, char const *s2)
 {
@@ -64,7 +76,7 @@ char	*ft_strjoin_free_s1(char const *s1, char const *s2)
 	return (str);
 }
 
-char **put_env_in_tab(t_mini *s)
+char	**put_env_in_tab(t_mini *s)
 {
 	t_env	*env;
 	char	*env_str;
@@ -72,19 +84,17 @@ char **put_env_in_tab(t_mini *s)
 
 	env = s->env;
 	env_str = strdup("");
-	// while (env && env->value)
 	while (env)
 	{
 		if (env->value)
 		{
-		env_str = ft_strjoin_free_s1(env_str, env->name);
-		env_str = ft_strjoin_free_s1(env_str, "=");
-		env_str = ft_strjoin_free_s1(env_str, env->value);
-		env_str = ft_strjoin_free_s1(env_str, "\n");
+			env_str = ft_strjoin_free_s1(env_str, env->name);
+			env_str = ft_strjoin_free_s1(env_str, "=");
+			env_str = ft_strjoin_free_s1(env_str, env->value);
+			env_str = ft_strjoin_free_s1(env_str, "\n");
 		}
 		env = env->next;
 	}
-		/*printf("%s\n", env_str);*/
 	env_tab = ft_split(env_str, '\n');
 	free(env_str);
 	return (env_tab);
@@ -167,13 +177,4 @@ void	init_env(t_mini *s, char **env)
 	copy_env(s, env);
 	split_env_value(s);
 	check_env_variable_name(s);
-
-	/*t_env	*print;*/
-	/*print = s->env;*/
-	/*while (print)*/
-	/*{*/
-		/*ft_printf("-%s:", print->name);*/
-		/*ft_printf("%s\n----\n", print->value);*/
-		/*print = print->next;*/
-	/*}*/
 }
