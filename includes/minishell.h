@@ -155,7 +155,38 @@ void				prompt(t_mini *s);
 /*
 **	builtin.c
 */
-int					is_valid_env_name(char *str);
+int		echo_flag_on(char *str);
+int		count_args(char **args);
+int		ft_echo(t_mini *s, char **args);
+int		go_to_path(t_mini *s, char **args);
+int		go_to_home_path(t_mini *s);
+
+/*
+**	builtin2.c
+*/
+int		ft_cd(t_mini *s, char **args);
+int		ft_pwd(t_mini *s, char **args);
+void	unset_value(t_mini *s, char *args);
+int		ft_unset(t_mini *s, char **args);
+int		ft_env(t_mini *s, char **args);
+
+/*
+**	export.c
+*/
+char **put_sorted_env_in_tab(t_mini *s);
+char **sort_tab_env(char **s_env);
+int		print_sorted_env(t_mini *s);
+void	create_export_value(t_mini *s, char *name, char *str, int pos);
+void	export_assignement(t_mini *s, char *str);
+
+/*
+**	export2.c
+*/
+int		is_valid_env_name(char *str);
+int		ft_strchr_int(const char *s, int c);
+int		is_in_env(t_mini *s, char *str);
+char	*get_name(char *str);
+void	modify_export_value(t_mini *s, char *name, char *str, int pos);
 
 /*
 **	env.c

@@ -18,7 +18,11 @@ SRCS			= 	minishell \
 					ft_parse \
 					ft_get_cmd_lines \
 					env \
+					export \
+					export2 \
 					builtin \
+					builtin2 \
+					builtin3 \
 					token \
 					token2 \
 					token3 \
