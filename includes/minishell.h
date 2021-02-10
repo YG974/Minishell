@@ -6,7 +6,7 @@
 /*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 13:07:14 by pcoureau          #+#    #+#             */
-/*   Updated: 2021/02/09 14:20:59 by pcoureau         ###   ########.fr       */
+/*   Updated: 2021/02/10 12:33:23 by pcoureau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,16 +155,63 @@ void				prompt(t_mini *s);
 /*
 **	builtin.c
 */
+int					echo_flag_on(char *str);
+int					count_args(char **args);
+int					ft_echo(t_mini *s, char **args);
+int					go_to_path(t_mini *s, char **args);
+int					go_to_home_path(t_mini *s);
+
+/*
+**	builtin2.c
+*/
+int					ft_cd(t_mini *s, char **args);
+int					ft_pwd(t_mini *s, char **args);
 int					is_valid_env_name(char *str);
+int					print_sorted_env(t_mini *s);
+int					ft_strchr_int(const char *s, int c);
+
+/*
+**	builtin3.c
+*/
+int					is_in_env(t_mini *s, char *str);
+char				*get_name(char *str);
+void				ct_export_value(t_mini *s, char *name, char *str, int pos);
+void				md_export_value(t_mini *s, char *name, char *str, int pos);
+void				export_assignement(t_mini *s, char *str);
+
+/*
+**	builtin4.c
+*/
+int					ft_export(t_mini *s, char **args);
+void				unset_value(t_mini *s, char *args);
+int					ft_unset(t_mini *s, char **args);
+int					ft_env(t_mini *s, char **args);
+int					str_is_digit(char *str);
+
+/*
+**	builtin5.c
+*/
+int		ft_exit(t_mini *s, char **args);
 
 /*
 **	env.c
 */
-void				init_env(t_mini *s, char **env);
-void				copy_env(t_mini *s, char **env);
-void				check_env_validity(t_mini *s);
-char				*ft_strjoin_free_s1(char const *s1, char const *s2);
 char				*ft_strjoin_free_s2(char const *s1, char const *s2);
+char				*ft_strjoin_free_s1(char const *s1, char const *s2);
+char				**put_env_in_tab(t_mini *s);
+void				check_env_variable_name(t_mini *s);
+void				split_env_value(t_mini *s);
+
+/*
+**	env2.c
+*/
+void				copy_env(t_mini *s, char **env);
+void				init_env(t_mini *s, char **env);
+
+/*
+**	what is this function ?
+*/
+void				check_env_validity(t_mini *s);
 
 /*
 **	ft_parse.c
@@ -224,25 +271,45 @@ void				error(t_mini *s, int error);
 /*
 **	token.c
 */
-void				break_cmdline_into_token(t_mini *s);
-int					is_char_set(int c, const char *char_set);
 char				*get_env_value(t_mini *s, char *name);
+void				expand_dollars(t_mini *s, t_cmdl *cmd);
+void				check_dollars(t_mini *s, t_cmdl *cmd);
+void				check_double_quotes(t_mini *s, t_cmdl *cmd);
+void				check_simple_quotes(t_mini *s, t_cmdl *cmd);
 
 /*
 **	token2.c
 */
-int					ft_get_tokens(t_mini *s, t_cmdl *cmd);
-int					ft_add_token(t_cmdl *cmd, int i);
-int					ft_del_tokens(t_cmdl *cmd, int ret);
-char				*ft_strdup_meta(char *src, char *flagstr);
+int					ft_wich_meta(char c);
 void				ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c);
+char				*ft_strdup_meta(char *src, char *flagstr);
+int					ft_del_tokens(t_cmdl *cmd, int ret);
+int					ft_add_token(t_cmdl *cmd, int i);
 
 /*
 **	token3.c
 */
-int					ft_lit_char(t_cmdl *cmd, int i);
+char				*ft_without_quotes(char *s, int i, int j);
 char				*ft_strdup_quotes(char *src, char *flagstr, char c);
+int					paco_mange_tes_morts(char *str, int i);
+int					extreme(char *str, int i);
 int					ft_inc_i(char *str, char *flag, int i, char c);
+
+/*
+**	token4.c
+*/
+void				check_lit_char(t_mini *s, t_cmdl *cmd);
+void				check_quotes(t_mini *s, t_cmdl *cmd);
+void				ft_closefd(t_mini *s);
+void				break_cmdline_into_token(t_mini *s);
+void				print_tab(char **tab);
+
+/*
+**	token5.c
+*/
+int					is_char_set(int c, const char *char_set);
+int					ft_get_tokens(t_mini *s, t_cmdl *cmd);
 int					ft_ismeta(char c);
+int					ft_lit_char(t_cmdl *cmd, int i);
 
 #endif

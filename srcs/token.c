@@ -6,7 +6,7 @@
 /*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 16:45:47 by pcoureau          #+#    #+#             */
-/*   Updated: 2021/02/09 16:51:46 by pcoureau         ###   ########.fr       */
+/*   Updated: 2021/02/10 12:21:57 by pcoureau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,104 +146,4 @@ void	check_simple_quotes(t_mini *s, t_cmdl *cmd)
 		}
 		cmd->flag[s->i++] = '1';
 	}
-}
-
-void	check_lit_char(t_mini *s, t_cmdl *cmd)
-{
-	cmd->flag[s->i] = '3';
-	s->i++;
-	if (cmd->str[s->i])
-		cmd->flag[s->i] = '3';
-	s->i++;
-}
-
-void	check_quotes(t_mini *s, t_cmdl *cmd)
-{
-	int i;
-
-	i = -1;
-	cmd->flag = ft_strdup(cmd->str);
-	while (cmd->flag && cmd->flag[++i])
-		cmd->flag[i] = '0';
-	s->i = 0;
-	while (cmd->str[s->i])
-	{
-		if (cmd->str[s->i] == '\"')
-			check_double_quotes(s, cmd);
-		else if (cmd->str[s->i] == '\'')
-			check_simple_quotes(s, cmd);
-		else if (cmd->str[s->i] == '\\')
-			check_lit_char(s, cmd);
-		else
-			s->i++;
-	}
-}
-
-void	ft_closefd(t_mini *s)
-{
-	if (s->std.out > 1)
-		dup2(0, 1);
-	if (s->std.in > 0)
-		close(s->std.in);
-	if (s->std.out > 1)
-		close(s->std.out);
-	s->std.in = 0;
-	s->std.out = 1;
-	dup2(1, 1);
-	dup2(1, 0);
-}
-
-void	break_cmdline_into_token(t_mini *s)
-{
-	t_cmdl	*cmd;
-
-	cmd = s->firstcmdl;
-	while (cmd && !s->error)
-	{
-		check_quotes(s, cmd);
-		check_dollars(s, cmd);
-		expand_dollars(s, cmd);
-		free(cmd->str);
-		free(cmd->flag);
-		cmd->str = cmd->buf;
-		check_quotes(s, cmd);
-		check_dollars(s, cmd);
-		ft_get_tokens(s, cmd);
-		if (thereisapipe(cmd))
-		{
-			ft_redirection(s, cmd);
-			ft_exe_cmd(s, cmd);
-		}
-		else
-			ft_firstpipe(s, cmd);
-		ft_closefd(s);
-		ft_del_tokens(cmd, 0);
-		cmd = cmd->next;
-	}
-}
-
-void	print_tab(char **tab)
-{
-	int	i;
-
-	i = -1;
-	printf("print tab \n");
-	while (tab[++i])
-		printf("%s\n", tab[i]);
-}
-
-int		is_char_set(int c, const char *char_set)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = ft_strlen(char_set);
-	while (i < len)
-	{
-		if (c == char_set[i])
-			return (1);
-		i++;
-	}
-	return (0);
 }

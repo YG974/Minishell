@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/10 12:21:23 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/10 12:21:37 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
@@ -94,32 +106,6 @@ int		ft_add_token(t_cmdl *cmd, int i)
 		if (!(tmp->str = ft_calloc(2, sizeof(char))))
 			return (1);
 		tmp->str[0] = cmd->str[i];
-	}
-	return (0);
-}
-
-int		ft_get_tokens(t_mini *s, t_cmdl *cmd)
-{
-	int		i;
-
-	i = 0;
-	(void)s;
-	while (cmd->str[i] == ' ')
-		i++;
-	while (cmd->str[i])
-	{
-		if (cmd->str[i] == '\\')
-		{
-			if (ft_lit_char(cmd, i))
-				return (ft_del_tokens(cmd, 1));
-			i += 2;
-		}
-		else
-		{
-			if (ft_add_token(cmd, i))
-				return (ft_del_tokens(cmd, 1));
-			i = ft_inc_i(cmd->str, cmd->flag, i, cmd->flag[i]);
-		}
 	}
 	return (0);
 }

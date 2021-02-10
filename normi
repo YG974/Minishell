@@ -15,17 +15,23 @@ drwxr-xr-x  16 pcoureau  2019_paris   544 Feb  9 12:54 srcs
 
 
 SRCS												
--rw-r--r--  1 pcoureau  2019_paris  7478 Feb  9 12:53 builtin.c					OK Need to split, too many functions
--rw-r--r--  1 pcoureau  2019_paris  3115 Feb  8 14:51 env.c						OK need to split too many functions
--rw-r--r--  1 pcoureau  2019_paris   719 Feb  9 12:54 ft_error.c				ok
--rw-r--r--  1 pcoureau  2019_paris  8941 Feb  9 12:54 ft_exe_cmd.c				ok too many functions and c++ comments
--rw-r--r--  1 pcoureau  2019_paris  2542 Feb  8 10:42 ft_get_cmd_lines.c		ok
--rw-r--r--  1 pcoureau  2019_paris   908 Feb  9 12:57 ft_init_signal.c				
--rw-r--r--  1 pcoureau  2019_paris  1291 Feb  8 14:51 ft_parse.c				ok
--rw-r--r--  1 pcoureau  2019_paris  1342 Feb  9 12:54 ft_pipes.c				ok
--rw-r--r--  1 pcoureau  2019_paris  1454 Feb  8 14:51 ft_redirection.c			ok
--rw-r--r--  1 pcoureau  2019_paris  1671 Feb  9 12:53 minishell.c				ok
--rw-r--r--  1 pcoureau  2019_paris  4841 Feb  9 12:54 token.c					ok too many functions
--rw-r--r--  1 pcoureau  2019_paris  2604 Feb  8 14:51 token2.c					ok too many functions
--rw-r--r--  1 pcoureau  2019_paris  2174 Feb  8 10:42 token3.c					ok too many functions
-
+-rw-r--r--  1 pcoureau  2019_paris  2572 Feb 10 11:38 builtin.c					ok
+-rw-r--r--@ 1 pcoureau  2019_paris  1207 Feb 10 11:37 builtin2.c				ok
+-rw-r--r--@ 1 pcoureau  2019_paris  1954 Feb 10 11:38 builtin3.c				ok
+-rw-r--r--@ 1 pcoureau  2019_paris  1799 Feb 10 11:38 builtin4.c				ok
+-rw-r--r--@ 1 pcoureau  2019_paris   906 Feb 10 11:38 builtin5.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  3165 Feb 10 11:42 env.c						ok
+-rw-r--r--@ 1 pcoureau  2019_paris   663 Feb 10 11:43 env2.c					ok
+-rw-r--r--  1 pcoureau  2019_paris  1613 Feb 10 10:34 ft_error.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  9487 Feb 10 10:37 ft_exe_cmd.c				NOT GOOD
+-rw-r--r--  1 pcoureau  2019_paris  2878 Feb 10 10:34 ft_get_cmd_lines.c		ok
+-rw-r--r--  1 pcoureau  2019_paris   928 Feb 10 10:37 ft_init_signal.c			NOT GOOD
+-rw-r--r--  1 pcoureau  2019_paris  1771 Feb 10 10:53 ft_parse.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  2315 Feb 10 10:34 ft_pipes.c				ok
+-rw-r--r--  1 pcoureau  2019_paris  2139 Feb 10 10:34 ft_redirection.c			ok
+-rw-r--r--  1 pcoureau  2019_paris  2466 Feb 10 10:49 minishell.c				NOT GOOD
+-rw-r--r--  1 pcoureau  2019_paris  3586 Feb 10 12:02 token.c					ok
+-rw-r--r--  1 pcoureau  2019_paris  1761 Feb 10 12:05 token2.c					ok
+-rw-r--r--  1 pcoureau  2019_paris  1586 Feb 10 12:06 token3.c					ok
+-rw-r--r--@ 1 pcoureau  2019_paris  1434 Feb 10 12:09 token4.c					ok
+-rw-r--r--@ 1 pcoureau  2019_paris  1265 Feb 10 12:06 token5.c					ok
