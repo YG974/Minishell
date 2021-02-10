@@ -154,11 +154,11 @@ void	copy_env(t_mini *s, char **env)
 	t_env	*old;
 
 	i = 0;
-	if (!(old = ft_calloc(sizeof(t_env), 1)))
+	if (!(s->env = ft_calloc(sizeof(t_env), 1)))
 		error(s, ERR_CALLOC);
-	old->value = ft_strdup(env[i]);
-	old->next = NULL;
-	s->env = old;
+	s->env->value = ft_strdup(env[i]);
+	s->env->next = NULL;
+	old = s->env;
 	i++;
 	while (env[i] && env)
 	{
@@ -170,6 +170,7 @@ void	copy_env(t_mini *s, char **env)
 		old = new;
 		i++;
 	}
+	/*free(old->value);*/
 }
 
 void	init_env(t_mini *s, char **env)
