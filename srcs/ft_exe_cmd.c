@@ -12,7 +12,6 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
-#include <sys/_types/_s_ifmt.h>
 
 int		ft_is_builtin(char *str)
 {
@@ -146,6 +145,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	char	**env;
 
 	g_sig.pid = fork();
+	path = NULL;
 	if (g_sig.pid == 0)
 	{
 		env = put_env_in_tab(s);

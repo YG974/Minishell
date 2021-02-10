@@ -12,7 +12,6 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
-#include <sys/syslimits.h>
 
 void	prompt(t_mini *s)
 {
