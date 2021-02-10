@@ -15,25 +15,21 @@
 #include <sys/syslimits.h>
 
 void	prompt(t_mini *s)
-{	
-	char	buf[MAX_INPUT];
-	int		ret;
-
-	while(1)
+{
+	while (1)
 	{
 		ft_putstr_fd(CYAN, STDOUT);
 		ft_putstr_fd("MINISHELL DU TURFU -> ", STDOUT);
 		ft_putstr_fd(RESET, STDOUT);
-		ret = read(s->read.fd, buf, s->read.count);
-		if (ret)
+		s->read.ret = read(s->read.fd, s->read.buf, s->read.count);
+		if (s->read.ret)
 		{
-			while (buf[ret - 1] != '\n')
+			while (s->read.buf[s->read.ret - 1] != '\n')
 			{
 				ft_putstr_fd("  \b\b", 1);
-				ret += read(s->read.fd, &buf[ret], s->read.count);
+				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret],
+						s->read.count);
 			}
-			buf[ret] = '\0';
-			s->read.buf = ft_strdup(buf);
 		}
 		else
 		{
@@ -82,7 +78,7 @@ void	minishell(t_mini *s)
 	{
 		if (!(s->read.buf = ft_calloc(BUFF_SIZE, sizeof(char))))
 			error(s, ERR_CALLOC);
-	init_signal(s);
+		init_signal(s);
 		prompt(s);
 		if (!s->status && s->error != 2 && ft_parse(s))
 			error(s, ERR_CALLOC);
