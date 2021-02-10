@@ -63,6 +63,7 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 			break ;
 	}
 	closedir(folder);
+	free(file);
 	return (cmd_path);
 }
 
@@ -156,11 +157,11 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		}
 		else
 			exit(g_sig.ret);
-		free(path);
 		cmd->ret = cmd->ret;
 	}
 	else
 		waitpid(g_sig.pid, &g_sig.ret, 0);
+	free(path);
 	g_sig.ret = WEXITSTATUS(g_sig.ret);
 	if (g_sig.interrupt == 1 || g_sig.quit == 1)
 		g_sig.ret = g_sig.ret + 128;
