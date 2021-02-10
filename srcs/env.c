@@ -136,6 +136,7 @@ void	split_env_value(t_mini *s)
 	{
 		tab = ft_split(env->value, '=');
 		env->name = tab[0];
+		free(env->value);
 		env->value = tab[1];
 		if (env->value == NULL)
 			env->value = ft_strdup("");

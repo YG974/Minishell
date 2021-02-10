@@ -1,32 +1,7 @@
-Makefile
-Makefile_cub_yann_le_bg
-Makefilepaco
-Minishell_documentation
-ONBRANCH.txt
-README.md
-Roadmap
-building_dir
-includes
-libft
-minishell
-srcs
-test
-test[D[D[D[D[D[D
-test.c
-test1
-Makefile
-Makefile_cub_yann_le_bg
-Makefilepaco
-Minishell_documentation
-ONBRANCH.txt
-README.md
-Roadmap
-building_dir
-includes
-libft
-minishell
-srcs
-test
-test[D[D[D[D[D[D
-test.c
-test1
+drwxr-xr-x    3 pcoureau  2019_paris    102 Feb  8 10:42 ..
+-rw-r--r--    1 pcoureau  2019_paris     52 Feb  8 10:42 .gitignore
+drwxr-xr-x    3 pcoureau  2019_paris    102 Feb  8 10:42 .vim
+-rw-r--r--    1 pcoureau  2019_paris   1014 Feb  8 10:42 Makefile_cub_yann_le_bg
+-rw-r--r--    1 pcoureau  2019_paris   1883 Feb  8 10:42 Makefilepaco
+drwxr-xr-x    4 pcoureau  2019_paris    136 Feb  8 10:42 Minishell_documentation
+-rw-r--r--    1 pcoureau  2019_paris     22 Feb  8 10:42 README.md
