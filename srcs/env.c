@@ -169,6 +169,7 @@ void	copy_env(t_mini *s, char **env)
 		old->next = new;
 		old = new;
 		i++;
+		free(new);
 	}
 	/*free(old->value);*/
 }
