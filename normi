@@ -29,7 +29,7 @@ SRCS
 -rw-r--r--  1 pcoureau  2019_paris  1771 Feb 10 10:53 ft_parse.c				ok
 -rw-r--r--  1 pcoureau  2019_paris  2315 Feb 10 10:34 ft_pipes.c				ok
 -rw-r--r--  1 pcoureau  2019_paris  2139 Feb 10 10:34 ft_redirection.c			ok
--rw-r--r--  1 pcoureau  2019_paris  2466 Feb 10 10:49 minishell.c				NOT GOOD
+-rw-r--r--  1 pcoureau  2019_paris  2466 Feb 10 10:49 minishell.c				ok
 -rw-r--r--  1 pcoureau  2019_paris  3586 Feb 10 12:02 token.c					ok
 -rw-r--r--  1 pcoureau  2019_paris  1761 Feb 10 12:05 token2.c					ok
 -rw-r--r--  1 pcoureau  2019_paris  1586 Feb 10 12:06 token3.c					ok
