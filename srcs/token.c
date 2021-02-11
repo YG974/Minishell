@@ -38,13 +38,14 @@ char	*get_env_value(t_mini *s, char *name)
 	value = NULL;
 	env = s->env;
 	i = ft_strlen(name);
+	/*ft_putstr_fd(name, 2);*/
 	while (env)
 	{
 		if (ft_strncmp(env->name, name, i) == 0 && i == ft_strlen(env->name))
 			value = ft_strdup(env->value);
 		env = env->next;
 	}
-	ft_putstr_fd(env->value, 2);
+	/*[>ft_putstr_fd(env->value, 2);<]*/
 	if (value == NULL)
 		value = ft_strdup("");
 	free(name);
