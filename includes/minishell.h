@@ -32,7 +32,7 @@
 # define STDERR 2
 
 # define BUFF_SIZE 4096
-# define SIZE_T_MAX 10000
+//# define SIZE_T_MAX 10000
 
 # define ERR_CALLOC 1
 # define ERR_INVALID_ENV_NAME 2
