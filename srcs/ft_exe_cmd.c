@@ -59,6 +59,7 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 			cmd_path = ft_strjoin(bin_path, "/");
 			cmd_path = ft_strjoin_free_s1(cmd_path, file->d_name);
 		}
+		ft_putstr_fd(cmd_path, STDERR);
 		if (cmd_path)
 			break ;
 	}
@@ -89,6 +90,10 @@ int		check_bin_right(char *path, char **args)
 {
 	struct stat		file;
 
+	/*ft_putstr_fd(path, 2);*/
+	/*ft_putstr_fd("\n", 2);*/
+	/*ft_putstr_fd(args[0], 2);*/
+	/*ft_putstr_fd("\n", 2);*/
 	if (!path)
 		return (ft_str_error(args[0], "command not found", CMD_NOT_FOUND));
 	if ((stat(path, &file)) == -1)
@@ -115,8 +120,9 @@ char	*find_bin_path(t_mini *s, char **args)
 	i = 0;
 	path = ft_strdup("PATH");
 	bin_paths = ft_split(get_env_value(s, path), ':');
-	/*print_tab(bin_paths);*/
 	path = NULL;
+	if (ft_strchr(args[0], '/'))
+		return (args[0]);
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
 	return (path);
@@ -151,10 +157,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
 		if ((check_bin_right(path, args) == 1))
-		{
-			if (!(execve(path, args, env)))
-				ft_putstr_fd("error\n", STDERR);
-		}
+			execve(path, args, env);
 		else
 			exit(g_sig.ret);
 		free(path);
