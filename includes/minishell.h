@@ -32,7 +32,6 @@
 # define STDERR 2
 
 # define BUFF_SIZE 4096
-# define SIZE_T_MAX 10000
 
 # define ERR_CALLOC 1
 # define ERR_INVALID_ENV_NAME 2
@@ -317,4 +316,7 @@ int					ft_get_tokens(t_mini *s, t_cmdl *cmd);
 int					ft_ismeta(char c);
 int					ft_lit_char(t_cmdl *cmd, int i);
 
+#endif
+#ifndef SIZE_T_MAX
+# define SIZE_T_MAX 10000
 #endif

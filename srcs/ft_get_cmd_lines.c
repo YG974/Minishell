@@ -92,6 +92,10 @@ int		ft_del_cmdline(t_mini *s, int ret)
 		tmp = todel->next;
 		if (todel->str)
 			free(todel->str);
+		if (todel->flag)
+			free(todel->flag);
+		if (todel->buf)
+			free(todel->buf);
 		free(todel);
 		todel->str = NULL;
 		todel->next = NULL;
