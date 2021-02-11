@@ -138,7 +138,7 @@ void	split_env_value(t_mini *s)
 		tmp = ft_strdup(env->value);
 		free(env->value);
 		pos = ft_strchrgnl(tmp, '=');
-		env->name = ft_strdup_size(env->value, pos, 0);
+		env->name = ft_strdup_size(tmp, pos, 0);
 		env->value = ft_strdup_size(tmp, ft_strlen(tmp), pos + 1);
 		if (env->value == NULL)
 			env->value = ft_strdup("");

@@ -76,8 +76,8 @@ void	break_cmdline_into_token(t_mini *s)
 		ft_get_tokens(s, cmd);
 		if (thereisapipe(cmd))
 		{
-			ft_redirection(s, cmd);
-			ft_exe_cmd(s, cmd);
+			if (!ft_redirection(s, cmd))
+				ft_exe_cmd(s, cmd);
 		}
 		else
 			ft_firstpipe(s, cmd);

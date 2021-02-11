@@ -32,6 +32,7 @@
 # define STDERR 2
 
 # define BUFF_SIZE 4096
+# define SIZE_T_MAX 10000
 
 # define ERR_CALLOC 1
 # define ERR_INVALID_ENV_NAME 2
@@ -269,6 +270,7 @@ int					ft_exit(t_mini *s, char **args);
 /*
 **	ft_error.c
 */
+void				error_fd(char *s);
 void				error(t_mini *s, int error);
 
 /*

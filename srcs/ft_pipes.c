@@ -53,8 +53,8 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 		close(fd[0]);
 		s->std.out = fd[1];
 		dup2(fd[1], 1);
-		ft_redirection(s, cmd);
-		ft_exe_cmd(s, cmd);
+		if (!ft_redirection(s, cmd))
+			ft_exe_cmd(s, cmd);
 		close(fd[1]);
 		exit(g_sig.ret);
 	}

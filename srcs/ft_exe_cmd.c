@@ -12,7 +12,7 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
-#include <sys/_types/_s_ifmt.h>
+//#include <sys/_types/_s_ifmt.h>
 
 int		ft_is_builtin(char *str)
 {

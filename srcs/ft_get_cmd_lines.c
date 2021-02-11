@@ -41,6 +41,7 @@ char	*ft_strdup_size(char *line, int end, int start)
 	int		k;
 
 	k = 0;
+	//printf("TEST PUTAIN line = %s\nend = %d\n start = %d\n", line, end, start);
 	if (!(dest = malloc(sizeof(char) * (end - start) + 1)))
 		return (NULL);
 	while (start < end)
