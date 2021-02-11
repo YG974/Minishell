@@ -330,12 +330,10 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 	while (cmd->token)
 	{
 		if (cmd->token->str[0] == '$' && cmd->token->str[1] == '?'
-			&& cmd->token->str[3] == '\0')
+			&& cmd->token->str[2] == '\0')
 		{
 			free(cmd->token->str);
 			cmd->token->str = ft_itoa(g_sig.ret);
-			//remplacer par la bonne variable qui contiendra le retour de la
-			//commande precedente
 		}
 		cmd->token = cmd->token->next;
 	}
@@ -350,7 +348,6 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
-	/*handle_dollar_question_mark(s, cmd);*/
 	if (cmd_has_only_assignement(cmd))
 	{
 		g_sig.ret = apply_assignement(s, cmd);
