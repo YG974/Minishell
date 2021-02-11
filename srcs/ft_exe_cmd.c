@@ -115,7 +115,8 @@ char	*find_bin_path(t_mini *s, char **args)
 	i = 0;
 	path = ft_strdup("PATH");
 	bin_paths = ft_split(get_env_value(s, path), ':');
-	path = NULL;
+	print_tab(bin_paths);
+	/*path = NULL;*/
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
 	return (path);
