@@ -59,7 +59,6 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 			cmd_path = ft_strjoin(bin_path, "/");
 			cmd_path = ft_strjoin_free_s1(cmd_path, file->d_name);
 		}
-		ft_putstr_fd(cmd_path, STDERR);
 		if (cmd_path)
 			break ;
 	}
