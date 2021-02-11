@@ -50,7 +50,7 @@ int		ft_exit(t_mini *s, char **args)
 	return (2);
 }
 
-char **put_sorted_env_in_tab(t_mini *s)
+char	**put_sorted_env_in_tab(t_mini *s)
 {
 	t_env	*env;
 	char	*env_str;
@@ -58,7 +58,6 @@ char **put_sorted_env_in_tab(t_mini *s)
 
 	env = s->env;
 	env_str = strdup("");
-	// while (env && env->value)
 	while (env)
 	{
 		env_str = ft_strjoin_free_s1(env_str, env->name);
@@ -70,13 +69,12 @@ char **put_sorted_env_in_tab(t_mini *s)
 		env_str = ft_strjoin_free_s1(env_str, "\n");
 		env = env->next;
 	}
-		/*printf("%s\n", env_str);*/
 	env_tab = ft_split(env_str, '\n');
 	free(env_str);
 	return (env_tab);
 }
 
-char **sort_tab_env(char **s_env)
+char	**sort_tab_env(char **s_env)
 {
 	char	*tmp;
 	int		i;
@@ -95,7 +93,7 @@ char **sort_tab_env(char **s_env)
 			{
 				tmp = s_env[i];
 				s_env[i] = s_env[min];
-				s_env[min]= tmp;
+				s_env[min] = tmp;
 			}
 		}
 		min++;

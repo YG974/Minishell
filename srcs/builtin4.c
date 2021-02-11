@@ -15,7 +15,7 @@
 #include <string.h>
 
 int		ft_export(t_mini *s, char **args)
-	{
+{
 	int		i;
 	int		ret;
 

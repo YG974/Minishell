@@ -54,7 +54,7 @@ int		ft_pwd(t_mini *s, char **args)
 
 int		is_valid_env_name(char *str)
 {
-		int		i;
+	int		i;
 
 	i = 0;
 	while (str[i] && str[i] != '=')
