@@ -109,14 +109,7 @@ void	export_assignement(t_mini *s, char *str)
 	pos = ft_strchr_int(str, '=');
 	tmp = get_name(str);
 	if (is_in_env(s, tmp) == 0)
-	{
-		/*if (pos < 0)*/
-			/*return ;*/
-		/*else if (pos == ft_strlen(str))*/
-			/*ct_export_value(s, tmp, str, pos);*/
-		/*else*/
-			ct_export_value(s, tmp, str, pos);
-	}
+		ct_export_value(s, tmp, str, pos);
 	else
 	{
 		if (pos < 0)

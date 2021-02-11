@@ -90,10 +90,6 @@ int		check_bin_right(char *path, char **args)
 {
 	struct stat		file;
 
-	/*ft_putstr_fd(path, 2);*/
-	/*ft_putstr_fd("\n", 2);*/
-	/*ft_putstr_fd(args[0], 2);*/
-	/*ft_putstr_fd("\n", 2);*/
 	if (!path)
 		return (ft_str_error(args[0], "command not found", CMD_NOT_FOUND));
 	if ((stat(path, &file)) == -1)
