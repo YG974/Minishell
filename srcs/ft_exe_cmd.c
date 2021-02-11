@@ -350,7 +350,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 
 	cmd->ret = 0;
 	s->i = ft_exe_tokens(s, cmd);
-	handle_dollar_question_mark(s, cmd);
+	/*handle_dollar_question_mark(s, cmd);*/
 	if (cmd_has_only_assignement(cmd))
 	{
 		g_sig.ret = apply_assignement(s, cmd);

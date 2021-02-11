@@ -265,6 +265,7 @@ int					ft_export(t_mini *s, char **args);
 int					ft_unset(t_mini *s, char **args);
 int					ft_env(t_mini *s, char **args);
 int					ft_exit(t_mini *s, char **args);
+void				handle_dollar_question_mark(t_mini *s, t_cmdl *cmd);
 
 /*
 **	ft_error.c

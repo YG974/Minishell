@@ -74,6 +74,7 @@ void	break_cmdline_into_token(t_mini *s)
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
 		ft_get_tokens(s, cmd);
+	handle_dollar_question_mark(s, cmd);
 		if (thereisapipe(cmd))
 		{
 			if (!ft_redirection(s, cmd))
