@@ -6,7 +6,7 @@
 /*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 14:38:47 by pcoureau          #+#    #+#             */
-/*   Updated: 2021/02/10 12:17:07 by pcoureau         ###   ########.fr       */
+/*   Updated: 2021/02/09 14:41:04 by pcoureau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,17 +129,54 @@ void	check_env_variable_name(t_mini *s)
 void	split_env_value(t_mini *s)
 {
 	t_env	*env;
-	char	**tab;
+	char	*tmp;
+	int		pos;
 
 	env = s->env;
 	while (env)
 	{
-		tab = ft_split(env->value, '=');
-		env->name = tab[0];
+		tmp = ft_strdup(env->value);
 		free(env->value);
-		env->value = tab[1];
+		pos = ft_strchrgnl(tmp, '=');
+		env->name = ft_strdup_size(env->value, pos - 1, 0);
+		env->value = ft_strdup_size(tmp, ft_strlen(tmp), pos + 1);
 		if (env->value == NULL)
 			env->value = ft_strdup("");
+		free(tmp);
 		env = env->next;
 	}
+}
+
+/*
+**	copy every string of the env into s->env->value (linked list)
+*/
+
+void	copy_env(t_mini *s, char **env)
+{
+	int		i;
+	t_env	*new;
+	t_env	*old;
+
+	i = 0;
+	if (!(s->env = ft_calloc(sizeof(t_env), 1)))
+		error(s, ERR_CALLOC);
+	s->env->value = ft_strdup(env[i]);
+	old = s->env;
+	i++;
+	while (env[i] && env)
+	{
+		if (!(new = ft_calloc(sizeof(t_env), 1)))
+			error(s, ERR_CALLOC);
+		new->value = ft_strdup(env[i]);
+		old->next = new;
+		old = old->next;
+		i++;
+	}
+}
+
+void	init_env(t_mini *s, char **env)
+{
+	copy_env(s, env);
+	split_env_value(s);
+	check_env_variable_name(s);
 }
