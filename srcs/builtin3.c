@@ -101,6 +101,7 @@ void	md_export_value(t_mini *s, char *name, char *str, int pos)
 		}
 		env = env->next;
 	}
+	free(name);
 }
 
 /*leaks ici*/

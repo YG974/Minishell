@@ -63,7 +63,7 @@ int		ft_unset(t_mini *s, char **args)
 	ret = 0;
 	while (args[i])
 	{
-		if ((is_valid_env_name(args[i])) == 1)
+		if ((is_valid_env_name(args[i])) == 0)
 		{
 			ret++;
 			ft_putstr_fd(RED, STDERR);
