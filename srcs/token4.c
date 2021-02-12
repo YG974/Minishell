@@ -27,7 +27,9 @@ void	check_quotes(t_mini *s, t_cmdl *cmd)
 	int i;
 
 	i = -1;
+	/*leaks ici*/
 	cmd->flag = ft_strdup(cmd->str);
+	/*leaks ici*/
 	while (cmd->flag && cmd->flag[++i])
 		cmd->flag[i] = '0';
 	s->i = 0;

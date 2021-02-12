@@ -43,7 +43,7 @@ char	*ft_strjoin_free_s2(char const *s1, char const *s2)
 		i++;
 	}
 	str[len1 + len2] = '\0';
-	free((void *)s1);
+	free((void *)s2);
 	return (str);
 }
 
