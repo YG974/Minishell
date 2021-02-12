@@ -69,6 +69,7 @@ char	**put_sorted_env_in_tab(t_mini *s)
 		env_str = ft_strjoin_free_s1(env_str, "\n");
 		env = env->next;
 	}
+	/*leaks ici*/
 	env_tab = ft_split(env_str, '\n');
 	free(env_str);
 	return (env_tab);
