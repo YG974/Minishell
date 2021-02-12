@@ -35,7 +35,7 @@ void	prompt(t_mini *s)
 		{
 			ft_putstr_fd("  \b\bexit\n", 1);
 			s->error = 2;
-			exit(errno);
+			return ;
 		}
 		return ;
 	}
