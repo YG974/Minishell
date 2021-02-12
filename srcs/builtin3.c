@@ -44,6 +44,8 @@ char	*get_name(char *str)
 		tmp = ft_strdup(str);
 	else
 		tmp = ft_strdup_size(str, pos, 0);
+	if (str)
+		free(str);
 	return (tmp);
 }
 

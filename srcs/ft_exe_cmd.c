@@ -273,7 +273,6 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 	char **args;
 
 	(void)s;
-	cmd->buf = ft_strdup("walou");
 	cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
@@ -286,6 +285,8 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 		cmd->token = cmd->token->next;
 	}
 	args = ft_split(cmd->buf, '\n');
+	if (cmd->buf)
+		free(cmd->buf);
 	cmd->ret = ft_export(s, args);
 	return (cmd->ret);
 }
