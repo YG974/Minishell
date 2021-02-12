@@ -323,12 +323,27 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 **	-> if there is only an assignement in the command line, it applies it.
 */
 
+t_cmdl	*join_tokens(t_cmdl *cmd)
+{
+	t_tok	*tmp;
+
+	tmp = cmd->token->next;
+	cmd->token->next = tmp->next;
+	cmd->token->str = ft_strjoin_free_s1(cmd->token->str, tmp->str);
+	free(tmp->str);
+	return (cmd);
+}
+
 void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
 	{
+		while ((cmd->token->flag == FLAG_STR || cmd->token->flag == FLAG_CMD) && 
+			(cmd->token->next) && (cmd->token->next->flag == FLAG_STR ||
+			cmd->token->next->flag == FLAG_CMD))
+			cmd = join_tokens(cmd);
 		if (cmd->token->str[0] == '$' && cmd->token->str[1] == '?'
 			&& cmd->token->str[2] == '\0')
 		{
