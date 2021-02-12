@@ -60,6 +60,14 @@ void	ft_closefd(t_mini *s)
 	dup2(1, 0);
 }
 
+void	free_cmd_str(t_cmdl *cmd)
+{
+	if (cmd->str)
+		free(cmd->str);
+	if (cmd->flag)
+		free(cmd->flag);
+}
+
 void	break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
@@ -70,8 +78,7 @@ void	break_cmdline_into_token(t_mini *s)
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
 		expand_dollars(s, cmd);
-		free(cmd->str);
-		free(cmd->flag);
+		free_cmd_str(cmd);
 		cmd->str = cmd->buf;
 		check_quotes(s, cmd);
 		check_dollars(s, cmd);
