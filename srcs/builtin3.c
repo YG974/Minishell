@@ -44,8 +44,8 @@ char	*get_name(char *str)
 		tmp = ft_strdup(str);
 	else
 		tmp = ft_strdup_size(str, pos, 0);
-	if (str)
-		free(str);
+	/*if (str)*/
+		/*free(str);*/
 	return (tmp);
 }
 
@@ -63,7 +63,7 @@ void	ct_export_value(t_mini *s, char *name, char *str, int pos)
 		return (error(s, ERR_CALLOC));
 	tmp->name = name;
 	if (pos < 0)
-		return ;
+		tmp->value = NULL;
 	else
 	{
 		if (pos == ft_strlen(str))
