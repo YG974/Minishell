@@ -47,6 +47,7 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 		if (s->std.in > 0)
 			close(s->std.in);
 		s->std.in = open(tmp->str, O_RDONLY);
+		printf("fd = %d\n", s->std.in);
 		if (s->std.in < 0)
 		{
 			g_sig.ret = 1;

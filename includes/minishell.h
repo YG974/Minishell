@@ -158,7 +158,7 @@ void				prompt(t_mini *s);
 int					echo_flag_on(char *str);
 int					count_args(char **args);
 int					ft_echo(t_mini *s, char **args);
-int					go_to_path(t_mini *s, char **args);
+int					go_to_path(t_mini *s, char *args);
 int					go_to_home_path(t_mini *s);
 
 /*

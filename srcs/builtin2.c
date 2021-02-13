@@ -17,13 +17,22 @@
 int		ft_cd(t_mini *s, char **args)
 {
 	int		i;
+	char	*buf;
+	int		ret;
 
-	(void)s;
 	i = count_args(args);
-	if (i == 1)
+	if (s->std.in > 0)
+	{
+		get_next_line(s->std.in, &buf);
+		printf("PATH = %s\n", buf);
+		ret = go_to_path(s, buf);
+		free(buf);
+		return (ret);
+	}
+	else if (i == 1)
 		return (go_to_home_path(s));
 	else
-		return (go_to_path(s, args));
+		return (go_to_path(s, args[1]));
 }
 
 int		ft_pwd(t_mini *s, char **args)

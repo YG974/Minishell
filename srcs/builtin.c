@@ -70,17 +70,17 @@ int		ft_echo(t_mini *s, char **args)
 	return (0);
 }
 
-int		go_to_path(t_mini *s, char **args)
+int		go_to_path(t_mini *s, char *args)
 {
 	int		i;
 
 	(void)s;
-	i = chdir(args[1]);
+	i = chdir(args);
 	if (i != 0)
 	{
 		ft_putstr_fd(RED, STDERR);
 		ft_putstr_fd("Minishell: cd: ", STDERR);
-		ft_putstr_fd(args[1], STDERR);
+		ft_putstr_fd(args, STDERR);
 		ft_putstr_fd(": ", STDERR);
 		ft_putstr_fd(strerror(errno), STDERR);
 		ft_putstr_fd("\n", STDERR);
