@@ -52,7 +52,7 @@ int		ft_echo(t_mini *s, char **args)
 	i = 1;
 	if ((nb = count_args(args)) > 1)
 	{
-		while (echo_flag_on(args[i]) && args[i])
+		while (args[i] && echo_flag_on(args[i]))
 		{
 			n_flag = 1;
 			i++;
