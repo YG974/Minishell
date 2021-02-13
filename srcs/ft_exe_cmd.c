@@ -374,7 +374,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	if (cmd->token == NULL)
 		return ;
 	parse_cmd_args(s, cmd);
-	args = ft_split(cmd->buf, '\n');
+	args = ft_split_ms(cmd->buf, '\n');
 	free(cmd->buf);
 	if (ft_is_builtin(args[0]))
 		g_sig.ret = exec_builtin(s, cmd, args);

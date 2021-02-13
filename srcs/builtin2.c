@@ -24,7 +24,6 @@ int		ft_cd(t_mini *s, char **args)
 	if (s->std.in > 0)
 	{
 		get_next_line(s->std.in, &buf);
-		printf("PATH = %s\n", buf);
 		ret = go_to_path(s, buf);
 		free(buf);
 		return (ret);

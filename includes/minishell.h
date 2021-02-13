@@ -318,6 +318,11 @@ int					ft_get_tokens(t_mini *s, t_cmdl *cmd);
 int					ft_ismeta(char c);
 int					ft_lit_char(t_cmdl *cmd, int i);
 
+/*
+**	ft_split_ms.c
+*/
+char		**ft_split_ms(char const *s, char c);
+
 #endif
 #ifndef SIZE_T_MAX
 # define SIZE_T_MAX 10000

@@ -34,6 +34,7 @@ SRCS			= 	minishell \
 					ft_pipes \
 					ft_exe_cmd \
 					ft_error \
+					ft_split_ms \
 
 FILES			= $(addsuffix .c, $(SRCS))
 OBJECTS			= $(addprefix $(BUILDING_DIR),$(FILES:.c=.o))
