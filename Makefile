@@ -41,17 +41,17 @@ OBJECTS			= $(addprefix $(BUILDING_DIR),$(FILES:.c=.o))
 
 # BUILDING RULES
 all:			objects ${LIB_FT} $(NAME)
-				$(CC) $(C_FLAGS) ${OBJECTS} -o ${NAME} ${LIB_FT}
 
 objects:		${LIB_FT}
-				mkdir -p building_dir
 
 $(BUILDING_DIR)%.o:$(SRCS_DIR)%.c
 				$(CC) $(C_FLAGS) -I $(INCLUDES_DIR) -c $< -o $@
 
 ${LIB_FT}:
 				make -C ${LIB_DIR}
+				mkdir -p building_dir
 ${NAME}:		${OBJECTS}
+				$(CC) $(C_FLAGS) ${OBJECTS} -o ${NAME} ${LIB_FT}
 
 # CLEANING RULES
 clean:
