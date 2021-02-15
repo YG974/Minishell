@@ -102,7 +102,6 @@ void	md_export_value(t_mini *s, char *name, char *str, int pos)
 	free(name);
 }
 
-/*leaks ici*/
 void	export_assignement(t_mini *s, char *str)
 {
 	char	*tmp;

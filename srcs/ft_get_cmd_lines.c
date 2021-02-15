@@ -41,7 +41,6 @@ char	*ft_strdup_size(char *line, int end, int start)
 	int		k;
 
 	k = 0;
-	//printf("TEST PUTAIN line = %s\nend = %d\n start = %d\n", line, end, start);
 	if (!(dest = malloc(sizeof(char) * (end - start) + 1)))
 		return (NULL);
 	while (start < end)
@@ -92,10 +91,6 @@ int		ft_del_cmdline(t_mini *s, int ret)
 		tmp = todel->next;
 		if (todel->str)
 			free(todel->str);
-		/*if (todel->flag)*/
-			/*free(todel->flag);*/
-		/*if (todel->buf)*/
-			/*free(todel->buf);*/
 		free(todel);
 		todel->str = NULL;
 		todel->next = NULL;

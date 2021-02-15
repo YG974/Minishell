@@ -12,7 +12,6 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
-//#include <sys/syslimits.h>
 
 void	prompt(t_mini *s)
 {
@@ -98,6 +97,9 @@ int		main(int ac, char **av, char **env)
 	init_mini(&s);
 	init_env(&s, env);
 	minishell(&s);
+	close(0);
+	close(1);
+	close(2);
 	ft_printf("END OF MINISHELL\n");
 	return (g_sig.ret);
 }
