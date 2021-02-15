@@ -379,7 +379,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	else
 		g_sig.ret = exec_bin(s, cmd, args);
 	waitpid(-1, &status, 0);
-	if ((WIFSIGNALED(status) && (WTERMSIG(status))))
+	if ((WTERMSIG(status)))
 		g_sig.ret = status + 128;
 	ft_free_tab(args);
 }
