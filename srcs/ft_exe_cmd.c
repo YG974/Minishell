@@ -380,6 +380,6 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		g_sig.ret = exec_bin(s, cmd, args);
 	waitpid(-1, &status, 0);
 	if (g_sig.interrupt == 1 || g_sig.quit == 1)
-		g_sig.ret = g_sig.ret + 128;
+		g_sig.ret = status + 128;
 	ft_free_tab(args);
 }
