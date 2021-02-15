@@ -48,7 +48,14 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 	cmd->token = cmd->firsttoken;
 	return (1);
 }
+void	print_tab(char **tab)
+{
+	int		i;
 
+	i = 0;
+	while (tab[i])
+		ft_putstr_fd(tab[i++], 2);
+}
 int		apply_assignement(t_mini *s, t_cmdl *cmd)
 {
 	char **args;
@@ -68,8 +75,12 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 	args = ft_split(cmd->buf, '\n');
 	if (cmd->buf)
 		free(cmd->buf);
-	cmd->ret = ft_export(s, args);
-	ft_free_tab(args);
+	if (args)
+	{
+		print_tab(args);
+		cmd->ret = ft_export(s, args);
+	}
+	/*ft_free_tab(args);*/
 	return (cmd->ret);
 }
 
