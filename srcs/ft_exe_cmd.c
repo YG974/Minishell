@@ -121,6 +121,7 @@ char	*find_bin_path(t_mini *s, char **args)
 		return (args[0]);
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
+	ft_free_tab(bin_paths);
 	return (path);
 }
 
