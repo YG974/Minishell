@@ -29,7 +29,10 @@ void	ft_pipe2(t_mini *s, t_cmdl *cmd, int fd, t_tok *next)
 	cmd->firsttoken = next;
 	waitpid(g_sig.pid, &g_sig.ret, 0);
 	if (!thereisapipe(cmd))
+	{
+		close(fd);
 		ft_pipe(s, cmd);
+	}
 	else
 	{
 		ft_redirection(s, cmd);
