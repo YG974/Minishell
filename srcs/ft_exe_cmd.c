@@ -357,6 +357,14 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 	return ;
 }
 
+void	sig_ret(void)
+{
+	if (g_sig.interrupt == 1)
+		g_sig.ret = 130;
+	if (g_sig.quit == 1)
+		g_sig.ret = 131;
+}
+
 void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 {
 	char	**args;
@@ -379,7 +387,6 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	else
 		g_sig.ret = exec_bin(s, cmd, args);
 	waitpid(-1, &status, 0);
-	if ((WTERMSIG(status)))
-		g_sig.ret = status + 128;
+	sig_ret();
 	ft_free_tab(args);
 }
