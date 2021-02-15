@@ -1,0 +1,65 @@
+==2572== HEAP SUMMARY:
+==2572==     in use at exit: 16,409 bytes in 7 blocks
+==2572==   total heap usage: 2,445 allocs, 2,439 frees, 1,380,665 bytes allocated
+==2572== 
+==2572== 6 bytes in 1 blocks are definitely lost in loss record 1 of 4
+==2572==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2572==    by 0x40134E: ft_strdup_size (ft_get_cmd_lines.c:45)
+==2572==    by 0x4027A6: get_name (builtin3.c:46)
+==2572==    by 0x402A0B: export_assignement (builtin3.c:114)
+==2572==    by 0x402B49: ft_export (builtin4.c:30)
+==2572==    by 0x405C4C: exec_builtin (ft_exe_cmd.c:183)
+==2572==    by 0x406646: ft_exe_cmd (ft_exe_cmd.c:380)
+==2572==    by 0x404776: break_cmdline_into_token (token4.c:90)
+==2572==    by 0x4011E1: ft_parse (ft_parse.c:66)
+==2572==    by 0x400ECB: minishell (minishell.c:83)
+==2572==    by 0x400F67: main (minishell.c:99)
+==2572== 
+==2572== 6 bytes in 1 blocks are definitely lost in loss record 2 of 4
+==2572==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2572==    by 0x40134E: ft_strdup_size (ft_get_cmd_lines.c:45)
+==2572==    by 0x4028B1: ct_export_value (builtin3.c:72)
+==2572==    by 0x402A39: export_assignement (builtin3.c:116)
+==2572==    by 0x402B49: ft_export (builtin4.c:30)
+==2572==    by 0x405C4C: exec_builtin (ft_exe_cmd.c:183)
+==2572==    by 0x406646: ft_exe_cmd (ft_exe_cmd.c:380)
+==2572==    by 0x404776: break_cmdline_into_token (token4.c:90)
+==2572==    by 0x4011E1: ft_parse (ft_parse.c:66)
+==2572==    by 0x400ECB: minishell (minishell.c:83)
+==2572==    by 0x400F67: main (minishell.c:99)
+==2572== 
+==2572== 13 bytes in 1 blocks are definitely lost in loss record 3 of 4
+==2572==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2572==    by 0x4074CA: ft_strdup (in /home/user42/Minishell/minishell)
+==2572==    by 0x403251: get_env_value (token.c:44)
+==2572==    by 0x4020BE: go_to_home_path (builtin.c:100)
+==2572==    by 0x402243: ft_cd (builtin2.c:32)
+==2572==    by 0x405BAC: exec_builtin (ft_exe_cmd.c:179)
+==2572==    by 0x406646: ft_exe_cmd (ft_exe_cmd.c:380)
+==2572==    by 0x404776: break_cmdline_into_token (token4.c:90)
+==2572==    by 0x4011E1: ft_parse (ft_parse.c:66)
+==2572==    by 0x400ECB: minishell (minishell.c:83)
+==2572==    by 0x400F67: main (minishell.c:99)
+==2572== 
+==2572== 16,384 bytes in 4 blocks are definitely lost in loss record 4 of 4
+==2572==    at 0x4C2FB0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2572==    by 0x406E56: ft_calloc (in /home/user42/Minishell/minishell)
+==2572==    by 0x402298: ft_pwd (builtin2.c:42)
+==2572==    by 0x405BFC: exec_builtin (ft_exe_cmd.c:181)
+==2572==    by 0x406646: ft_exe_cmd (ft_exe_cmd.c:380)
+==2572==    by 0x404776: break_cmdline_into_token (token4.c:90)
+==2572==    by 0x4011E1: ft_parse (ft_parse.c:66)
+==2572==    by 0x400ECB: minishell (minishell.c:83)
+==2572==    by 0x400F67: main (minishell.c:99)
+==2572== 
+==2572== LEAK SUMMARY:
+==2572==    definitely lost: 16,409 bytes in 7 blocks
+==2572==    indirectly lost: 0 bytes in 0 blocks
+==2572==      possibly lost: 0 bytes in 0 blocks
+==2572==    still reachable: 0 bytes in 0 blocks
+==2572==         suppressed: 0 bytes in 0 blocks
+==2572== 
+==2572== For counts of detected and suppressed errors, rerun with: -v
+==2572== Use --track-origins=yes to see where uninitialised values come from
+==2572== ERROR SUMMARY: 524 errors from 17 contexts (suppressed: 0 from 0)
+
