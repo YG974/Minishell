@@ -46,7 +46,7 @@ char	*get_env_value(t_mini *s, char *name)
 	}
 	/*if (value == NULL)*/
 		/*value = ft_strdup("");*/
-	free(name);
+	/*free(name);*/
 	return (value);
 }
 
