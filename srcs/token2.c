@@ -65,7 +65,7 @@ int		ft_del_tokens(t_cmdl *cmd, int ret)
 	t_tok	*todel;
 
 	todel = cmd->firsttoken;
-	while (todel->prev)
+	while (todel && todel->prev)
 		todel = todel->prev;
 	while (todel)
 	{
