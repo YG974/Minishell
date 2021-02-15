@@ -38,9 +38,11 @@ void	ft_pipe2(t_mini *s, t_cmdl *cmd, int fd, t_tok *next)
 		ft_redirection(s, cmd);
 		ft_exe_cmd(s, cmd);
 		close(fd);
-		printf("FD ENCORE OUVERT LOL  = %d\n", s->firstfd);
 		close(4);
 		s->firstfd = 0;
+		close(0);
+		close(1);
+		close(2);
 		exit(g_sig.ret);
 	}
 	close(fd);
@@ -63,6 +65,9 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 		if (!ft_redirection(s, cmd))
 			ft_exe_cmd(s, cmd);
 		close(fd[1]);
+		close(0);
+		close(1);
+		close(2);
 		exit(g_sig.ret);
 	}
 	else
