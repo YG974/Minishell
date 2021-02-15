@@ -117,10 +117,12 @@ int		go_to_home_path(t_mini *s)
 	char	*buf;
 	int		i;
 
+	path = NULL;
+	buf = NULL;
 	buf = ft_strdup("HOME");
 	path = get_env_value(s, buf);
 	free(buf);
-	if ((i = ft_strlen(path)) < 1)
+	if ((i = ft_strlen(path)) == 0)
 	{
 		cd_str_error(path, 1);
 		return (1);
@@ -128,7 +130,10 @@ int		go_to_home_path(t_mini *s)
 	i = chdir(path);
 	if (i != 0)
 	{
+		/*i = chdir(path);*/
 		cd_str_error(path, 2);
 	}
+	if (path)
+		free(path);
 	return (-i);
 }
