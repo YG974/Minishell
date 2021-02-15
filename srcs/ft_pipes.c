@@ -84,8 +84,8 @@ int		ft_firstpipe(t_mini *s, t_cmdl *cmd)
 	{
 		close(fd[0]);
 		s->firstfd = fd[1];
-		ft_pipe(s, cmd);
 		close(fd[1]);
+		ft_pipe(s, cmd);
 	}
 	else
 	{
