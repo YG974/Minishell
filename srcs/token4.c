@@ -66,27 +66,46 @@ void	free_cmd_str(t_cmdl *cmd)
 		free(cmd->flag);
 }
 
+void	check_quotes_and_dollars(t_mini *s, t_cmdl *cmd)
+{
+		check_quotes(s, cmd);
+		check_dollars(s, cmd);
+}
+
+void	syntax_error(t_mini *s)
+{
+	s->error = 2;
+	g_sig.ret = 2;
+}
+
+int		check_syntax(t_mini *s, t_cmdl *cmd)
+{
+	while (cmd && !s->error)
+	{
+		cmd = cmd->next;
+	}
+	return (1);
+}
+
+
 void	break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
+	if (!check_syntax(s, cmd))
+		syntax_error(s);
 	while (cmd && !s->error)
 	{
-		check_quotes(s, cmd);
-		check_dollars(s, cmd);
+		check_quotes_and_dollars(s, cmd);
 		expand_dollars(s, cmd);
 		free_cmd_str(cmd);
 		cmd->str = cmd->buf;
-		check_quotes(s, cmd);
-		check_dollars(s, cmd);
+		check_quotes_and_dollars(s, cmd);
 		ft_get_tokens(s, cmd);
 		handle_dollar_question_mark(s, cmd);
-		if (thereisapipe(cmd))
-		{
-			if (!ft_redirection(s, cmd))
-				ft_exe_cmd(s, cmd);
-		}
+		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
+			ft_exe_cmd(s, cmd);
 		else
 			ft_firstpipe(s, cmd);
 		ft_closefd(s);
