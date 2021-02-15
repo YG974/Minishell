@@ -89,7 +89,6 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	int		status;
 
 	cmd->ret = 0;
-	s->i = ft_exe_tokens(s, cmd);
 	if (cmd_has_only_assignement(cmd))
 	{
 		g_sig.ret = apply_assignement(s, cmd);
