@@ -62,6 +62,8 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 		if (cmd_path)
 			break ;
 	}
+	free(folder);
+	free(file);
 	closedir(folder);
 	return (cmd_path);
 }

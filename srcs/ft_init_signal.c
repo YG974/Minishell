@@ -31,6 +31,7 @@ void	handle_sigint(int signum)
 	else
 		ft_putstr_fd("\n", STDERR);
 	g_sig.interrupt = 1;
+	g_sig.ret = 2;
 }
 
 void	handle_sigquit(int signum)
@@ -41,6 +42,7 @@ void	handle_sigquit(int signum)
 		ft_putstr_fd(RED, STDERR);
 		ft_putstr_fd("Quitter (core dumped)\n", STDERR);
 		ft_putstr_fd(RESET, STDERR);
+		g_sig.ret = 3;
 		g_sig.quit = 1;
 	}
 	else
