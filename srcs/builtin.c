@@ -129,10 +129,7 @@ int		go_to_home_path(t_mini *s)
 	}
 	i = chdir(path);
 	if (i != 0)
-	{
-		/*i = chdir(path);*/
 		cd_str_error(path, 2);
-	}
 	if (path)
 		free(path);
 	return (-i);
