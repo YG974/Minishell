@@ -59,7 +59,7 @@ int		is_valid_env_name(char *str)
 	int		i;
 
 	i = 0;
-	if (str[i] == '=')
+	if (str[i] == '=' || str[i] == '\0')
 		return (0);
 	while (str[i] && str[i] != '=')
 	{

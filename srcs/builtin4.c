@@ -18,7 +18,7 @@ void	export_error(char *str)
 	ft_putstr_fd(RED, STDERR);
 	ft_putstr_fd("Minishell: export: \"", STDERR);
 	ft_putstr_fd(str, STDERR);
-	ft_putstr_fd("\" : identifiant non valable\n", STDERR);
+	ft_putstr_fd("\" : not a valid identifier\n", STDERR);
 	ft_putstr_fd(RESET, STDERR);
 }
 
@@ -81,9 +81,9 @@ int		ft_unset(t_mini *s, char **args)
 		{
 			ret++;
 			ft_putstr_fd(RED, STDERR);
-			ft_putstr_fd("Minishell: unset: ", STDERR);
+			ft_putstr_fd("Minishell: unset: \"", STDERR);
 			ft_putstr_fd(args[i], STDERR);
-			ft_putstr_fd(" not a valid identifier\n", STDERR);
+			ft_putstr_fd("\" not a valid identifier\n", STDERR);
 			ft_putstr_fd(RESET, STDERR);
 		}
 		else
