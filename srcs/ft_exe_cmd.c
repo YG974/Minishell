@@ -62,8 +62,6 @@ char	*try_bin_path(char *bin_path, char *cmd_name)
 		if (cmd_path)
 			break ;
 	}
-	free(folder);
-	free(file);
 	closedir(folder);
 	return (cmd_path);
 }
@@ -163,8 +161,6 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	else
 		waitpid(g_sig.pid, &g_sig.ret, 0);
 	g_sig.ret = WEXITSTATUS(g_sig.ret);
-	if (g_sig.interrupt == 1 || g_sig.quit == 1)
-		g_sig.ret = g_sig.ret + 128;
 	return (g_sig.ret);
 }
 
@@ -383,5 +379,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	else
 		g_sig.ret = exec_bin(s, cmd, args);
 	waitpid(-1, &status, 0);
+	if (g_sig.interrupt == 1 || g_sig.quit == 1)
+		g_sig.ret = g_sig.ret + 128;
 	ft_free_tab(args);
 }
