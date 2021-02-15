@@ -72,10 +72,15 @@ void	check_quotes_and_dollars(t_mini *s, t_cmdl *cmd)
 		check_dollars(s, cmd);
 }
 
-void	syntax_error(t_mini *s)
+void	syntax_error(t_mini *s, char *str)
 {
 	s->error = 2;
 	g_sig.ret = 2;
+	ft_putstr_fd(RED, STDERR);
+	ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
+	ft_putstr_fd(str, STDERR);
+	ft_putstr_fd("\"\n", STDERR);
+	ft_putstr_fd(RESET, STDERR);
 }
 
 int		check_syntax(t_mini *s, t_cmdl *cmd)
@@ -85,7 +90,7 @@ int		check_syntax(t_mini *s, t_cmdl *cmd)
 
 	ret = 0;
 	if (ret == -1)
-		syntax_error(s);
+		syntax_error(s, cmd->token->str);
 	return (1);
 }
 
