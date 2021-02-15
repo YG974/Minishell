@@ -114,8 +114,9 @@ char	*find_bin_path(t_mini *s, char **args)
 
 	i = 0;
 	path = ft_strdup("PATH");
-	bin_paths = ft_split(get_env_value(s, path), ':');
-	/*free(path);*/
+	path = get_env_value(s, path);
+	bin_paths = ft_split(path, ':');
+	free(path);
 	path = NULL;
 	if (ft_strchr(args[0], '/'))
 		return (args[0]);
