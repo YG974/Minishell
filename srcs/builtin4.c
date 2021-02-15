@@ -13,6 +13,14 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 #include <string.h>
+void	export_error(char *str)
+{
+	ft_putstr_fd(RED, STDERR);
+	ft_putstr_fd("Minishell: export: \"", STDERR);
+	ft_putstr_fd(str, STDERR);
+	ft_putstr_fd("\" : identifiant non valable\n", STDERR);
+	ft_putstr_fd(RESET, STDERR);
+}
 
 int		ft_export(t_mini *s, char **args)
 {
@@ -21,20 +29,21 @@ int		ft_export(t_mini *s, char **args)
 
 	i = 1;
 	if ((ret = count_args(args)) == 1)
-	{
-		ft_printf("%d\n", ret);
 		return(print_sorted_env(s));
-		/*ft_free_tab(args);*/
-		/*return (ret);*/
-	}
+	ret = 0;
 	while (args[i])
 	{
-		if (!(ret = is_valid_env_name(args[i])))
-			error(s, ERR_INVALID_ENV_NAME);
+		if ((is_valid_env_name(args[i])) == 0)
+		{
+			ret++;
+			export_error(args[i]);
+		}
 		else
 			export_assignement(s, args[i]);
 		i++;
 	}
+	if (ret > 0)
+		ret = 1;
 	return (ret);
 }
 

@@ -59,6 +59,8 @@ int		is_valid_env_name(char *str)
 	int		i;
 
 	i = 0;
+	if (str[i] == '=')
+		return (0);
 	while (str[i] && str[i] != '=')
 	{
 		if (ft_isdigit(str[0]) == 1)
