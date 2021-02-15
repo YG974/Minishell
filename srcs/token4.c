@@ -80,10 +80,12 @@ void	syntax_error(t_mini *s)
 
 int		check_syntax(t_mini *s, t_cmdl *cmd)
 {
-	while (cmd && !s->error)
-	{
-		cmd = cmd->next;
-	}
+	(void)cmd;
+	int		ret;
+
+	ret = 0;
+	if (ret == -1)
+		syntax_error(s);
 	return (1);
 }
 
@@ -93,8 +95,6 @@ void	break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
-	if (!check_syntax(s, cmd))
-		syntax_error(s);
 	while (cmd && !s->error)
 	{
 		check_quotes_and_dollars(s, cmd);
@@ -103,6 +103,8 @@ void	break_cmdline_into_token(t_mini *s)
 		cmd->str = cmd->buf;
 		check_quotes_and_dollars(s, cmd);
 		ft_get_tokens(s, cmd);
+		if (!check_syntax(s, cmd))
+			return ;
 		handle_dollar_question_mark(s, cmd);
 		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
 			ft_exe_cmd(s, cmd);
