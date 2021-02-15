@@ -42,5 +42,8 @@ void	error(t_mini *s, int error)
 		s->error = 2;
 		if (g_sig.pid == -1)
 			ret = ft_printf("EXIT MINISHELL, GOOD BYE <3\n");
+		close(0);
+		close(1);
+		close(2);
 	}
 }
