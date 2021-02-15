@@ -191,11 +191,11 @@ int					str_is_digit(char *str);
 /*
 **	builtin5.c
 */
-int		ft_exit(t_mini *s, char **args);
-char	**put_sorted_env_in_tab(t_mini *s);
-char	**sort_tab_env(char **s_env);
-int		print_sorted_env(t_mini *s);
-void	cd_str_error(char *s1, int flag);
+int					ft_exit(t_mini *s, char **args);
+char				**put_sorted_env_in_tab(t_mini *s);
+char				**sort_tab_env(char **s_env);
+int					print_sorted_env(t_mini *s);
+void				cd_str_error(char *s1, int flag);
 
 /*
 **	env.c
@@ -272,27 +272,27 @@ void				ft_free_tab(char **env);
 /*
 **	search_bin.c
 */
-char	*try_bin_path(char *bin_path, char *cmd_name);
-int		check_bin_right(char *path, char **args);
-char	*find_bin_path(t_mini *s, char **args);
-int		exec_bin(t_mini *s, t_cmdl *cmd, char **args);
-int		ft_str_error(char *path, char *str, int ret);
+char				*try_bin_path(char *bin_path, char *cmd_name);
+int					check_bin_right(char *path, char **args);
+char				*find_bin_path(t_mini *s, char **args);
+int					exec_bin(t_mini *s, t_cmdl *cmd, char **args);
+int					ft_str_error(char *path, char *str, int ret);
 
 /*
 **	parse_cmd_args.c
 */
-t_cmdl	*join_tokens(t_cmdl *cmd);
-int		parse_cmd_args(t_mini *s, t_cmdl *cmd);
-t_tok	*norme_chlag(t_tok *token);
-void	parse_cmd_args2(t_cmdl *cmd);
-t_cmdl	*join_tokens(t_cmdl *cmd);
+t_cmdl				*join_tokens(t_cmdl *cmd);
+int					parse_cmd_args(t_mini *s, t_cmdl *cmd);
+t_tok				*norme_chlag(t_tok *token);
+void				parse_cmd_args2(t_cmdl *cmd);
+t_cmdl				*join_tokens(t_cmdl *cmd);
 
 /*
 **	exec_tools.c
 */
-int		apply_assignement(t_mini *s, t_cmdl *cmd);
-int		cmd_has_only_assignement(t_cmdl *cmd);
-void	ft_free_tab(char **env);
+int					apply_assignement(t_mini *s, t_cmdl *cmd);
+int					cmd_has_only_assignement(t_cmdl *cmd);
+void				ft_free_tab(char **env);
 
 /*
 **	ft_error.c
@@ -347,7 +347,7 @@ int					ft_lit_char(t_cmdl *cmd, int i);
 /*
 **	ft_split_ms.c
 */
-char		**ft_split_ms(char const *s, char c);
+char				**ft_split_ms(char const *s, char c);
 
 #endif
 #ifndef SIZE_T_MAX
