@@ -85,7 +85,7 @@ int		print_sorted_env(t_mini *s)
 		ft_putstr_fd("declare -x ", s->std.out);
 		while (s_env[i][j - 1] != '=' && s_env[i][j])
 			write(s->std.out, &s_env[i][j++], 1);
-		if (s_env[i][j])
+		if (s_env[i][j - 1] == '=')
 		{
 			write(s->std.out, "\"", 1);
 			while (s_env[i][j])
