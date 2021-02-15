@@ -39,12 +39,12 @@ int		ft_pwd(t_mini *s, char **args)
 	char *cwd;
 
 	(void)s;
-	cwd = ft_calloc(PATH_MAX, sizeof(char));
-	if (!cwd)
-	{
-		error(s, ERR_CALLOC);
-		return (1);
-	}
+	/*cwd = ft_calloc(PATH_MAX, sizeof(char));*/
+	/*if (!cwd)*/
+	/*{*/
+		/*error(s, ERR_CALLOC);*/
+		/*return (1);*/
+	/*}*/
 	cwd = getcwd(args[1], PATH_MAX);
 	if (!cwd)
 	{
