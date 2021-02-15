@@ -154,8 +154,10 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		if ((check_bin_right(path, args) == 1))
 			execve(path, args, env);
 		else
+		{
+			free(path);
 			exit(g_sig.ret);
-		free(path);
+		}
 		cmd->ret = cmd->ret;
 	}
 	else
