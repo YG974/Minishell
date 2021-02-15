@@ -38,11 +38,10 @@ void	ft_pipe2(t_mini *s, t_cmdl *cmd, int fd, t_tok *next)
 		ft_redirection(s, cmd);
 		ft_exe_cmd(s, cmd);
 		close(fd);
-		close(4);
-		s->firstfd = 0;
 		close(0);
 		close(1);
 		close(2);
+		ft_free_env(s->env);
 		exit(g_sig.ret);
 	}
 	close(fd);
@@ -68,6 +67,7 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 		close(0);
 		close(1);
 		close(2);
+		ft_free_env(s->env);
 		exit(g_sig.ret);
 	}
 	else

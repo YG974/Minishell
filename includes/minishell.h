@@ -150,6 +150,7 @@ t_sig	g_sig;
 **	minishell.c
 */
 void				init_mini(t_mini *s);
+void				ft_free_env(t_env *env);
 void				minishell(t_mini *s);
 void				prompt(t_mini *s);
 
