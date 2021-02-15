@@ -91,7 +91,7 @@ int		go_to_path(t_mini *s, char *args)
 	return (i);
 }
 
-void	cd_str_error(char *s1, char *s2, int flag)
+void	cd_str_error(char *s1, int flag)
 {
 	if (flag == 1)
 	{
@@ -109,7 +109,6 @@ void	cd_str_error(char *s1, char *s2, int flag)
 		ft_putstr_fd(RESET, STDERR);
 	}
 	free(s1);
-	free(s2);
 }
 
 int		go_to_home_path(t_mini *s)
@@ -122,13 +121,13 @@ int		go_to_home_path(t_mini *s)
 	path = get_env_value(s, buf);
 	if ((i = ft_strlen(path)) < 1)
 	{
-		cd_str_error(path, buf, 1);
+		cd_str_error(path, 1);
 		return (1);
 	}
 	i = chdir(path);
 	if (i != 0)
 	{
-		cd_str_error(path, buf, 2);
+		cd_str_error(path, 2);
 	}
 	return (-i);
 }
