@@ -101,3 +101,23 @@ char	**sort_tab_env(char **s_env)
 	}
 	return (s_env);
 }
+
+void	cd_str_error(char *s1, int flag)
+{
+	if (flag == 1)
+	{
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd("Minishell: cd: ", STDERR);
+		ft_putstr_fd("HOME not set\n", 2);
+		ft_putstr_fd(RESET, STDERR);
+	}
+	if (flag == 2)
+	{
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd("Minishell: cd: ", STDERR);
+		ft_putstr_fd(strerror(errno), STDERR);
+		ft_putstr_fd("\n", STDERR);
+		ft_putstr_fd(RESET, STDERR);
+	}
+	free(s1);
+}

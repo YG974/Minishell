@@ -94,13 +94,3 @@ void	break_cmdline_into_token(t_mini *s)
 		cmd = cmd->next;
 	}
 }
-
-void	print_tab(char **tab)
-{
-	int	i;
-
-	i = -1;
-	printf("print tab \n");
-	while (tab[++i])
-		printf("%s\n", tab[i]);
-}

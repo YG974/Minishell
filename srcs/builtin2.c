@@ -96,7 +96,6 @@ int		print_sorted_env(t_mini *s)
 		j = 0;
 		i++;
 	}
-	ft_free_tab(s_env);
 	return (0);
 }
 
