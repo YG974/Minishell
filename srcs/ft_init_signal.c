@@ -39,7 +39,7 @@ void	handle_sigquit(int signum)
 	if (g_sig.pid != 0)
 	{
 		ft_putstr_fd(RED, STDERR);
-		ft_putstr_fd("Quit: 3\n", STDERR);
+		ft_putstr_fd("Quitter (core dumped)\n", STDERR);
 		ft_putstr_fd(RESET, STDERR);
 		g_sig.quit = 1;
 	}

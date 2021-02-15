@@ -91,31 +91,44 @@ int		go_to_path(t_mini *s, char *args)
 	return (i);
 }
 
-int		go_to_home_path(t_mini *s)
+void	cd_str_error(char *s1, char *s2, int flag)
 {
-	char	*path;
-	int		i;
-
-	path = ft_strdup("HOME");
-	path = get_env_value(s, path);
-	if ((i = ft_strlen(path)) < 1)
+	if (flag == 1)
 	{
 		ft_putstr_fd(RED, STDERR);
 		ft_putstr_fd("Minishell: cd: ", STDERR);
 		ft_putstr_fd("HOME not set\n", 2);
 		ft_putstr_fd(RESET, STDERR);
-		free(path);
-		return (1);
 	}
-	i = chdir(path);
-	if (i != 0)
+	if (flag == 2)
 	{
 		ft_putstr_fd(RED, STDERR);
 		ft_putstr_fd("Minishell: cd: ", STDERR);
 		ft_putstr_fd(strerror(errno), STDERR);
 		ft_putstr_fd("\n", STDERR);
 		ft_putstr_fd(RESET, STDERR);
-		free(path);
+	}
+	free(s1);
+	free(s2);
+}
+
+int		go_to_home_path(t_mini *s)
+{
+	char	*path;
+	char	*buf;
+	int		i;
+
+	buf = ft_strdup("HOME");
+	path = get_env_value(s, buf);
+	if ((i = ft_strlen(path)) < 1)
+	{
+		cd_str_error(path, buf, 1);
+		return (1);
+	}
+	i = chdir(path);
+	if (i != 0)
+	{
+		cd_str_error(path, buf, 2);
 	}
 	return (-i);
 }
