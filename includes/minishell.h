@@ -141,6 +141,7 @@ typedef struct		s_mini
 	int				error;
 	int				i;
 	int				j;
+	int				firstfd;
 }					t_mini;
 
 t_sig	g_sig;

@@ -56,6 +56,7 @@ void	init_mini(t_mini *s)
 	s->read.count = BUFF_SIZE;
 	s->parse.semcol = 0;
 	s->firstcmdl = NULL;
+	s->firstfd = 0;
 }
 
 void	ft_free_env(t_env *env)
