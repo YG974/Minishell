@@ -21,7 +21,7 @@ int		ft_cd(t_mini *s, char **args)
 	int		ret;
 
 	i = count_args(args);
-	if (s->std.in > 0)
+	if (s->std.in > 1)
 	{
 		get_next_line(s->std.in, &buf);
 		ret = go_to_path(s, buf);
