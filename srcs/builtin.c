@@ -104,6 +104,7 @@ int		go_to_home_path(t_mini *s)
 		ft_putstr_fd("Minishell: cd: ", STDERR);
 		ft_putstr_fd("HOME not set\n", 2);
 		ft_putstr_fd(RESET, STDERR);
+		free(path);
 		return (1);
 	}
 	i = chdir(path);
@@ -114,6 +115,7 @@ int		go_to_home_path(t_mini *s)
 		ft_putstr_fd(strerror(errno), STDERR);
 		ft_putstr_fd("\n", STDERR);
 		ft_putstr_fd(RESET, STDERR);
+		free(path);
 	}
 	return (-i);
 }
