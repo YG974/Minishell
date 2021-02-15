@@ -291,6 +291,7 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 	if (cmd->buf)
 		free(cmd->buf);
 	cmd->ret = ft_export(s, args);
+	ft_free_tab(args);
 	return (cmd->ret);
 }
 
