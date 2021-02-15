@@ -72,3 +72,11 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 	ft_free_tab(args);
 	return (cmd->ret);
 }
+
+void	closepipes(t_mini *s)
+{
+	close(0);
+	close(1);
+	close(2);
+	ft_free_env(s->env);
+}

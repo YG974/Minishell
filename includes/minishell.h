@@ -295,6 +295,7 @@ t_cmdl				*join_tokens(t_cmdl *cmd);
 int					apply_assignement(t_mini *s, t_cmdl *cmd);
 int					cmd_has_only_assignement(t_cmdl *cmd);
 void				ft_free_tab(char **env);
+void				closepipes(t_mini *s);
 
 /*
 **	ft_error.c

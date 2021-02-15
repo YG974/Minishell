@@ -64,10 +64,7 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 		if (!ft_redirection(s, cmd))
 			ft_exe_cmd(s, cmd);
 		close(fd[1]);
-		close(0);
-		close(1);
-		close(2);
-		ft_free_env(s->env);
+		closepipes(s);
 		exit(g_sig.ret);
 	}
 	else
