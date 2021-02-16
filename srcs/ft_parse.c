@@ -157,9 +157,11 @@ int		syntax_error(t_mini *s, char *str, int err)
 	else if (err == 2)
 		ft_putstr_fd("Minishell: syntax error : double quotes opened.\n", STDERR);
 	else
+	{
 		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
-	ft_putstr_fd(str, STDERR);
-	ft_putstr_fd("\"\n", STDERR);
+		ft_putstr_fd(str, STDERR);
+		ft_putstr_fd("\"\n", STDERR);
+	}
 	ft_putstr_fd(RESET, STDERR);
 	return (-1);
 }
@@ -250,6 +252,7 @@ int		ft_parse(t_mini *s)
 		return (0);
 	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
 		return (0);
-	exit(1);
+	ft_putstr_fd(s->p.str, 1);
+	/*exit(1);*/
 	return (1);
 }
