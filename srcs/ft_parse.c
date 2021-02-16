@@ -92,37 +92,37 @@ char	*get_env_value(t_mini *s, char *name)
 **	replace the env values ($NAME) by their value in cmd->buf
 */
 
-void	expand_dollars(t_mini *s, t_cmdl *cmd)
+void	expand_dollars(t_mini *s, t_parse *p)
 {
 	char	*tmp;
 
 	s->i = 0;
 	s->j = 0;
-	cmd->buf = ft_strdup("");
-	while (cmd->str[s->i])
+	p->buf = ft_strdup("");
+	while (p->str[s->i])
 	{
 		s->i = s->i + s->j;
 		s->j = 0;
-		if (cmd->flag[s->i] == '4')
+		if (p->flag[s->i] == '4')
 		{
-			while (cmd->flag[s->i + s->j] == '4' && cmd->str[s->i + s->j])
+			while (p->flag[s->i + s->j] == '4' && p->str[s->i + s->j])
 				s->j++;
-			tmp = ft_strdup_size(cmd->str, s->i + s->j, s->i);
+			tmp = ft_strdup_size(p->str, s->i + s->j, s->i);
 			tmp = get_env_value(s, tmp);
 		}
 		else
 		{
-			while (cmd->flag[s->i + s->j] != '4' && cmd->str[s->i + s->j])
+			while (p->flag[s->i + s->j] != '4' && p->str[s->i + s->j])
 				s->j++;
-			tmp = ft_strdup_size(cmd->str, s->i + s->j - 1, s->i);
+			tmp = ft_strdup_size(p->str, s->i + s->j - 1, s->i);
 		}
-		cmd->buf = ft_strjoin_free_s1(cmd->buf, tmp);
+		p->buf = ft_strjoin_free_s1(p->buf, tmp);
 		free(tmp);
 	}
 }
 
 /*
-**	flag the dollars sign in the cmd->flag string with a '4'
+**	flag the dollars sign in the p->flag string with a '4'
 */
 
 void	check_dollars(t_mini *s, t_parse *p)
@@ -166,7 +166,7 @@ int		syntax_error(t_mini *s, char *str, int err)
 
 void	check_lit_char(t_mini *s, t_parse *p)
 {
-	p->flag[s->i] = '3';
+	/*p->flag[s->i] = '3';*/
 	s->i++;
 	if (p->str[s->i])
 		p->flag[s->i] = '3';
@@ -259,9 +259,13 @@ int		ft_parse(t_mini *s)
 		return (0);
 	check_dollars(s, &s->p);
 	expand_dollars(s, &s->p);
-	free_str_flags(&s->p);
+	/*free_str_flags(&s->p);*/
 	s->p.str = s->p.buf;
 	ft_putstr_fd(s->p.str, 1);
+	ft_putstr_fd( "\n", 1);
+	ft_putstr_fd(s->p.flag, 1);
+	ft_putstr_fd( "\n", 1);
+	check_quotes( s, &s->p);
 	/*exit(1);*/
 	return (0);
 }
