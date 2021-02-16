@@ -12,3 +12,8 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+
+int		break_cmdline_into_token(t_mini *s);
+{
+
+}

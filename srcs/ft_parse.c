@@ -259,13 +259,14 @@ int		ft_parse(t_mini *s)
 		return (0);
 	check_dollars(s, &s->p);
 	expand_dollars(s, &s->p);
-	/*free_str_flags(&s->p);*/
+	free_str_flags(&s->p);
 	s->p.str = s->p.buf;
+	check_quotes( s, &s->p);
 	ft_putstr_fd(s->p.str, 1);
 	ft_putstr_fd( "\n", 1);
 	ft_putstr_fd(s->p.flag, 1);
 	ft_putstr_fd( "\n", 1);
-	check_quotes( s, &s->p);
-	/*exit(1);*/
+	if (!(break_cmdline_into_token(s)))
+		return (syntax_error(s, s->p.buf, 3));
 	return (0);
 }

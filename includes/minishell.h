@@ -339,7 +339,7 @@ int					ft_inc_i(char *str, char *flag, int i, char c);
 **	token4.c
 */
 void				ft_closefd(t_mini *s);
-void				break_cmdline_into_token(t_mini *s);
+int					break_cmdline_into_token(t_mini *s);
 void				free_cmd_str(t_cmdl *cmd);
 
 /*
