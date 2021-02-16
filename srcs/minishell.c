@@ -81,7 +81,7 @@ void	minishell(t_mini *s)
 		init_signal(s);
 		prompt(s);
 		if (!s->status && s->error != 2 && ft_parse(s))
-			error(s, ERR_CALLOC);
+			;
 		free(s->read.buf);
 	}
 	ft_free_env(s->env);

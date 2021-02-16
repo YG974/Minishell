@@ -146,7 +146,8 @@ void	check_dollars(t_mini *s, t_cmdl *cmd)
 
 int		syntax_error(t_mini *s, char *str, int err)
 {
-	s->error = 2;
+	/*s->error = 2;*/
+	(void)s;
 	g_sig.ret = 2;
 	ft_putstr_fd(RED, STDERR);
 	if (err == 1)
@@ -254,5 +255,5 @@ int		ft_parse(t_mini *s)
 		return (0);
 	ft_putstr_fd(s->p.str, 1);
 	/*exit(1);*/
-	return (1);
+	return (0);
 }
