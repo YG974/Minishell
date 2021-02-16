@@ -137,6 +137,7 @@ typedef struct		s_mini
 	t_cmdl			*currentcmdl;
 	char			**line;
 	int				status;
+	int				parsed;
 	int				sig;
 	int				error;
 	int				i;

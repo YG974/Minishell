@@ -83,13 +83,35 @@ void	syntax_error(t_mini *s, char *str)
 	ft_putstr_fd(RESET, STDERR);
 }
 
+void	check_sep(t_mini *s, t_cmdl *cmd)
+{
+	t_tok	*t;
+	
+	t = cmd->firsttoken;
+	while (t && s->parsed == 0)
+	{
+		/*if (t->flag == 2)*/
+		ft_printf("str:%s|flag:%d\n",t->str, t->flag);
+
+	t = t->next;
+	}
+}
+
 int		check_syntax(t_mini *s, t_cmdl *cmd)
 {
-	(void)cmd;
-	int		ret;
-
-	ret = 0;
-	if (ret == -1)
+	s->parsed = 0;
+	while (cmd && !s->error)
+	{
+		cmd = cmd->next;
+		check_quotes_and_dollars(s, cmd);
+		expand_dollars(s, cmd);
+		free_cmd_str(cmd);
+		cmd->str = cmd->buf;
+		check_quotes_and_dollars(s, cmd);
+		ft_get_tokens(s, cmd);
+		check_sep(s, cmd);
+	}
+	if (s->parsed == -1)
 		syntax_error(s, cmd->token->str);
 	return (1);
 }
@@ -100,6 +122,8 @@ void	break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
+	if (!check_syntax(s, cmd))
+		return ;
 	while (cmd && !s->error)
 	{
 		check_quotes_and_dollars(s, cmd);
@@ -108,8 +132,6 @@ void	break_cmdline_into_token(t_mini *s)
 		cmd->str = cmd->buf;
 		check_quotes_and_dollars(s, cmd);
 		ft_get_tokens(s, cmd);
-		if (!check_syntax(s, cmd))
-			return ;
 		handle_dollar_question_mark(s, cmd);
 		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
 			ft_exe_cmd(s, cmd);
