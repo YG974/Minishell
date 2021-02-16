@@ -117,6 +117,13 @@ typedef	struct		s_cmdl
 	struct s_cmdl	*next;
 }					t_cmdl;
 
+typedef	struct		s_parse
+{
+	char			*str;
+	char			*flag;
+	char			*buf;
+}					t_parse;
+
 typedef	struct		s_sig
 {
 	int				interrupt;
@@ -135,6 +142,7 @@ typedef struct		s_mini
 	t_forparse		parse;
 	t_cmdl			*firstcmdl;
 	t_cmdl			*currentcmdl;
+	t_parse			p;
 	char			**line;
 	int				status;
 	int				parsed;
@@ -310,8 +318,6 @@ void				error(t_mini *s, int error);
 char				*get_env_value(t_mini *s, char *name);
 void				expand_dollars(t_mini *s, t_cmdl *cmd);
 void				check_dollars(t_mini *s, t_cmdl *cmd);
-void				check_double_quotes(t_mini *s, t_cmdl *cmd);
-void				check_simple_quotes(t_mini *s, t_cmdl *cmd);
 
 /*
 **	token2.c
@@ -334,8 +340,6 @@ int					ft_inc_i(char *str, char *flag, int i, char c);
 /*
 **	token4.c
 */
-void				check_lit_char(t_mini *s, t_cmdl *cmd);
-void				check_quotes(t_mini *s, t_cmdl *cmd);
 void				ft_closefd(t_mini *s);
 void				break_cmdline_into_token(t_mini *s);
 void				free_cmd_str(t_cmdl *cmd);
