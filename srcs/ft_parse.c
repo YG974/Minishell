@@ -125,19 +125,19 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd)
 **	flag the dollars sign in the cmd->flag string with a '4'
 */
 
-void	check_dollars(t_mini *s, t_cmdl *cmd)
+void	check_dollars(t_mini *s, t_parse *p)
 {
 	s->i = 0;
-	while (cmd->str[s->i])
+	while (p->str[s->i])
 	{
-		if (cmd->str[s->i] == '$' && cmd->flag[s->i] != '1'
-				&& cmd->str[s->i - 1] != '\\')
+		if (p->str[s->i] == '$' && p->flag[s->i] != '1'
+				&& p->str[s->i - 1] != '\\')
 		{
 			s->i++;
-			while (cmd->str[s->i]
-					&& (ft_isalnum(cmd->str[s->i])
-						|| cmd->str[s->i] == '_'))
-				cmd->flag[s->i++] = '4';
+			while (p->str[s->i]
+					&& (ft_isalnum(p->str[s->i])
+						|| p->str[s->i] == '_'))
+				p->flag[s->i++] = '4';
 		}
 		else
 			s->i++;
@@ -151,10 +151,7 @@ int		syntax_error(t_mini *s, char *str, int err)
 	g_sig.ret = 2;
 	ft_putstr_fd(RED, STDERR);
 	if (err == 1)
-	{
-	ft_putstr_fd("Minishell: syntax error : single quotes opened.\n", STDERR);
-
-	}
+		ft_putstr_fd("Minishell: syntax error : single quotes opened.\n", STDERR);
 	else if (err == 2)
 		ft_putstr_fd("Minishell: syntax error : double quotes opened.\n", STDERR);
 	else
@@ -243,6 +240,13 @@ int		check_quotes(t_mini *s, t_parse *p)
 	return (1);
 }
 
+void	free_str_flags(t_parse *p)
+{
+	if (p->str)
+		free(p->str);
+	if (p->flag)
+		free(p->flag);
+}
 
 int		ft_parse(t_mini *s)
 {
@@ -253,6 +257,10 @@ int		ft_parse(t_mini *s)
 		return (0);
 	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
 		return (0);
+	check_dollars(s, &s->p);
+	expand_dollars(s, &s->p);
+	free_str_flags(&s->p);
+	s->p.str = s->p.buf;
 	ft_putstr_fd(s->p.str, 1);
 	/*exit(1);*/
 	return (0);

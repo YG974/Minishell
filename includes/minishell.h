@@ -316,8 +316,6 @@ void				error(t_mini *s, int error);
 **	token.c
 */
 char				*get_env_value(t_mini *s, char *name);
-void				expand_dollars(t_mini *s, t_cmdl *cmd);
-void				check_dollars(t_mini *s, t_cmdl *cmd);
 
 /*
 **	token2.c
