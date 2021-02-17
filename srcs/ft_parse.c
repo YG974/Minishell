@@ -308,9 +308,9 @@ int		ft_parse(t_mini *s)
 	/*free_str_flags(&s->p);*/
 	check_quotes( s, &s->p);
 	print_str(s);
-	free(s->p.buf);
-	free(s->p.flag);
 	if (!(break_cmdline_into_token(s)))
 		return (syntax_error(s, s->p.buf, 3));
+	free(s->p.buf);
+	free(s->p.flag);
 	return (0);
 }
