@@ -270,12 +270,22 @@ int		check_quotes(t_mini *s, t_parse *p)
 	return (1);
 }
 
-void	free_str_flags(t_parse *p)
+/*
+** itinerate the string and put the flag 5 on every not escaped blank
+** FLAG = 5 --> not escaped BLANK
+*/
+
+void	flag_blank(t_mini *s, t_parse *p)
 {
-	if (p->str)
-		free(p->str);
-	if (p->flag)
-		free(p->flag);
+	s->i = 0;
+	while (p->str[s->i])
+	{
+		if ((p->str[s->i] == ' ' || p->str[s->i] == '\t') &&
+			(p->flag[s->i] == '0'))
+			p->flag[s->i] = '5';
+		s->i++;
+	}
+	return ;
 }
 
 void	print_str(t_mini *s)
@@ -304,9 +314,8 @@ int		ft_parse(t_mini *s)
 	expand_dollars(s, &s->p, 0, 0);
 	print_str(s);
 	s->p.str = s->p.buf;
-	print_str(s);
-	/*free_str_flags(&s->p);*/
 	check_quotes( s, &s->p);
+	flag_blank(s, &s->p);
 	print_str(s);
 	if (!(break_cmdline_into_token(s)))
 		return (syntax_error(s, s->p.buf, 3));

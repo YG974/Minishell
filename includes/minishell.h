@@ -50,6 +50,8 @@
 # define S_QUOTED 1
 # define D_QUOTED 2
 # define ESCAPED 3
+# define TO_EXPAND 4
+# define BLANK 5
 
 /*
 **	FLAGS FOR TOKENS
