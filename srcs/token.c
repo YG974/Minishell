@@ -41,6 +41,49 @@ t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+char *shift_str_left(char *str, int i)
+{
+	while (str[i])
+	{
+		str[i - 1] = str[i];
+		i++;
+	}
+	str[i - 1] = '\0';
+	return (str);
+}
+char *delete_backslash(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i - 1] == '\\' && str[i -1])
+			str = shift_str_left(str, i);
+		else if (str[i] == '"' && str[i - 1] == '\\' && str[i -1])
+			str = shift_str_left(str, i);
+		else if (str[i] == '\\' && str[i - 1] == '\\' && str[i -1])
+			str = shift_str_left(str, i);
+		i++;
+	}
+	return (str);
+}
+
+t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
+{
+	t_tok	*new;
+	
+	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+		error(s, ERR_CALLOC);
+	while (s->p.flag[s->i] == '2')
+		s->i++;
+	new->str = ft_strdup_size(s->p.str, s->i -1, j + 1);
+	new->str = delete_backslash(new->str);
+	new->flag = 2;
+	new = link_token(s, tok, new);
+	return (new);
+}
+
 t_tok	*add_simple_quote(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -61,7 +104,7 @@ void	print_token(t_tok *tok)
 	while (tok)
 	{
 		i++;
-		ft_printf("%d-tok:%s\nflag:%d\nn----\n", i, tok->str,tok->flag);
+		ft_printf("%d-tok:%s|\n flag:%d|\n----\n", i, tok->str,tok->flag);
 		tok = tok->next;
 	}
 }
@@ -81,8 +124,8 @@ int		break_cmdline_into_token(t_mini *s)
 			cmd->token = add_blank(s, s->i, cmd->token);
 		else if (s->p.flag[s->i] == '1')
 			cmd->token = add_simple_quote(s, s->i, cmd->token);
-		/*else if (s->p.flag[s->i] == '2')*/
-			/*cmd->token = add_double_quote(s, s->i, cmd->token);*/
+		else if (s->p.flag[s->i] == '2')
+			cmd->token = add_double_quote(s, s->i, cmd->token);
 		/*else if (s->p.flag[s->i] == '3')*/
 			/*cmd->token = add_backslash(s, s->i, cmd->token);*/
 		/*else if (s->p.flag[s->i] == '3')*/
