@@ -92,32 +92,60 @@ char	*get_env_value(t_mini *s, char *name)
 **	replace the env values ($NAME) by their value in cmd->buf
 */
 
-void	expand_dollars(t_mini *s, t_parse *p)
+char	*ft_strjoin_free_s1_s2(char const *s1, char const *s2)
+{
+	int		len1;
+	int		len2;
+	int		i;
+	char	*str;
+
+	if (!(s2 && s1))
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	i = 0;
+	if (!(str = malloc(sizeof(char) * (len1 + len2 + 1))))
+		return (NULL);
+	while (i < len1)
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (i < len1 + len2)
+	{
+		str[i] = s2[i - len1];
+		i++;
+	}
+	str[len1 + len2] = '\0';
+	free((void *)s1);
+	free((void *)s2);
+	return (str);
+}
+
+void	expand_dollars(t_mini *s, t_parse *p, int i, int j)
 {
 	char	*tmp;
 
-	s->i = 0;
-	s->j = 0;
 	p->buf = ft_strdup("");
-	while (p->str[s->i])
+	while (p->str[i])
 	{
-		s->i = s->i + s->j;
-		s->j = 0;
-		if (p->flag[s->i] == '4')
+		i = i + j;
+		j = 0;
+		if (p->flag[i] == '4')
 		{
-			while (p->flag[s->i + s->j] == '4' && p->str[s->i + s->j])
-				s->j++;
-			tmp = ft_strdup_size(p->str, s->i + s->j, s->i);
+			while (p->flag[i + j] == '4' && p->str[i + j])
+				j++;
+			tmp = ft_strdup_size(p->str, i + j, i);
 			tmp = get_env_value(s, tmp);
+			p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);
 		}
 		else
 		{
-			while (p->flag[s->i + s->j] != '4' && p->str[s->i + s->j])
-				s->j++;
-			tmp = ft_strdup_size(p->str, s->i + s->j - 1, s->i);
+			while (p->flag[i + j] != '4' && p->str[i + j])
+				j++;
+			tmp = ft_strdup_size(p->str, i + j - 1, i);
+			p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);
 		}
-		p->buf = ft_strjoin_free_s1(p->buf, tmp);
-		free(tmp);
 	}
 }
 
@@ -222,6 +250,8 @@ int		check_quotes(t_mini *s, t_parse *p)
 	int i;
 
 	i = -1;
+	if (p->flag)
+		free(p->flag);
 	p->flag = ft_strdup(p->str);
 	while (p->flag && p->flag[++i])
 		p->flag[i] = '0';
@@ -248,24 +278,38 @@ void	free_str_flags(t_parse *p)
 		free(p->flag);
 }
 
+void	print_str(t_mini *s)
+{
+	ft_putstr_fd( "str:", 1);
+	ft_putstr_fd(s->p.str, 1);
+	ft_putstr_fd( "\nflg:", 1);
+	ft_putstr_fd(s->p.flag, 1);
+	ft_putstr_fd( "\nbuf:", 1);
+	ft_putstr_fd(s->p.buf, 1);
+	ft_putstr_fd( "\n--------\n", 1);
+}
+
 int		ft_parse(t_mini *s)
 {
 	s->error = 0;
 	s->parsed = 0;
 	s->p.str = s->read.buf;
+	s->p.flag = ft_strdup("");
 	if (s->read.buf[0] == '\n')
 		return (0);
+	print_str(s);
 	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
 		return (0);
 	check_dollars(s, &s->p);
-	expand_dollars(s, &s->p);
-	free_str_flags(&s->p);
+	expand_dollars(s, &s->p, 0, 0);
+	print_str(s);
 	s->p.str = s->p.buf;
+	print_str(s);
+	/*free_str_flags(&s->p);*/
 	check_quotes( s, &s->p);
-	ft_putstr_fd(s->p.str, 1);
-	ft_putstr_fd( "\n", 1);
-	ft_putstr_fd(s->p.flag, 1);
-	ft_putstr_fd( "\n", 1);
+	print_str(s);
+	free(s->p.buf);
+	free(s->p.flag);
 	if (!(break_cmdline_into_token(s)))
 		return (syntax_error(s, s->p.buf, 3));
 	return (0);
