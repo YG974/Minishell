@@ -70,7 +70,7 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 	while (s->p.flag[s->i] == '7')
 		s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i, j);
-	new->flag = 1;
+	new->flag = T_WORD;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -85,6 +85,7 @@ t_tok	*add_newline(t_mini *s, int j, t_tok *tok)
 	new->str = ft_strdup("newline");
 	new->flag = NEWLINE;
 	new = link_token(s, tok, new);
+	s->i++;
 	return (new);
 }
 
@@ -95,10 +96,10 @@ t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 	(void)j;
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	while (s->p.flag[s->i + 1] == '5')
+	while (s->p.flag[s->i] == '5')
 		s->i++;
 	new->str = ft_strdup(" ");
-	new->flag = 5;
+	new->flag = BLANK;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -137,8 +138,9 @@ t_tok	*add_backslash(t_mini *s, int j, t_tok *tok)
 	
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
-	new->flag = 1;
+	s->i++;
+	new->str = ft_strdup_size(s->p.str, s->i, j);
+	new->flag = T_WORD;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -153,7 +155,7 @@ t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 		s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i -1, j + 1);
 	new->str = delete_backslash(new->str);
-	new->flag = 1;
+	new->flag = T_WORD;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -167,7 +169,7 @@ t_tok	*add_simple_quote(t_mini *s, int j, t_tok *tok)
 	while (s->p.flag[s->i] == '1')
 		s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i -1, j + 1);
-	new->flag = 1;
+	new->flag = T_WORD;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -229,9 +231,10 @@ int		break_cmdline_into_token(t_mini *s)
 			cmd->token = add_word(s, s->i, cmd->token);
 		else if (s->p.flag[s->i] == '8')
 			cmd->token = add_newline(s, s->i, cmd->token);
-		s->i++;
+		else
+			s->i++;
 	}
-	cmd = join_tokens(cmd);
+	/*cmd = join_tokens(cmd);*/
 	print_token(cmd->firsttoken);
 	return (1);
 }
