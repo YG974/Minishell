@@ -54,6 +54,7 @@
 # define BLANK 5
 # define META 6
 # define WORD 7
+//# define NEWLINE 8
 /*
 **	FLAGS FOR TOKENS
 */
@@ -64,10 +65,11 @@
 # define S_LESS 13
 # define S_PIPE 14
 # define S_SEMICOLON 15
+# define NEWLINE 16
 //forbidenn token
-# define D_PIPE 16
-# define D_LESS 17
-# define D_SEMICOLON 18
+# define D_PIPE 17
+# define D_LESS 18
+# define D_SEMICOLON 19
 
 /*
 **	FLAGS FOR TOKENS

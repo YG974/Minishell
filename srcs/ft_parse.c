@@ -278,6 +278,18 @@ int		is_meta(char c)
 		return (0);
 }
 
+void	flag_newline(t_mini *s, t_parse *p)
+{
+	s->i = 0;
+	while (p->str[s->i])
+	{
+		if (p->str[s->i] == '\n')
+			p->flag[s->i] = '8';
+		s->i++;
+	}
+	return ;
+}
+
 void	flag_meta(t_mini *s, t_parse *p)
 {
 	s->i = 0;
@@ -333,12 +345,6 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
 	else if (err == 2)
 		ft_putstr_fd("Minishell: syntax error token not supported: \"", STDERR);
-	/*else if (!tok)*/
-	/*if (tok->flag == S_SEMICOLON)*/
-	/*{*/
-		/*free(tok->str);*/
-		/*tok->str = ft_strdup("newline");*/
-	/*}*/
 	if (tok->str)
 		ft_putstr_fd(tok->str, STDERR);
 	ft_putstr_fd("\"\n", STDERR);
@@ -365,8 +371,12 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 			s->currentcmdl->token = tok;
 			return (0);
 		}
+		if (tok->flag > BLANK)
+		{
+			s->currentcmdl->token = tok;
+			return (-1);
+		}
 	}
-	s->currentcmdl->token = tok;
 	return (-1);
 }
 
@@ -416,6 +426,7 @@ int		ft_parse(t_mini *s)
 	flag_blank(s, &s->p);
 	flag_meta(s, &s->p);
 	flag_word(s, &s->p);
+	flag_newline(s, &s->p);
 	print_str(s);
 	if (!(break_cmdline_into_token(s)))
 		return (0);
