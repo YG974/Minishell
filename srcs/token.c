@@ -70,7 +70,7 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 	while (s->p.flag[s->i] == '7')
 		s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i, j);
-	new->flag = 7;
+	new->flag = 1;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -124,9 +124,8 @@ t_tok	*add_backslash(t_mini *s, int j, t_tok *tok)
 	
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	/*s->i++;*/
 	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
-	new->flag = 3;
+	new->flag = 1;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -141,7 +140,7 @@ t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 		s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i -1, j + 1);
 	new->str = delete_backslash(new->str);
-	new->flag = 2;
+	new->flag = 1;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -167,8 +166,29 @@ void	print_token(t_tok *tok)
 	{
 		i++;
 		ft_printf("%d-tok:%s|\n flag:%d|\n----\n", i, tok->str,tok->flag);
+		/*ft_printf("|%s|f:%d-", tok->str,tok->flag);*/
 		tok = tok->next;
 	}
+}
+
+t_cmdl	*join_tokens(t_cmdl *cmd)
+{
+	t_tok	*tmp;
+	t_tok	*tok;
+
+	tok = cmd->firsttoken;
+	while (tok && tok->next)
+	{
+		if (tok->next && tok->flag == 1 && tok->next->flag == 1)
+		{
+			tmp = tok->next;
+			tok->next = tmp->next;
+			tok->str = ft_strjoin_free_s1(tok->str, tmp->str);
+			free(tmp->str);
+		}
+		tok = tok->next;
+	}
+	return (cmd);
 }
 
 int		break_cmdline_into_token(t_mini *s)
@@ -196,6 +216,7 @@ int		break_cmdline_into_token(t_mini *s)
 			cmd->token = add_word(s, s->i, cmd->token);
 		s->i++;
 	}
+	cmd = join_tokens(cmd);
 	print_token(cmd->firsttoken);
 	return (1);
 }

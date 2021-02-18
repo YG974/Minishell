@@ -54,6 +54,14 @@
 # define BLANK 5
 # define META 6
 # define WORD 7
+# define S_GREATER 11
+# define D_GREATER 12
+# define S_LESS 13
+# define S_PIPE 14
+# define S_SEMICOLON 15
+# define D_PIPE 16
+# define D_LESS 17
+# define D_SEMICOLON 18
 
 /*
 **	FLAGS FOR TOKENS
@@ -64,14 +72,6 @@
 # define FLAG_STR 4
 # define FLAG_ASSIGNEMENT 5
 # define FLAG_PIPE 6
-# define S_GREATER 11
-# define D_GREATER 12
-# define S_LESS 13
-# define S_PIPE 14
-# define S_SEMICOLON 15
-# define D_PIPE 16
-# define D_LESS 17
-# define D_SEMICOLON 18
 
 # define NOT_EXEC 126
 # define CMD_NOT_FOUND 127
@@ -304,11 +304,9 @@ int					ft_str_error(char *path, char *str, int ret);
 /*
 **	parse_cmd_args.c
 */
-t_cmdl				*join_tokens(t_cmdl *cmd);
 int					parse_cmd_args(t_mini *s, t_cmdl *cmd);
 t_tok				*norme_chlag(t_tok *token);
 void				parse_cmd_args2(t_cmdl *cmd);
-t_cmdl				*join_tokens(t_cmdl *cmd);
 
 /*
 **	exec_tools.c

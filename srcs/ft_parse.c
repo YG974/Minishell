@@ -334,12 +334,10 @@ int		ft_parse(t_mini *s)
 	s->p.flag = ft_strdup("");
 	if (s->read.buf[0] == '\n')
 		return (0);
-	print_str(s);
 	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
 		return (0);
 	check_dollars(s, &s->p);
 	expand_dollars(s, &s->p, 0, 0);
-	print_str(s);
 	s->p.str = s->p.buf;
 	check_quotes( s, &s->p);
 	flag_blank(s, &s->p);
@@ -348,6 +346,7 @@ int		ft_parse(t_mini *s)
 	print_str(s);
 	if (!(break_cmdline_into_token(s)))
 		return (syntax_error(s, s->p.buf, 3));
+	/*join_tokens(s->currentcmdl);*/
 	free(s->p.buf);
 	free(s->p.flag);
 	return (0);
