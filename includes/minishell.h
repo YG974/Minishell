@@ -64,6 +64,14 @@
 # define FLAG_STR 4
 # define FLAG_ASSIGNEMENT 5
 # define FLAG_PIPE 6
+# define S_GREATER 11
+# define D_GREATER 12
+# define S_LESS 13
+# define S_PIPE 14
+# define S_SEMICOLON 15
+# define D_PIPE 16
+# define D_LESS 17
+# define D_SEMICOLON 18
 
 # define NOT_EXEC 126
 # define CMD_NOT_FOUND 127

@@ -26,6 +26,27 @@ t_tok	*link_token(t_mini *s, t_tok *tok, t_tok *new)
 	return (new);
 }
 
+int		flag_meta_token(char *str)
+{
+	if (str[0] == '>' && str[1] == '\0')
+		return (S_GREATER);
+	else if (str[0] == '>' && str[1] == '>')
+		return (D_GREATER);
+	else if (str[0] == '<' && str[1] == '\0')
+		return (S_LESS);
+	else if (str[0] == '<' && str[1] == '<')
+		return (D_LESS);
+	else if (str[0] == '|' && str[1] == '\0')
+		return (S_PIPE);
+	else if (str[0] == '|' && str[1] == '|')
+		return (D_PIPE);
+	else if (str[0] == ';' && str[1] == '\0')
+		return (S_PIPE);
+	else if (str[0] == ';' && str[1] == ';')
+		return (D_PIPE);
+	return (0);
+}
+
 t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -35,7 +56,7 @@ t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 	if (s->p.flag[s->i] == '6' && (s->p.str[s->i] == s->p.str[s->i + 1]))
 		s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
-	new->flag = 6;
+	new->flag = flag_meta_token(new->str);
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -48,7 +69,7 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '7')
 		s->i++;
-	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
+	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new->flag = 7;
 	new = link_token(s, tok, new);
 	return (new);
@@ -61,9 +82,8 @@ t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 	(void)j;
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	while (s->p.flag[s->i] == '5')
+	while (s->p.flag[s->i + 1] == '5')
 		s->i++;
-	s->i++;
 	new->str = ft_strdup(" ");
 	new->flag = 5;
 	new = link_token(s, tok, new);

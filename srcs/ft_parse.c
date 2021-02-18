@@ -103,14 +103,11 @@ char	*ft_strjoin_free_s1_s2(char const *s1, char const *s2)
 		return (NULL);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
-	i = 0;
+	i = -1;
 	if (!(str = malloc(sizeof(char) * (len1 + len2 + 1))))
 		return (NULL);
-	while (i < len1)
-	{
+	while (++i < len1)
 		str[i] = s1[i];
-		i++;
-	}
 	while (i < len1 + len2)
 	{
 		str[i] = s2[i - len1];
@@ -194,7 +191,6 @@ int		syntax_error(t_mini *s, char *str, int err)
 
 void	check_lit_char(t_mini *s, t_parse *p)
 {
-	/*p->flag[s->i] = '3';*/
 	s->i++;
 	if (p->str[s->i])
 		p->flag[s->i] = '3';
