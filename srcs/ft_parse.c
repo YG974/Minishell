@@ -274,6 +274,37 @@ int		check_quotes(t_mini *s, t_parse *p)
 ** itinerate the string and put the flag 5 on every not escaped blank
 ** FLAG = 5 --> not escaped BLANK
 */
+int		is_meta(char c)
+{
+	if (c == '>' || c == '<' || c == ';' || c == '|')
+		return (1);
+	else
+		return (0);
+}
+
+void	flag_meta(t_mini *s, t_parse *p)
+{
+	s->i = 0;
+	while (p->str[s->i])
+	{
+		if ((is_meta(p->str[s->i]) == 1 && p->flag[s->i] == '0'))
+			p->flag[s->i] = '6';
+		s->i++;
+	}
+	return ;
+}
+
+void	flag_word(t_mini *s, t_parse *p)
+{
+	s->i = 0;
+	while (p->str[s->i])
+	{
+		if (p->str[s->i] != '\\' && p->flag[s->i] == '0')
+			p->flag[s->i] = '7';
+		s->i++;
+	}
+	return ;
+}
 
 void	flag_blank(t_mini *s, t_parse *p)
 {
@@ -316,6 +347,8 @@ int		ft_parse(t_mini *s)
 	s->p.str = s->p.buf;
 	check_quotes( s, &s->p);
 	flag_blank(s, &s->p);
+	flag_meta(s, &s->p);
+	flag_word(s, &s->p);
 	print_str(s);
 	if (!(break_cmdline_into_token(s)))
 		return (syntax_error(s, s->p.buf, 3));

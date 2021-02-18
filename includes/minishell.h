@@ -52,6 +52,8 @@
 # define ESCAPED 3
 # define TO_EXPAND 4
 # define BLANK 5
+# define META 6
+# define WORD 7
 
 /*
 **	FLAGS FOR TOKENS
