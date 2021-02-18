@@ -13,43 +13,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-int		ft_check_semicolons(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (i > 0 && line[i - 1] == '\\')
-			i++;
-		else if (line[i] == ';' && !ft_not_quoted(line, i))
-		{
-			i++;
-			while (line[i] != '\0' && line[i] == ' ')
-				i++;
-			if (line[i] == ';')
-				return (1);
-		}
-		else
-			i++;
-	}
-	return (0);
-}
-
-void	ft_testchainlist(t_mini *s)
-{
-	int		i;
-	t_cmdl	*tmp;
-
-	i = 0;
-	tmp = s->firstcmdl;
-	while (tmp)
-	{
-		ft_printf("CMD LINE %d : %s\n", i, tmp->str);
-		i++;
-		tmp = tmp->next;
-	}
-}
 
 /*
 **	cmd->str = command line;
@@ -367,7 +330,7 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 		tok = tok->next;
 		if (tok->flag == T_WORD)
 		{
-			tok->flag = REDIR_ARG;
+			tok->flag = 2;
 			s->currentcmdl->token = tok;
 			return (0);
 		}
@@ -382,18 +345,21 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 
 int		check_sep_syntax(t_mini *s)
 {
-	s->currentcmdl->token = s->firstcmdl->firsttoken;
-	if (s->currentcmdl->token->flag == S_SEMICOLON)
-		return(syntax_sep_error(s, s->currentcmdl->token, 1));
-	while (s->currentcmdl->token)
+	t_tok	*tok;
+
+	(void)s;
+	tok = s->firstcmdl->firsttoken;
+	tok = s->firstcmdl->firsttoken;
+	if (tok->flag == S_SEMICOLON)
+		return(syntax_sep_error(s, tok, 1));
+	while (tok)
 	{
-		if (s->currentcmdl->token->flag >= D_PIPE)
-			return(syntax_sep_error(s, s->currentcmdl->token, 2));
-		else if ((is_redir(s->currentcmdl->token->flag) == 1) &&
-				((find_redir_arg(s, s->currentcmdl->token)) == -1))
-			return(syntax_sep_error(s, s->currentcmdl->token, 1));
-			
-		s->currentcmdl->token = s->currentcmdl->token->next;
+		if (tok->flag >= D_PIPE)
+			return(syntax_sep_error(s, tok, 2));
+		else if ((is_redir(tok->flag) == 1) &&
+				((find_redir_arg(s, tok)) == -1))
+			return(syntax_sep_error(s, tok, 1));
+		tok = tok->next;
 	}
 	return (1);
 }
@@ -432,6 +398,7 @@ int		ft_parse(t_mini *s)
 		return (0);
 	if ((check_sep_syntax(s)) == -1 || ((split_cmdl(s)) == -1))
 		return (0);
+	print_token(s->currentcmdl->firsttoken);
 	/*join_tokens(s->currentcmdl);*/
 	free(s->p.buf);
 	free(s->p.flag);

@@ -242,6 +242,5 @@ int		break_cmdline_into_token(t_mini *s)
 			s->i++;
 	}
 	cmd = join_tokens(cmd);
-	print_token(cmd->firsttoken);
 	return (1);
 }
