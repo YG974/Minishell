@@ -29,6 +29,7 @@ void	prompt(t_mini *s)
 				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret],
 						s->read.count);
 			}
+			s->read.buf[s->read.ret] = '\n';
 		}
 		else
 		{

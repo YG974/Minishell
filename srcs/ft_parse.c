@@ -334,7 +334,11 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 	else if (err == 2)
 		ft_putstr_fd("Minishell: syntax error token not supported: \"", STDERR);
 	/*else if (!tok)*/
-
+	/*if (tok->flag == S_SEMICOLON)*/
+	/*{*/
+		/*free(tok->str);*/
+		/*tok->str = ft_strdup("newline");*/
+	/*}*/
 	if (tok->str)
 		ft_putstr_fd(tok->str, STDERR);
 	ft_putstr_fd("\"\n", STDERR);
@@ -350,39 +354,36 @@ int		is_redir(int flag)
 		return (0);
 }
 
-t_tok	*find_redir_arg(t_tok *tok)
+int		find_redir_arg(t_mini *s, t_tok *tok)
 {
-	t_tok	*tmp;
-
-	tmp = tok;
-	while (tmp && tmp->next)
+	while (tok && tok->next)
 	{
-		tmp = tmp->next;
-		if (tmp->flag == T_WORD)
+		tok = tok->next;
+		if (tok->flag == T_WORD)
 		{
-			tmp->flag = REDIR_ARG;
-			return (tmp);
+			tok->flag = REDIR_ARG;
+			s->currentcmdl->token = tok;
+			return (0);
 		}
 	}
-	return (NULL);
+	s->currentcmdl->token = tok;
+	return (-1);
 }
 
 int		check_sep_syntax(t_mini *s)
 {
-	t_tok	*tok;
-
-	tok = s->firstcmdl->firsttoken;
-	if (tok->flag == S_SEMICOLON)
-		return(syntax_sep_error(s, tok, 1));
-	while (tok)
+	s->currentcmdl->token = s->firstcmdl->firsttoken;
+	if (s->currentcmdl->token->flag == S_SEMICOLON)
+		return(syntax_sep_error(s, s->currentcmdl->token, 1));
+	while (s->currentcmdl->token)
 	{
-		if (tok->flag >= D_PIPE)
-			return(syntax_sep_error(s, tok, 2));
-		else if (is_redir(tok->flag) == 1 && (!(tok = find_redir_arg(tok))))
-			/*ft_putstr_fd("zuuuut\n", STDERR);*/
-			return(syntax_sep_error(s, tok, 1));
+		if (s->currentcmdl->token->flag >= D_PIPE)
+			return(syntax_sep_error(s, s->currentcmdl->token, 2));
+		else if ((is_redir(s->currentcmdl->token->flag) == 1) &&
+				((find_redir_arg(s, s->currentcmdl->token)) == -1))
+			return(syntax_sep_error(s, s->currentcmdl->token, 1));
 			
-		tok = tok->next;
+		s->currentcmdl->token = s->currentcmdl->token->next;
 	}
 	return (1);
 }
