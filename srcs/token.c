@@ -124,8 +124,8 @@ t_tok	*add_backslash(t_mini *s, int j, t_tok *tok)
 	
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	s->i++;
-	new->str = ft_strdup_size(s->p.str, s->i, j);
+	/*s->i++;*/
+	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
 	new->flag = 3;
 	new = link_token(s, tok, new);
 	return (new);
