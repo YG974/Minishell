@@ -171,7 +171,7 @@ void	check_dollars(t_mini *s, t_parse *p)
 
 int		syntax_error(t_mini *s, char *str, int err)
 {
-	/*s->error = 2;*/
+	s->error = 3;
 	(void)s;
 	g_sig.ret = 2;
 	ft_putstr_fd(RED, STDERR);
@@ -252,7 +252,7 @@ int		check_quotes(t_mini *s, t_parse *p)
 	while (p->flag && p->flag[++i])
 		p->flag[i] = '0';
 	s->i = 0;
-	while (p->str[s->i])
+	while (p->str[s->i]  && s->error != 3)
 	{
 		if (p->str[s->i] == '\"')
 			check_double_quotes(s, p);
@@ -326,6 +326,16 @@ void	print_str(t_mini *s)
 	ft_putstr_fd( "\n--------\n", 1);
 }
 
+int		split_cmdl(t_mini *s)
+{
+	t_tok	*tok;
+
+	tok = s->firstcmdl->firsttoken;
+	/*if ((check_sep_syntax(s)) == -1)*/
+		return (0);
+
+}
+
 int		ft_parse(t_mini *s)
 {
 	s->error = 0;
@@ -345,7 +355,9 @@ int		ft_parse(t_mini *s)
 	flag_word(s, &s->p);
 	print_str(s);
 	if (!(break_cmdline_into_token(s)))
-		return (syntax_error(s, s->p.buf, 3));
+		return (0);
+	if (!(split_cmdl(s)))
+		return (0);
 	/*join_tokens(s->currentcmdl);*/
 	free(s->p.buf);
 	free(s->p.flag);
