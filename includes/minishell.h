@@ -57,7 +57,8 @@
 /*
 **	FLAGS FOR TOKENS
 */
-//# define WORD 1
+# define T_WORD 1
+# define REDIR_ARG 2
 # define S_GREATER 11
 # define D_GREATER 12
 # define S_LESS 13

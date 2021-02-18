@@ -332,13 +332,40 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 	if (err == 1)
 		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
 	else if (err == 2)
-		ft_putstr_fd("Minishell: syntax error not supported token: \"", STDERR);
-	ft_putstr_fd(tok->str, STDERR);
+		ft_putstr_fd("Minishell: syntax error token not supported: \"", STDERR);
+	/*else if (!tok)*/
+
+	if (tok->str)
+		ft_putstr_fd(tok->str, STDERR);
 	ft_putstr_fd("\"\n", STDERR);
 	ft_del_tokens(s->currentcmdl, 0);
 	return (0);
 }
 
+int		is_redir(int flag)
+{
+	if (flag == S_GREATER || flag == D_GREATER || flag == S_LESS)
+		return (1);
+	else
+		return (0);
+}
+
+t_tok	*find_redir_arg(t_tok *tok)
+{
+	t_tok	*tmp;
+
+	tmp = tok;
+	while (tmp && tmp->next)
+	{
+		tmp = tmp->next;
+		if (tmp->flag == T_WORD)
+		{
+			tmp->flag = REDIR_ARG;
+			return (tmp);
+		}
+	}
+	return (NULL);
+}
 
 int		check_sep_syntax(t_mini *s)
 {
@@ -351,6 +378,10 @@ int		check_sep_syntax(t_mini *s)
 	{
 		if (tok->flag >= D_PIPE)
 			return(syntax_sep_error(s, tok, 2));
+		else if (is_redir(tok->flag) == 1 && (!(tok = find_redir_arg(tok))))
+			/*ft_putstr_fd("zuuuut\n", STDERR);*/
+			return(syntax_sep_error(s, tok, 1));
+			
 		tok = tok->next;
 	}
 	return (1);
@@ -358,9 +389,10 @@ int		check_sep_syntax(t_mini *s)
 
 int		split_cmdl(t_mini *s)
 {
-	t_tok	*tok;
+	/*t_tok	*tok;*/
 
-	tok = s->firstcmdl->firsttoken;
+	(void)s;
+	/*tok = s->firstcmdl->firsttoken;*/
 	/*if ((check_sep_syntax(s)) == -1)*/
 		return (0);
 
