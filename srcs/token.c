@@ -30,7 +30,7 @@ t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
 	
-	j = s->i;
+	(void)j;
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '5')
@@ -128,7 +128,7 @@ int		break_cmdline_into_token(t_mini *s)
 			cmd->token = add_double_quote(s, s->i, cmd->token);
 		/*else if (s->p.flag[s->i] == '3')*/
 			/*cmd->token = add_backslash(s, s->i, cmd->token);*/
-		/*else if (s->p.flag[s->i] == '3')*/
+		/*else if (s->p.flag[s->i] == '6')*/
 			/*cmd->token = add_word(s, s->i, cmd->token);*/
 		s->i++;
 	}
