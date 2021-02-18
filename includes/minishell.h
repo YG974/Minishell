@@ -54,11 +54,16 @@
 # define BLANK 5
 # define META 6
 # define WORD 7
+/*
+**	FLAGS FOR TOKENS
+*/
+//# define WORD 1
 # define S_GREATER 11
 # define D_GREATER 12
 # define S_LESS 13
 # define S_PIPE 14
 # define S_SEMICOLON 15
+//forbidenn token
 # define D_PIPE 16
 # define D_LESS 17
 # define D_SEMICOLON 18

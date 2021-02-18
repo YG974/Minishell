@@ -41,9 +41,9 @@ int		flag_meta_token(char *str)
 	else if (str[0] == '|' && str[1] == '|')
 		return (D_PIPE);
 	else if (str[0] == ';' && str[1] == '\0')
-		return (S_PIPE);
+		return (S_SEMICOLON);
 	else if (str[0] == ';' && str[1] == ';')
-		return (D_PIPE);
+		return (D_SEMICOLON);
 	return (0);
 }
 
@@ -67,9 +67,9 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 	
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	while (s->p.flag[s->i] == '7')
+	while (s->p.flag[s->i + 1] == '7')
 		s->i++;
-	new->str = ft_strdup_size(s->p.str, s->i, j);
+	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
 	new->flag = 1;
 	new = link_token(s, tok, new);
 	return (new);

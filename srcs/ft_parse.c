@@ -326,6 +326,36 @@ void	print_str(t_mini *s)
 	ft_putstr_fd( "\n--------\n", 1);
 }
 
+int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
+{
+	ft_putstr_fd(RED, STDERR);
+	if (err == 1)
+		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
+	else if (err == 2)
+		ft_putstr_fd("Minishell: syntax error not supported token: \"", STDERR);
+	ft_putstr_fd(tok->str, STDERR);
+	ft_putstr_fd("\"\n", STDERR);
+	ft_del_tokens(s->currentcmdl, 0);
+	return (0);
+}
+
+
+int		check_sep_syntax(t_mini *s)
+{
+	t_tok	*tok;
+
+	tok = s->firstcmdl->firsttoken;
+	if (tok->flag == S_SEMICOLON)
+		return(syntax_sep_error(s, tok, 1));
+	while (tok)
+	{
+		if (tok->flag >= D_PIPE)
+			return(syntax_sep_error(s, tok, 2));
+		tok = tok->next;
+	}
+	return (1);
+}
+
 int		split_cmdl(t_mini *s)
 {
 	t_tok	*tok;
@@ -356,7 +386,7 @@ int		ft_parse(t_mini *s)
 	print_str(s);
 	if (!(break_cmdline_into_token(s)))
 		return (0);
-	if (!(split_cmdl(s)))
+	if ((check_sep_syntax(s)) == -1 || ((split_cmdl(s)) == -1))
 		return (0);
 	/*join_tokens(s->currentcmdl);*/
 	free(s->p.buf);
