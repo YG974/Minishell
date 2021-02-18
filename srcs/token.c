@@ -69,7 +69,7 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '7')
 		s->i++;
-	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
+	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new->flag = 1;
 	new = link_token(s, tok, new);
 	return (new);
@@ -83,7 +83,7 @@ t_tok	*add_newline(t_mini *s, int j, t_tok *tok)
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
 	new->str = ft_strdup("newline");
-	new->flag = 16;
+	new->flag = NEWLINE;
 	new = link_token(s, tok, new);
 	return (new);
 }
