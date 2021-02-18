@@ -323,6 +323,30 @@ int		is_redir(int flag)
 		return (0);
 }
 
+int		pipe_syntax_error(t_mini *s, t_tok *tok)
+{
+	if (!tok->next)
+		return (-1);
+	if (!tok->prev)
+		return (-1);
+	while (tok && tok->next)
+	{
+		tok = tok->next;
+		if (tok->flag == T_WORD)
+		{
+			tok->flag = PIPE_ARG;
+			s->currentcmdl->token = tok;
+			return (0);
+		}
+		else if (tok->flag > BLANK)
+		{
+			s->currentcmdl->token = tok;
+			return (-1);
+		}
+	}
+	return (-1);
+}
+
 int		find_redir_arg(t_mini *s, t_tok *tok)
 {
 	while (tok && tok->next)
@@ -330,11 +354,13 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 		tok = tok->next;
 		if (tok->flag == T_WORD)
 		{
-			tok->flag = 2;
+			tok->flag = REDIR_ARG;
 			s->currentcmdl->token = tok;
 			return (0);
 		}
-		if (tok->flag > BLANK)
+		else if (tok->flag == S_PIPE)
+			return (pipe_syntax_error(s, tok));
+		else if (tok->flag > BLANK)
 		{
 			s->currentcmdl->token = tok;
 			return (-1);
@@ -349,15 +375,15 @@ int		check_sep_syntax(t_mini *s)
 
 	(void)s;
 	tok = s->firstcmdl->firsttoken;
-	tok = s->firstcmdl->firsttoken;
 	if (tok->flag == S_SEMICOLON)
 		return(syntax_sep_error(s, tok, 1));
 	while (tok)
 	{
 		if (tok->flag >= D_PIPE)
 			return(syntax_sep_error(s, tok, 2));
-		else if ((is_redir(tok->flag) == 1) &&
-				((find_redir_arg(s, tok)) == -1))
+		else if ((is_redir(tok->flag) == 1) && ((find_redir_arg(s, tok)) == -1))
+			return(syntax_sep_error(s, tok, 1));
+		else if (tok->flag == S_PIPE && (pipe_syntax_error(s, tok)) == -1)
 			return(syntax_sep_error(s, tok, 1));
 		tok = tok->next;
 	}
