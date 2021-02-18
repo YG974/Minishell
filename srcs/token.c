@@ -55,7 +55,8 @@ t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 		error(s, ERR_CALLOC);
 	if (s->p.flag[s->i] == '6' && (s->p.str[s->i] == s->p.str[s->i + 1]))
 		s->i++;
-	new->str = ft_strdup_size(s->p.str, s->i + 1, j);
+	s->i++;
+	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new->flag = flag_meta_token(new->str);
 	new = link_token(s, tok, new);
 	return (new);
@@ -152,8 +153,13 @@ t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '2')
+	{
 		s->i++;
-	new->str = ft_strdup_size(s->p.str, s->i -1, j + 1);
+		if (s->p.str[s->i] == '"' && s->p.str[s->i - 1] != '\\')
+			break ;
+	}
+	s->i++;
+	new->str = ft_strdup_size(s->p.str, s->i - 1, j + 1);
 	new->str = delete_backslash(new->str);
 	new->flag = T_WORD;
 	new = link_token(s, tok, new);
@@ -194,7 +200,7 @@ t_cmdl	*join_tokens(t_cmdl *cmd)
 	tok = cmd->firsttoken;
 	while (tok && tok->next)
 	{
-		if (tok->next && tok->flag == 1 && tok->next->flag == 1)
+		while (tok->next && tok->flag == 1 && tok->next->flag == 1)
 		{
 			tmp = tok->next;
 			tok->next = tmp->next;
@@ -234,7 +240,7 @@ int		break_cmdline_into_token(t_mini *s)
 		else
 			s->i++;
 	}
-	/*cmd = join_tokens(cmd);*/
+	cmd = join_tokens(cmd);
 	print_token(cmd->firsttoken);
 	return (1);
 }
