@@ -206,6 +206,7 @@ t_cmdl	*join_tokens(t_cmdl *cmd)
 			tok->next = tmp->next;
 			tok->str = ft_strjoin_free_s1(tok->str, tmp->str);
 			free(tmp->str);
+			free(tmp);
 		}
 		tok = tok->next;
 	}
