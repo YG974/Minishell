@@ -68,9 +68,7 @@
 # define S_SEMICOLON 15
 # define NEWLINE 16
 //forbidenn token
-# define D_PIPE 17
-# define D_LESS 18
-# define D_SEMICOLON 19
+# define FORBIDEN_SEP 20
 
 /*
 **	FLAGS FOR TOKENS

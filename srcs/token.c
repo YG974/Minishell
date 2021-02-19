@@ -34,16 +34,12 @@ int		flag_meta_token(char *str)
 		return (D_GREATER);
 	else if (str[0] == '<' && str[1] == '\0')
 		return (S_LESS);
-	else if (str[0] == '<' && str[1] == '<')
-		return (D_LESS);
 	else if (str[0] == '|' && str[1] == '\0')
 		return (S_PIPE);
-	else if (str[0] == '|' && str[1] == '|')
-		return (D_PIPE);
 	else if (str[0] == ';' && str[1] == '\0')
 		return (S_SEMICOLON);
-	else if (str[0] == ';' && str[1] == ';')
-		return (D_SEMICOLON);
+	else
+		return (FORBIDEN_SEP);
 	return (0);
 }
 
@@ -53,7 +49,9 @@ t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 	
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	if (s->p.flag[s->i] == '6' && (s->p.str[s->i] == s->p.str[s->i + 1]))
+	if (s->p.str[s->i] == '>' && s->p.str[s->i + 1] == '|')
+			s->i++;
+	else if (s->p.str[s->i] == s->p.str[s->i + 1])
 		s->i++;
 	s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i, j);
