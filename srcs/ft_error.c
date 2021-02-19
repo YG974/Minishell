@@ -13,11 +13,15 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-void	error_fd(char *s)
+int		ft_redir_error(char *s)
 {
+	g_sig.ret = 1;
 	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(s, 2);
-	ft_putstr_fd(": this file or directory does not exists\n", 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd("\n", 2);
+	return (1);
 }
 
 void	error(t_mini *s, int error)

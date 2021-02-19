@@ -111,10 +111,12 @@ void	break_cmdline_into_token(t_mini *s)
 		if (!check_syntax(s, cmd))
 			return ;
 		handle_dollar_question_mark(s, cmd);
-		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
+		// if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
+		// 	ft_exe_cmd(s, cmd);
+		// else
+			// ft_firstpipe(s, cmd);
+		if (!ft_redirection(s, cmd))
 			ft_exe_cmd(s, cmd);
-		else
-			ft_firstpipe(s, cmd);
 		ft_closefd(s);
 		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;

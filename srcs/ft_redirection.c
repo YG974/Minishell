@@ -49,8 +49,6 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 		s->std.in = open(tmp->str, O_RDONLY);
 		if (s->std.in < 0)
 		{
-			g_sig.ret = 1;
-			error_fd(tmp->str);
 			s->std.in = 0;
 			return (1);
 		}
@@ -69,7 +67,11 @@ int		ft_redirection(t_mini *s, t_cmdl *cmd)
 	{
 		if (tmp->str[0] == '>' || tmp->str[0] == '<')
 			if (ft_change_fd(s, tmp))
-				return (1);
+			{
+				while (tmp && tmp->flag != FLAG_STR)
+					tmp = tmp->next;
+				return (ft_redir_error(tmp->str));
+			}
 		if (tmp->str[0] == '>' && tmp->next && tmp->next->str[0] == '>')
 			tmp = tmp->next->next;
 		tmp = tmp->next;
