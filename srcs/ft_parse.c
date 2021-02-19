@@ -311,7 +311,7 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 		ft_putstr_fd(tok->str, STDERR);
 	ft_putstr_fd("\"\n", STDERR);
 	ft_del_tokens(s->currentcmdl, 0);
-	return (0);
+	return (-1);
 }
 
 int		is_redir(int flag)
