@@ -195,9 +195,13 @@ void	print_token(t_mini *s)
 		{
 			i++;
 			ft_printf("%d-tok:%s|\n flag:%d|\n----\n", i, tok->str,tok->flag);
-			tok = tok->next;
+			if (tok->next)
+				tok = tok->next;
 		}
+		if (!cmd->next)
+			break;
 		cmd = cmd->next;
+
 		tok = cmd->firsttoken;
 	}
 }
