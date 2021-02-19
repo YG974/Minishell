@@ -400,6 +400,7 @@ t_cmdl		*new_cmd_line(t_cmdl *cmd)
 	cmd->next = new;
 	new->firsttoken = tmp;
 	new->token = tmp;
+	new->token->prev = NULL;
 	cmd->token->next = NULL;
 	/*ft_printf("new:%s|\n flag:%d|\n----\n",new->token->str,new->token->flag);*/
 	/*ft_printf("cmd:%s|\n flag:%d|\n----\n",cmd->token->str,cmd->token->flag);*/
@@ -414,20 +415,14 @@ int		split_cmdl(t_mini *s)
 	cmd->token = cmd->firsttoken;
 	while (cmd->token->flag != NEWLINE || cmd->token)
 	{
-	ft_printf("new:%s|\n flag:%d|\n----\n",cmd->token->str,cmd->token->flag);
 		if (cmd->token->flag == S_SEMICOLON)
-		{
-			ft_printf("hihihih\n");
 			cmd = new_cmd_line(cmd);
-		}
 		else
 			cmd->token = cmd->token->next;
 		if (cmd->token->flag == NEWLINE)
 			break ;
 	}
-	/*tok = s->firstcmdl->firsttoken;*/
-	/*if ((check_sep_syntax(s)) == -1)*/
-		return (0);
+	return (0);
 
 }
 
