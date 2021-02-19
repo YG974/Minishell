@@ -389,11 +389,42 @@ int		check_sep_syntax(t_mini *s)
 	return (1);
 }
 
+t_cmdl		*new_cmd_line(t_cmdl *cmd)
+{
+	t_cmdl	*new;
+	t_tok	*tmp;
+
+	tmp = cmd->token->next;
+	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+		return (NULL);
+	cmd->next = new;
+	new->firsttoken = tmp;
+	new->token = tmp;
+	cmd->token->next = NULL;
+	/*ft_printf("new:%s|\n flag:%d|\n----\n",new->token->str,new->token->flag);*/
+	/*ft_printf("cmd:%s|\n flag:%d|\n----\n",cmd->token->str,cmd->token->flag);*/
+	return (new);
+}
+
 int		split_cmdl(t_mini *s)
 {
-	/*t_tok	*tok;*/
-
 	(void)s;
+	t_cmdl *cmd;
+	cmd = s->firstcmdl;
+	cmd->token = cmd->firsttoken;
+	while (cmd->token->flag != NEWLINE || cmd->token)
+	{
+	ft_printf("new:%s|\n flag:%d|\n----\n",cmd->token->str,cmd->token->flag);
+		if (cmd->token->flag == S_SEMICOLON)
+		{
+			ft_printf("hihihih\n");
+			cmd = new_cmd_line(cmd);
+		}
+		else
+			cmd->token = cmd->token->next;
+		if (cmd->token->flag == NEWLINE)
+			break ;
+	}
 	/*tok = s->firstcmdl->firsttoken;*/
 	/*if ((check_sep_syntax(s)) == -1)*/
 		return (0);
@@ -422,9 +453,8 @@ int		ft_parse(t_mini *s)
 	if (!(break_cmdline_into_token(s)))
 		return (0);
 	if ((check_sep_syntax(s)) == -1 || ((split_cmdl(s)) == -1))
-		s->i++;
-		/*return (0);*/
-	print_token(s->currentcmdl->firsttoken);
+		return (0);
+	print_token(s);
 	free(s->p.buf);
 	free(s->p.flag);
 	return (0);

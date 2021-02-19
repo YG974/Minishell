@@ -250,7 +250,7 @@ void				check_env_validity(t_mini *s);
 /*
 **	ft_parse.c
 */
-void	print_token(t_tok *tok);
+void	print_token(t_mini *s);
 int					ft_check_semicolons(char *line);
 int					ft_parse(t_mini *s);
 

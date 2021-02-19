@@ -178,15 +178,27 @@ t_tok	*add_simple_quote(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
-void	print_token(t_tok *tok)
+void	print_token(t_mini *s)
 {
+	t_tok *tok;
+	t_cmdl *cmd;
+
+	cmd = s->firstcmdl;
+	tok = cmd->firsttoken;
 	int i = 0;
-	while (tok)
+	int j = 0;
+	while (cmd && tok && tok->next && tok->flag != NEWLINE)
 	{
-		i++;
-		ft_printf("%d-tok:%s|\n flag:%d|\n----\n", i, tok->str,tok->flag);
-		/*ft_printf("|%s|f:%d-", tok->str,tok->flag);*/
-		tok = tok->next;
+		j++;
+		ft_printf("%dcmd_line----------\n", j);
+		while (tok && tok->next && tok->flag != NEWLINE)
+		{
+			i++;
+			ft_printf("%d-tok:%s|\n flag:%d|\n----\n", i, tok->str,tok->flag);
+			tok = tok->next;
+		}
+		cmd = cmd->next;
+		tok = cmd->firsttoken;
 	}
 }
 
