@@ -123,8 +123,7 @@ void	check_dollars(t_mini *s, t_parse *p)
 		{
 			s->i++;
 			while (p->str[s->i]
-					&& (ft_isalnum(p->str[s->i])
-						|| p->str[s->i] == '_'))
+					&& (ft_isalnum(p->str[s->i]) || p->str[s->i] == '_'))
 				p->flag[s->i++] = '4';
 		}
 		else
@@ -325,26 +324,31 @@ int		is_redir(int flag)
 
 int		pipe_syntax_error(t_mini *s, t_tok *tok)
 {
-	if (!tok->next)
+	int		i;
+	t_tok	*tmp;
+
+	(void)s;
+	i = 0;
+	tmp = tok;
+	if (!tok->next || !tok->prev)
 		return (-1);
-	if (!tok->prev)
-		return (-1);
-	while (tok && tok->next)
+	while (tok && tok->prev && i == 0)
+	{
+		tok = tok->prev;
+		if (tok->flag == T_WORD)
+			i++;
+	}
+	tok = tmp;
+	while (tok && tok->next && i == 1)
 	{
 		tok = tok->next;
 		if (tok->flag == T_WORD)
-		{
-			tok->flag = PIPE_ARG;
-			s->currentcmdl->token = tok;
-			return (0);
-		}
-		/*else if (tok->flag > BLANK)*/
-		/*{*/
-			/*s->currentcmdl->token = tok;*/
-			/*return (-1);*/
-		/*}*/
+			i++;
 	}
-	return (-1);
+	if (i == 2)
+		return (1);
+	else
+		return (-1);
 }
 
 int		find_redir_arg(t_mini *s, t_tok *tok)
@@ -353,10 +357,11 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 	while (tok && tok->next)
 	{
 		tok = tok->next;
+		if (tok->flag == NEWLINE || tok->flag == S_SEMICOLON)
+			return (-1);
 		if (tok->flag <= REDIR_ARG)
 		{
 			tok->flag = REDIR_ARG;
-			/*s->currentcmdl->token = tok;*/
 			return (0);
 		}
 	}
@@ -373,12 +378,12 @@ int		check_sep_syntax(t_mini *s)
 		return(syntax_sep_error(s, tok, 1));
 	while (tok && tok->flag != NEWLINE)
 	{
-		if (tok->flag >= D_PIPE)
+		if (tok->flag == FORBIDEN_SEP)
 			return(syntax_sep_error(s, tok, 2));
-		if ((is_redir(tok->flag) == 1) && ((find_redir_arg(s, tok)) == -1))
+		else if ((is_redir(tok->flag) == 1) && ((find_redir_arg(s, tok)) == -1))
 			return(syntax_sep_error(s, tok, 1));
-		/*if (tok->flag == S_PIPE && (pipe_syntax_error(s, tok)) == -1)*/
-			/*return(syntax_sep_error(s, tok, 1));*/
+		else if (tok->flag == S_PIPE && (pipe_syntax_error(s, tok)) == -1)
+			return(syntax_sep_error(s, tok, 1));
 		tok = tok->next;
 	}
 	return (1);
@@ -417,9 +422,9 @@ int		ft_parse(t_mini *s)
 	if (!(break_cmdline_into_token(s)))
 		return (0);
 	if ((check_sep_syntax(s)) == -1 || ((split_cmdl(s)) == -1))
-		return (0);
+		s->i++;
+		/*return (0);*/
 	print_token(s->currentcmdl->firsttoken);
-	/*join_tokens(s->currentcmdl);*/
 	free(s->p.buf);
 	free(s->p.flag);
 	return (0);
