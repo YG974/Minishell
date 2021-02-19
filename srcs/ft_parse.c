@@ -302,6 +302,9 @@ void	print_str(t_mini *s)
 
 int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 {
+	s->error = 3;
+	(void)s;
+	g_sig.ret = 2;
 	ft_putstr_fd(RED, STDERR);
 	if (err == 1)
 		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
@@ -429,13 +432,13 @@ void	exec_cmdlines(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = s->firstcmdl;
-	while (cmd && !s->error)
+	while (cmd && !s->error && cmd->token->flag != NEWLINE)
 	{
 		handle_dollar_question_mark(s, cmd);
-		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
+		/*if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))*/
 			ft_exe_cmd(s, cmd);
-		else
-			ft_firstpipe(s, cmd);
+		/*else*/
+			/*ft_firstpipe(s, cmd);*/
 		ft_closefd(s);
 		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;
@@ -466,8 +469,8 @@ int		ft_parse(t_mini *s)
 	if ((check_sep_syntax(s)) == -1 || ((split_cmdl(s)) == -1))
 		return (0);
 	/*print_token(s);*/
-	exec_cmdlines(s);
 	free(s->p.buf);
 	free(s->p.flag);
+	exec_cmdlines(s);
 	return (0);
 }
