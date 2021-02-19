@@ -76,3 +76,17 @@ int		ft_redirection(t_mini *s, t_cmdl *cmd)
 	}
 	return (0);
 }
+
+void	ft_closefd(t_mini *s)
+{
+	if (s->std.out > 1)
+		dup2(0, 1);
+	if (s->std.in > 0)
+		close(s->std.in);
+	if (s->std.out > 1)
+		close(s->std.out);
+	s->std.in = 0;
+	s->std.out = 1;
+	dup2(1, 1);
+	dup2(1, 0);
+}

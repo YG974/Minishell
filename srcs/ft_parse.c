@@ -423,7 +423,23 @@ int		split_cmdl(t_mini *s)
 			break ;
 	}
 	return (0);
+}
+void	exec_cmdlines(t_mini *s)
+{
+	t_cmdl	*cmd;
 
+	cmd = s->firstcmdl;
+	while (cmd && !s->error)
+	{
+		handle_dollar_question_mark(s, cmd);
+		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
+			ft_exe_cmd(s, cmd);
+		else
+			ft_firstpipe(s, cmd);
+		ft_closefd(s);
+		ft_del_tokens(cmd, 0);
+		cmd = cmd->next;
+	}
 }
 
 int		ft_parse(t_mini *s)
@@ -444,12 +460,13 @@ int		ft_parse(t_mini *s)
 	flag_meta(s, &s->p);
 	flag_word(s, &s->p);
 	flag_newline(s, &s->p);
-	print_str(s);
+	/*print_str(s);*/
 	if (!(break_cmdline_into_token(s)))
 		return (0);
 	if ((check_sep_syntax(s)) == -1 || ((split_cmdl(s)) == -1))
 		return (0);
-	print_token(s);
+	/*print_token(s);*/
+	exec_cmdlines(s);
 	free(s->p.buf);
 	free(s->p.flag);
 	return (0);

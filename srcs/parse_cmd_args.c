@@ -46,23 +46,16 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 	(void)s;
 	cmd->buf = ft_strdup("");
 	cmd->token = cmd->firsttoken;
-	while ((ft_strchr(cmd->token->str, '=')
-				|| (cmd->token->flag == 2 && cmd->token->str[0] == ' ')))
+	while ((ft_strchr(cmd->token->str, '=') || (cmd->token->flag == BLANK)))
 		cmd->token = cmd->token->next;
-	while (cmd->token && cmd->token->flag != FLAG_PIPE)
+	while (cmd->token && cmd->token->flag <= FLAG_PIPE)
 	{
-		if (cmd->token->flag != 2 && cmd->token)
+		if (cmd->token->flag == T_WORD)
 		{
 			cmd->buf = ft_strjoin_free_s1(cmd->buf, cmd->token->str);
 			cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
-			cmd->token = cmd->token->next;
 		}
-		else if (cmd->token->flag == 2 && cmd->token->str[0] == ' ' &&
-				cmd->token)
-			cmd->token = cmd->token->next;
-		else if (cmd->token->flag == 2 && cmd->token->str[0] != ' ' &&
-				cmd->token)
-			cmd->token = norme_chlag(cmd->token);
+		cmd->token = cmd->token->next;
 	}
 	return (0);
 }
@@ -70,15 +63,11 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
-	if (cmd->flag)
-		free(cmd->flag);
+	/*if (cmd->flag)*/
+		/*free(cmd->flag);*/
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
 	{
-		while ((cmd->token->flag == FLAG_STR || cmd->token->flag == FLAG_CMD) &&
-			(cmd->token->next) && (cmd->token->next->flag == FLAG_STR ||
-			cmd->token->next->flag == FLAG_CMD))
-			/*cmd = join_tokens(cmd);*/
 		if (cmd->token->str[0] == '$' && cmd->token->str[1] == '?'
 			&& cmd->token->str[2] == '\0')
 		{

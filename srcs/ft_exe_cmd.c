@@ -89,11 +89,11 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	int		status;
 
 	cmd->ret = 0;
-	if (cmd_has_only_assignement(cmd))
-	{
-		g_sig.ret = apply_assignement(s, cmd);
-		return ;
-	}
+	/*if (cmd_has_only_assignement(cmd))*/
+	/*{*/
+		/*g_sig.ret = apply_assignement(s, cmd);*/
+		/*return ;*/
+	/*}*/
 	if (cmd->token == NULL)
 		return ;
 	parse_cmd_args(s, cmd);
