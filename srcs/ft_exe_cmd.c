@@ -94,8 +94,8 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 		/*g_sig.ret = apply_assignement(s, cmd);*/
 		/*return ;*/
 	/*}*/
-	if (cmd->token == NULL)
-		return ;
+	/*if (cmd->token == NULL)*/
+		/*return ;*/
 	parse_cmd_args(s, cmd);
 	args = ft_split_ms(cmd->buf, '\n');
 	free(cmd->buf);
