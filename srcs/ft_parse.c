@@ -436,10 +436,10 @@ void	exec_cmdlines(t_mini *s)
 	while (cmd && !s->error && cmd->token->flag != NEWLINE)
 	{
 		handle_dollar_question_mark(s, cmd);
-		/*if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))*/
+		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
 		ft_exe_cmd(s, cmd);
-		/*else*/
-			/*ft_firstpipe(s, cmd);*/
+		else
+			ft_firstpipe(s, cmd);
 		ft_closefd(s);
 		ft_del_tokens(cmd, 0);
 		cmd = cmd->next;

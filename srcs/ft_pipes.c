@@ -75,6 +75,35 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 	return (0);
 }
 
+int		ft_pipepar(t_mini *s, t_cmdl *cmd)
+{
+	t_tok	*next;
+	int		fd[2];
+
+	next = ft_next_sep(cmd->firsttoken);
+	if (pipe(fd) == -1)
+		return (1);
+	g_sig.pid = fork();
+	if (g_sig.pid != 0)
+	{
+		close(fd[0]);
+		s->std.out = fd[1];
+		dup2(fd[1], 1);
+		if (!ft_redirection(s, cmd))
+			ft_exe_cmd(s, cmd);
+		close(fd[1]);
+		closepipes(s);
+		waitpid(g_sig.pid, &g_sig.ret, 0);
+		exit(g_sig.ret);
+	}
+	else
+	{
+		close(fd[1]);
+		ft_pipe2(s, cmd, fd[0], next);
+	}
+	return (0);
+}
+
 int		ft_firstpipe(t_mini *s, t_cmdl *cmd)
 {
 	int	fd[2];
@@ -87,7 +116,10 @@ int		ft_firstpipe(t_mini *s, t_cmdl *cmd)
 		close(fd[0]);
 		s->firstfd = fd[1];
 		close(fd[1]);
-		ft_pipe(s, cmd);
+		if (!ft_strncmp("cat", cmd->firsttoken->str, 4))
+			ft_pipepar(s, cmd);
+		else
+			ft_pipe(s, cmd);
 	}
 	else
 	{

@@ -328,6 +328,7 @@ void				closepipes(t_mini *s);
 **	ft_error.c
 */
 void				error_fd(char *s);
+int					ft_redir_error(char *s);
 void				error(t_mini *s, int error);
 
 /*
