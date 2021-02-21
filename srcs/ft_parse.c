@@ -52,9 +52,8 @@ char	*get_env_value(t_mini *s, char *name)
 }
 
 /*
-**	replace the env values ($NAME) by their value in cmd->buf
+** join strings s1 and s2 and free them
 */
-
 char	*ft_strjoin_free_s1_s2(char const *s1, char const *s2)
 {
 	int		len1;
@@ -82,6 +81,9 @@ char	*ft_strjoin_free_s1_s2(char const *s1, char const *s2)
 	return (str);
 }
 
+/*
+**	replace the env names ($NAME) in the input by their values in cmd->buf
+*/
 void	expand_dollars(t_mini *s, t_parse *p, int i, int j)
 {
 	char	*tmp;
@@ -110,9 +112,9 @@ void	expand_dollars(t_mini *s, t_parse *p, int i, int j)
 }
 
 /*
-**	flag the dollars sign in the p->flag string with a '4'
+** itinerate the string and put the flag 4 on var names followings '$' char
+** FLAG = 4 --> not escaped VARIABLE NAME
 */
-
 void	check_dollars(t_mini *s, t_parse *p)
 {
 	s->i = 0;
@@ -131,6 +133,9 @@ void	check_dollars(t_mini *s, t_parse *p)
 	}
 }
 
+/*
+** set exit_status to 2, and print syntax error string to STD ERROR
+*/
 int		syntax_error(t_mini *s, char *str, int err)
 {
 	s->error = 3;
@@ -151,6 +156,10 @@ int		syntax_error(t_mini *s, char *str, int err)
 	return (-1);
 }
 
+/*
+** itinerate the string and put the flag 3 on every escaped char
+** FLAG = 3 --> ESCAPED CHAR
+*/
 void	check_lit_char(t_mini *s, t_parse *p)
 {
 	s->i++;
@@ -159,6 +168,10 @@ void	check_lit_char(t_mini *s, t_parse *p)
 	s->i++;
 }
 
+/*
+** itinerate the string and put the flag 2 on every char inside double quotes
+** FLAG = 2 --> double quoted char
+*/
 int		check_double_quotes(t_mini *s, t_parse *p)
 {
 	if (p->str[s->i - 1] == '\\')
@@ -182,6 +195,10 @@ int		check_double_quotes(t_mini *s, t_parse *p)
 	return (1);
 }
 
+/*
+** itinerate the string and put the flag 1 on every char inside single quotes
+** FLAG = 1 --> single quoted char
+*/
 int		check_simple_quotes(t_mini *s, t_parse *p)
 {
 	if (p->str[s->i - 1] == '\\')
@@ -203,6 +220,9 @@ int		check_simple_quotes(t_mini *s, t_parse *p)
 	return (1);
 }
 
+/*
+** malloc the flag string, and call the 3 differents quoting type functions
+*/
 int		check_quotes(t_mini *s, t_parse *p)
 {
 	int i;
@@ -229,8 +249,7 @@ int		check_quotes(t_mini *s, t_parse *p)
 }
 
 /*
-** itinerate the string and put the flag 5 on every not escaped blank
-** FLAG = 5 --> not escaped BLANK
+** return 1 if the char is a non espaced metacharacter, else 0
 */
 int		is_meta(char c)
 {
@@ -240,6 +259,11 @@ int		is_meta(char c)
 		return (0);
 }
 
+/*
+** itinerate the string and put the flag 8 on '\n' char, usefull to return
+** the good error string when syntax error : syntax error near unexpected token
+** FLAG = 8 --> NEWLINE '\n'
+*/
 void	flag_newline(t_mini *s, t_parse *p)
 {
 	s->i = 0;
@@ -252,6 +276,10 @@ void	flag_newline(t_mini *s, t_parse *p)
 	return ;
 }
 
+/*
+** itinerate the string and put the flag 6 on every not escaped metacharacter
+** FLAG = 6 --> not escaped METACHARACTER
+*/
 void	flag_meta(t_mini *s, t_parse *p)
 {
 	s->i = 0;
@@ -264,6 +292,10 @@ void	flag_meta(t_mini *s, t_parse *p)
 	return ;
 }
 
+/*
+** itinerate the string and put the flag 7 on every not escaped word
+** FLAG = 7 --> not escaped WORD
+*/
 void	flag_word(t_mini *s, t_parse *p)
 {
 	s->i = 0;
@@ -276,6 +308,10 @@ void	flag_word(t_mini *s, t_parse *p)
 	return ;
 }
 
+/*
+** itinerate the string and put the flag 5 on every not escaped blank
+** FLAG = 5 --> not escaped BLANK
+*/
 void	flag_blank(t_mini *s, t_parse *p)
 {
 	s->i = 0;
@@ -289,6 +325,9 @@ void	flag_blank(t_mini *s, t_parse *p)
 	return ;
 }
 
+/*
+** DEBUG FUNCTION : print the input and the flags for the parsing.
+*/
 void	print_str(t_mini *s)
 {
 	ft_putstr_fd( "str:", 1);
@@ -300,6 +339,9 @@ void	print_str(t_mini *s)
 	ft_putstr_fd( "\n--------\n", 1);
 }
 
+/*
+** set exit_status to 2, and print syntax error string to STD ERROR
+*/
 int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 {
 	s->error = 3;
@@ -317,6 +359,10 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 	return (-1);
 }
 
+/*
+** return 1 if the token is a redirection token
+** return 0 if the token is NOT a redirection token
+*/
 int		is_redir(int flag)
 {
 	if (flag == S_GREATER || flag == D_GREATER || flag == S_LESS)
@@ -325,6 +371,13 @@ int		is_redir(int flag)
 		return (0);
 }
 
+/*
+** look for pipe syntax error :
+** a pipe need at least one WORD token before AND after
+** command [ | command2 ... ]
+** return -1 if syntax error
+** return 1 if NO syntax error
+*/
 int		pipe_syntax_error(t_mini *s, t_tok *tok)
 {
 	int		i;
@@ -354,6 +407,12 @@ int		pipe_syntax_error(t_mini *s, t_tok *tok)
 		return (-1);
 }
 
+
+/*
+** look for redirection file into the tokens, and flag it with REDIR_ARG
+** return -1 if syntax error
+** return 0 if NO syntax error
+*/
 int		find_redir_arg(t_mini *s, t_tok *tok)
 {
 	(void)s;
@@ -371,6 +430,11 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 	return (-1);
 }
 
+/*
+** call the differents syntax checking functions for the diffecrents operators
+** return 1 if NO syntax error
+** return -1 and call functions that print error string if syntax error.
+*/
 int		check_sep_syntax(t_mini *s)
 {
 	t_tok	*tok;
@@ -392,6 +456,9 @@ int		check_sep_syntax(t_mini *s)
 	return (1);
 }
 
+/*
+** malloc a new command line and link the token and cmdlines
+*/
 t_cmdl		*new_cmd_line(t_cmdl *cmd)
 {
 	t_cmdl	*new;
@@ -405,11 +472,12 @@ t_cmdl		*new_cmd_line(t_cmdl *cmd)
 	new->token = tmp;
 	new->token->prev = NULL;
 	cmd->token->next = NULL;
-	/*ft_printf("new:%s|\n flag:%d|\n----\n",new->token->str,new->token->flag);*/
-	/*ft_printf("cmd:%s|\n flag:%d|\n----\n",cmd->token->str,cmd->token->flag);*/
 	return (new);
 }
 
+/*
+** Split the input into seperated cmdlines, seperated by semicolons ';'
+*/
 int		split_cmdl(t_mini *s)
 {
 	(void)s;
@@ -428,6 +496,10 @@ int		split_cmdl(t_mini *s)
 	cmd->token = cmd->firsttoken;
 	return (0);
 }
+
+/*
+** loop for executing each command line, and assigning exit status to '$?'
+*/
 void	exec_cmdlines(t_mini *s)
 {
 	t_cmdl	*cmd;
@@ -446,6 +518,9 @@ void	exec_cmdlines(t_mini *s)
 	}
 }
 
+/*
+** main parsing, call the differents parsing and error functions
+*/
 int		ft_parse(t_mini *s)
 {
 	s->error = 0;
@@ -471,6 +546,7 @@ int		ft_parse(t_mini *s)
 		return (0);
 	/*print_token(s);*/
 	exec_cmdlines(s);
+	ft_del_cmdline(s, 0);
 	free(s->p.buf);
 	free(s->p.flag);
 	return (0);

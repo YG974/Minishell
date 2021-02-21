@@ -13,6 +13,9 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
+/*
+** link the new token to the previous ones or to cmdline if it's the first
+*/
 t_tok	*link_token(t_mini *s, t_tok *tok, t_tok *new)
 {
 	if (tok)
@@ -26,6 +29,9 @@ t_tok	*link_token(t_mini *s, t_tok *tok, t_tok *new)
 	return (new);
 }
 
+/*
+** return a specific FLAG for each metacharacter
+*/
 int		flag_meta_token(char *str)
 {
 	if (str[0] == '>' && str[1] == '\0')
@@ -43,6 +49,9 @@ int		flag_meta_token(char *str)
 	return (0);
 }
 
+/*
+** malloc the new token from metacharacter word and flag it with meta flag
+*/
 t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -60,6 +69,9 @@ t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+/*
+** malloc the new token from regular word and flag it with T_WORD
+*/
 t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -74,6 +86,9 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+/*
+** malloc the new token from '\n' and flag it with NEWLINE
+*/
 t_tok	*add_newline(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -88,6 +103,9 @@ t_tok	*add_newline(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+/*
+** malloc the new token from space or tqb and flag it with BLANK
+*/
 t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -103,6 +121,10 @@ t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+/*
+** shift all the string by one to the left in order to erase '\' preceding 
+** escaped character
+*/
 char *shift_str_left(char *str, int i)
 {
 	while (str[i])
@@ -113,6 +135,10 @@ char *shift_str_left(char *str, int i)
 	str[i - 1] = '\0';
 	return (str);
 }
+
+/*
+** malloc the new token and flag it with T_WORD, for TOKEN WORD
+*/
 char *delete_backslash(char *str)
 {
 	int		i;
@@ -131,6 +157,9 @@ char *delete_backslash(char *str)
 	return (str);
 }
 
+/*
+** malloc the new token from escaped char and flag it with T_WORD
+*/
 t_tok	*add_backslash(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -144,6 +173,9 @@ t_tok	*add_backslash(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+/*
+** malloc the new token from double quoted input and flag it with T_WORD
+*/
 t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -164,6 +196,9 @@ t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+/*
+** malloc the new token from single quoted input and flag it with T_WORD
+*/
 t_tok	*add_simple_quote(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
@@ -178,6 +213,9 @@ t_tok	*add_simple_quote(t_mini *s, int j, t_tok *tok)
 	return (new);
 }
 
+/*
+** DEBUG FUNCTION : print all the tokens and flags
+*/
 void	print_token(t_mini *s)
 {
 	t_tok *tok;
@@ -206,6 +244,12 @@ void	print_token(t_mini *s)
 	}
 }
 
+/*
+** join token which are not seperated by BLANK
+** for example the string \o\k'bo'"goss" will return the 3 followings token
+** token 1 : o	|token 2 : k	| token 3 : bo	| token 4: goss
+** we have to join them to create a single token like in bash
+*/
 t_cmdl	*join_tokens(t_cmdl *cmd)
 {
 	t_tok	*tmp;
@@ -227,6 +271,9 @@ t_cmdl	*join_tokens(t_cmdl *cmd)
 	return (cmd);
 }
 
+/*
+** main tokenization function, call the differents token functions
+*/
 int		break_cmdline_into_token(t_mini *s)
 {
 	t_cmdl	*cmd;
