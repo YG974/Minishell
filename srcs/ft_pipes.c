@@ -124,10 +124,10 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 	next = ft_next_sep(cmd->firsttoken);
 	while (cmd->firsttoken && next)
 	{
-		pipe(fd);
 		pidlist[i] = fork();
 		if (pidlist[i] == 0)
 		{
+			pipe(fd);
 			close(fd[0]);
 			dup2(fd[1], 1);
 			if (!ft_redirection(s, cmd))
