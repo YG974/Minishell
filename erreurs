@@ -1,0 +1,39 @@
+1) cd < fichier_texte
+    Si le chemin n'est pas reconnaissable, le bash considère ça comme "cd" sans arg
+
+2) pwd avec arguments
+    segfault
+
+3) cd ~
+    no such file or directory
+
+4) exit exit
+    c'est pas le bon retour, bash renvoi 2
+
+5) Y'a un soucis avec ctrl + c, comme si le retour était en retard
+ctrl + c
+puis echo bonjour
+puis echo $? => 130 (au lieu de 0)
+
+6) export var ="cat Makefile | grep >"
+puis $var
+    Le vrai bash considère qu'on veut faire un cat sur Makefile, puis sur |, puis sur grep, puis sur >
+Il considère toute la valeur d'une var comme un T_WORD
+
+7) exit ne retourne pas le bon retour (sauf avec un ctrl + c avant du coup)
+Si on fait sans argument
+ls qdsqdd => erreur fichier n'existe pas
+exit
+echo $? devrait être 2
+
+8) echo bonjour > $var_qui_nexiste_pas
+    syntax error alors que ça devrait être redirection ambigue
+
+9) echo bonjour |   | echo salut
+    on n'a pas de retour d'erreur (FIX à retester)
+
+10) echo "bip | bip ; coyotte > < " "
+    on a deux messages d'erreur (FIX à retester)
+
+11) echo bonjoure ;    ; echo salut
+    pas de message d'erreur (FIX à retester)
