@@ -102,8 +102,8 @@ int		ft_pipepar(t_mini *s, t_cmdl *cmd)
 		ft_pipe2(s, cmd, fd[0], next);
 	}
 	return (0);
-}
-*/
+}*/
+
 
 int		ft_pipe(t_mini *s, t_cmdl *cmd)
 {
@@ -114,22 +114,30 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 	int i = 0;
 	int save;
 
+	next = cmd->firsttoken;
 	while (next)
 	{
 		if (next->flag == S_PIPE)
 			j++;
 		next = next->next;
 	}
-	pidlist = malloc(sizeof(pid_t) * j);
+	if (!(pidlist = ft_calloc(sizeof(pid_t), j)))
+	{
+		error(s, ERR_CALLOC);
+		return (1);
+	}
 	next = ft_next_sep(cmd->firsttoken);
-	while (cmd->firsttoken && next)
+	while (cmd->firsttoken)
 	{
 		pipe(fd);
 		pidlist[i] = fork();
 		if (pidlist[i] == 0)
 		{
 			close(fd[0]);
-			dup2(fd[1], 1);
+			if (next)
+				dup2(fd[1], 1);
+			else
+				g_sig.has_pipe = 0;
 			if (!ft_redirection(s, cmd))
 				ft_exe_cmd(s, cmd);
 			close(fd[1]);
@@ -143,15 +151,12 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 			i++;
 			cmd->firsttoken = next;
 			next = ft_next_sep(cmd->firsttoken);
+			close(fd[0]);
 		}
 	}
-	if (cmd->firsttoken && !ft_redirection(s, cmd))
-		ft_exe_cmd(s, cmd);
-	// ft_putstr_fd(ft_itoa(g_sig.ret), 1);
-	save = g_sig.ret;
-	//waitpid(pidlist[i], &g_sig.ret, 0);
-	while (--i < j)
-		//ft_putstr_fd(ft_itoa(pidlist[i]), 1);
+	waitpid(pidlist[--i], &g_sig.ret, 0);
+	g_sig.ret = WEXITSTATUS(g_sig.ret);
+	while (--i >= 0)
 		waitpid(pidlist[i], &save, 0);
 	exit(g_sig.ret);
 	return (0);
