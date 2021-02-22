@@ -84,13 +84,15 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 	while (tok && tok->next)
 	{
 		tok = tok->next;
-		if (tok->flag == NEWLINE || tok->flag == S_SEMICOLON)
-			return (-1);
+		if (tok->flag == BLANK)
+			tok = tok->next;
 		if (tok->flag <= REDIR_ARG)
 		{
 			tok->flag = REDIR_ARG;
 			return (0);
 		}
+		else
+			return (-1);
 	}
 	return (-1);
 }
