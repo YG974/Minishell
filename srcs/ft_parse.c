@@ -13,7 +13,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-
 /*
 **	cmd->str = command line;
 **	cmd->flag = flags or comments;
@@ -60,7 +59,6 @@ char	*ft_strjoin_free_s1_s2(char const *s1, char const *s2)
 	free((void *)s2);
 	return (str);
 }
-
 
 /*
 ** return 1 if the char is a non espaced metacharacter, else 0
@@ -127,17 +125,15 @@ int		ft_parse(t_mini *s)
 	check_dollars(s, &s->p);
 	expand_dollars(s, &s->p, 0, 0);
 	s->p.str = s->p.buf;
-	check_quotes( s, &s->p);
+	check_quotes(s, &s->p);
 	flag_blank(s, &s->p);
 	flag_meta(s, &s->p);
 	flag_word(s, &s->p);
 	flag_newline(s, &s->p);
-	/*print_str(s);*/
 	if (!(break_cmdline_into_token(s)))
 		return (0);
 	if ((check_sep_syntax(s)) == -1 || (split_cmdl(s)) == -1)
 		return (0);
-	/*print_token(s);*/
 	exec_cmdlines(s);
 	ft_del_cmdline(s, 0);
 	free(s->p.buf);

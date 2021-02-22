@@ -334,6 +334,7 @@ int					cmd_has_only_assignement(t_cmdl *cmd);
 void				error_fd(char *s);
 int					ft_redir_error(char *s);
 void				error(t_mini *s, int error);
+void				export_error(char *str);
 
 /*
 **	flag_input_string.c

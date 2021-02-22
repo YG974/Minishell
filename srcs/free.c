@@ -27,7 +27,6 @@ void	ft_free_tab(char **env)
 	free(env);
 }
 
-
 void	closepipes(t_mini *s)
 {
 	close(0);

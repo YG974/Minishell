@@ -17,7 +17,7 @@
 ** loop for executing each command line, and assigning exit status to '$?'
 */
 
-void	exec_cmdlines(t_mini *s)
+void		exec_cmdlines(t_mini *s)
 {
 	t_cmdl	*cmd;
 
@@ -39,10 +39,11 @@ void	exec_cmdlines(t_mini *s)
 ** Split the input into seperated cmdlines, seperated by semicolons ';'
 */
 
-int		split_cmdl(t_mini *s)
+int			split_cmdl(t_mini *s)
 {
+	t_cmdl	*cmd;
+
 	(void)s;
-	t_cmdl *cmd;
 	cmd = s->firstcmdl;
 	cmd->token = cmd->firsttoken;
 	while (cmd->token->flag != NEWLINE || !cmd->token)
@@ -85,7 +86,7 @@ t_cmdl		*new_cmd_line(t_cmdl *cmd)
 **	(only strings that contains '=')
 */
 
-int		cmd_has_only_assignement(t_cmdl *cmd)
+int			cmd_has_only_assignement(t_cmdl *cmd)
 {
 	cmd->token = cmd->firsttoken;
 	if (cmd->token == NULL)
@@ -100,7 +101,7 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 	return (1);
 }
 
-int		apply_assignement(t_mini *s, t_cmdl *cmd)
+int			apply_assignement(t_mini *s, t_cmdl *cmd)
 {
 	char **args;
 

@@ -14,15 +14,6 @@
 #include "../includes/minishell.h"
 #include <string.h>
 
-void	export_error(char *str)
-{
-	ft_putstr_fd(RED, STDERR);
-	ft_putstr_fd("Minishell: export: \"", STDERR);
-	ft_putstr_fd(str, STDERR);
-	ft_putstr_fd("\" : not a valid identifier\n", STDERR);
-	ft_putstr_fd(RESET, STDERR);
-}
-
 int		ft_export(t_mini *s, char **args)
 {
 	int		i;
@@ -30,7 +21,7 @@ int		ft_export(t_mini *s, char **args)
 
 	i = 1;
 	if ((ret = count_args(args)) == 1)
-		return(print_sorted_env(s));
+		return (print_sorted_env(s));
 	ret = 0;
 	while (args[i])
 	{

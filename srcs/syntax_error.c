@@ -80,6 +80,7 @@ int		pipe_syntax_error(t_mini *s, t_tok *tok)
 /*
 ** set exit_status to 2, and print syntax error string to STD ERROR
 */
+
 int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 {
 	s->error = 3;
@@ -87,9 +88,11 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 	g_sig.ret = 2;
 	ft_putstr_fd(RED, STDERR);
 	if (err == 1)
-		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
+		ft_putstr_fd("Minishell: syntax error near unexpected token: \"",
+				STDERR);
 	else if (err == 2)
-		ft_putstr_fd("Minishell: syntax error token not supported: \"", STDERR);
+		ft_putstr_fd("Minishell: syntax error token not supported: \"",
+				STDERR);
 	if (tok->str)
 		ft_putstr_fd(tok->str, STDERR);
 	ft_putstr_fd("\"\n", STDERR);
@@ -102,6 +105,7 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 ** return 1 if NO syntax error
 ** return -1 and call functions that print error string if syntax error.
 */
+
 int		check_sep_syntax(t_mini *s)
 {
 	t_tok	*tok;
@@ -109,15 +113,15 @@ int		check_sep_syntax(t_mini *s)
 	(void)s;
 	tok = s->firstcmdl->firsttoken;
 	if (tok->flag == S_SEMICOLON)
-		return(syntax_sep_error(s, tok, 1));
+		return (syntax_sep_error(s, tok, 1));
 	while (tok && tok->flag != NEWLINE)
 	{
 		if (tok->flag == FORBIDEN_SEP)
-			return(syntax_sep_error(s, tok, 2));
+			return (syntax_sep_error(s, tok, 2));
 		else if ((is_redir(tok->flag) == 1) && ((find_redir_arg(s, tok)) == -1))
-			return(syntax_sep_error(s, tok, 1));
+			return (syntax_sep_error(s, tok, 1));
 		else if (tok->flag == S_PIPE && (pipe_syntax_error(s, tok)) == -1)
-			return(syntax_sep_error(s, tok, 1));
+			return (syntax_sep_error(s, tok, 1));
 		tok = tok->next;
 	}
 	return (1);

@@ -13,7 +13,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-
 /*
 ** itinerate the string and put the flag 7 on every not escaped word
 ** FLAG = 7 --> not escaped WORD

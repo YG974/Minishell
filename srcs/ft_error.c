@@ -48,3 +48,12 @@ void	error(t_mini *s, int error)
 			ret = ft_printf("EXIT MINISHELL, GOOD BYE <3\n");
 	}
 }
+
+void	export_error(char *str)
+{
+	ft_putstr_fd(RED, STDERR);
+	ft_putstr_fd("Minishell: export: \"", STDERR);
+	ft_putstr_fd(str, STDERR);
+	ft_putstr_fd("\" : not a valid identifier\n", STDERR);
+	ft_putstr_fd(RESET, STDERR);
+}
