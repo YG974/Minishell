@@ -26,7 +26,7 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 	cmd->token = cmd->firsttoken;
 	while ((ft_strchr(cmd->token->str, '=') || (cmd->token->flag == BLANK)))
 		cmd->token = cmd->token->next;
-	while (cmd->token && cmd->token->flag <= FLAG_PIPE)
+	while (cmd->token && cmd->token->flag < S_PIPE)
 	{
 		if (cmd->token->flag == T_WORD)
 		{
