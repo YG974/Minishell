@@ -54,6 +54,7 @@ int		init_signal(t_mini *s)
 	g_sig.quit = 0;
 	g_sig.pid = 0;
 	g_sig.status = 0;
+	g_sig.has_pipe = 0;
 	signal(SIGINT, &handle_sigint);
 	signal(SIGQUIT, &handle_sigquit);
 	return (0);
