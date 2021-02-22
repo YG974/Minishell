@@ -128,20 +128,18 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 		pidlist[i] = fork();
 		if (pidlist[i] == 0)
 		{
-			close(fd[1]);
-			dup2(fd[1], 0);
+			close(fd[0]);
+			dup2(fd[1], 1);
 			if (!ft_redirection(s, cmd))
 				ft_exe_cmd(s, cmd);
-			/*close(fd[0]);*/
+			close(fd[1]);
 			closepipes(s);
 			exit(g_sig.ret);
 		}
 		else
 		{
-			close(fd[0]);
-			dup2(fd[0], 1);
-			/*close(fd[1]);*/
-			closepipes(s);
+			close(fd[1]);
+			dup2(fd[0], 0);
 			i++;
 			cmd->firsttoken = next;
 			next = ft_next_sep(cmd->firsttoken);
@@ -149,8 +147,6 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 	}
 	if (cmd->firsttoken && !ft_redirection(s, cmd))
 		ft_exe_cmd(s, cmd);
-	/*close(fd[1]);*/
-	/*closepipes(s);*/
 	// ft_putstr_fd(ft_itoa(g_sig.ret), 1);
 	save = g_sig.ret;
 	//waitpid(pidlist[i], &g_sig.ret, 0);
