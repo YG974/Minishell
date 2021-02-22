@@ -26,7 +26,7 @@ void	exec_cmdlines(t_mini *s)
 	{
 		handle_dollar_question_mark(s, cmd);
 		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
-		ft_exe_cmd(s, cmd);
+			ft_exe_cmd(s, cmd);
 		else
 			ft_firstpipe(s, cmd);
 		ft_closefd(s);

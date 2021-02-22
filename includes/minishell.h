@@ -250,9 +250,11 @@ void				check_env_validity(t_mini *s);
 /*
 **	ft_parse.c
 */
-void	print_token(t_mini *s);
-int					ft_check_semicolons(char *line);
 int					ft_parse(t_mini *s);
+char				*ft_strjoin_free_s1_s2(char const *s1, char const *s2);
+int					is_meta(char c);
+int					is_redir(int flag);
+int					find_redir_arg(t_mini *s, t_tok *tok);
 
 /*
 **	ft_get_cmd_lines.c
@@ -313,16 +315,18 @@ int					ft_str_error(char *path, char *str, int ret);
 **	parse_cmd_args.c
 */
 int					parse_cmd_args(t_mini *s, t_cmdl *cmd);
-t_tok				*norme_chlag(t_tok *token);
 void				parse_cmd_args2(t_cmdl *cmd);
+void				print_tab(char **tab);
 
 /*
 **	exec_tools.c
 */
+void				exec_cmdlines(t_mini *s);
+int					split_cmdl(t_mini *s);
+t_cmdl				*new_cmd_line(t_cmdl *cmd);
 int					apply_assignement(t_mini *s, t_cmdl *cmd);
 int					cmd_has_only_assignement(t_cmdl *cmd);
-void				ft_free_tab(char **env);
-void				closepipes(t_mini *s);
+
 
 /*
 **	ft_error.c
@@ -332,42 +336,76 @@ int					ft_redir_error(char *s);
 void				error(t_mini *s, int error);
 
 /*
-**	token.c
+**	flag_input_string.c
 */
+void				flag_word(t_mini *s, t_parse *p);
+void				flag_blank(t_mini *s, t_parse *p);
+void				flag_newline(t_mini *s, t_parse *p);
+void				flag_meta(t_mini *s, t_parse *p);
+
+/*
+**	handle_dollar.c
+*/
+void				check_dollars(t_mini *s, t_parse *p);
+void				expand_dollars(t_mini *s, t_parse *p, int i, int j);
 char				*get_env_value(t_mini *s, char *name);
 
 /*
-**	token2.c
+**	quote_parsing.c
 */
-int					ft_wich_meta(char c);
-void				ft_puttok_givflag(t_tok *tok, t_tok *firsttoken, char c);
-char				*ft_strdup_meta(char *src, char *flagstr);
-int					ft_del_tokens(t_cmdl *cmd, int ret);
-int					ft_add_token(t_cmdl *cmd, int i);
+void				check_lit_char(t_mini *s, t_parse *p);
+int					check_double_quotes(t_mini *s, t_parse *p);
+int					check_simple_quotes(t_mini *s, t_parse *p);
+int					check_quotes(t_mini *s, t_parse *p);
 
 /*
-**	token3.c
+**	syntax_error.c
 */
-char				*ft_without_quotes(char *s, int i, int j);
-char				*ft_strdup_quotes(char *src, char *flagstr, char c);
-int					paco_mange_tes_morts(char *str, int i);
-int					extreme(char *str, int i);
-int					ft_inc_i(char *str, char *flag, int i, char c);
+int					syntax_error(t_mini *s, char *str, int err);
+int					pipe_syntax_error(t_mini *s, t_tok *tok);
+int					syntax_sep_error(t_mini *s, t_tok *tok, int err);
+int					check_sep_syntax(t_mini *s);
 
 /*
-**	token4.c
+**	alloc_token.c
 */
-void				ft_closefd(t_mini *s);
+t_tok				*add_meta(t_mini *s, int j, t_tok *tok);
+t_tok				*add_word(t_mini *s, int j, t_tok *tok);
+t_tok				*add_newline(t_mini *s, int j, t_tok *tok);
+t_tok				*add_blank(t_mini *s, int j, t_tok *tok);
+char				*shift_str_left(char *str, int i);
+
+/*
+**	alloc_token2.c
+*/
+t_tok				*add_backslash(t_mini *s, int j, t_tok *tok);
+t_tok				*add_double_quote(t_mini *s, int j, t_tok *tok);
+t_tok				*add_simple_quote(t_mini *s, int j, t_tok *tok);
+t_cmdl				*join_tokens(t_cmdl *cmd);
+char				*delete_backslash(char *str);
+
+/*
+**	alloc_token2.c
+*/
+t_tok				*link_token(t_mini *s, t_tok *tok, t_tok *new);
+int					flag_meta_token(char *str);
+t_cmdl				*init_cmdline(t_mini *s);
 int					break_cmdline_into_token(t_mini *s);
-void				free_cmd_str(t_cmdl *cmd);
 
 /*
-**	token5.c
+**	free.c
 */
-int					is_char_set(int c, const char *char_set);
-int					ft_get_tokens(t_mini *s, t_cmdl *cmd);
-int					ft_ismeta(char c);
-int					ft_lit_char(t_cmdl *cmd, int i);
+void				ft_free_tab(char **env);
+void				closepipes(t_mini *s);
+int					ft_del_tokens(t_cmdl *cmd, int ret);
+void				ft_closefd(t_mini *s);
+
+/*
+**	debug.c
+*/
+void				print_str(t_mini *s);
+void				print_token(t_mini *s);
+void				print_tab(char **tab);
 
 /*
 **	ft_split_ms.c

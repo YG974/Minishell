@@ -24,11 +24,14 @@ SRCS			= 	minishell \
 					builtin3 \
 					builtin4 \
 					builtin5 \
-					token \
-					token2 \
-					token3 \
-					token4 \
-					token5 \
+					alloc_token \
+					alloc_token2 \
+					break_into_token \
+					free \
+					flag_input_string \
+					handle_dollar \
+					quote_parsing \
+					syntax_error \
 					ft_init_signal \
 					ft_redirection \
 					ft_pipes \

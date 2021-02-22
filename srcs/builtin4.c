@@ -13,6 +13,7 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 #include <string.h>
+
 void	export_error(char *str)
 {
 	ft_putstr_fd(RED, STDERR);

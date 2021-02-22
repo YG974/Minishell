@@ -55,4 +55,3 @@ void	print_tab(char **tab)
 	while (tab[i])
 		ft_putstr_fd(tab[i++], 2);
 }
-

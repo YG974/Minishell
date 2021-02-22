@@ -35,3 +35,39 @@ void	closepipes(t_mini *s)
 	close(2);
 	ft_free_env(s->env);
 }
+
+int		ft_del_tokens(t_cmdl *cmd, int ret)
+{
+	t_tok	*tmp;
+	t_tok	*todel;
+
+	todel = cmd->firsttoken;
+	while (todel && todel->prev)
+		todel = todel->prev;
+	while (todel)
+	{
+		tmp = todel->next;
+		if (todel->str)
+			free(todel->str);
+		free(todel);
+		todel->str = NULL;
+		todel->next = NULL;
+		todel = tmp;
+	}
+	cmd->firsttoken = NULL;
+	return (ret);
+}
+
+void	ft_closefd(t_mini *s)
+{
+	if (s->std.out > 1)
+		dup2(0, 1);
+	if (s->std.in > 0)
+		close(s->std.in);
+	if (s->std.out > 1)
+		close(s->std.out);
+	s->std.in = 0;
+	s->std.out = 1;
+	dup2(1, 1);
+	dup2(1, 0);
+}

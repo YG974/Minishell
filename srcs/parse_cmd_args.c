@@ -13,28 +13,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-void	parse_cmd_args2(t_cmdl *cmd)
-{
-	cmd->token = cmd->token->next;
-	if (cmd->token->flag == 2 && cmd->token->str[0] == ' '
-			&& cmd->token)
-		cmd->token = cmd->token->next->next;
-	else
-		cmd->token = cmd->token->next;
-}
-
-t_tok	*norme_chlag(t_tok *token)
-{
-	token = token->next;
-	while (token->flag == 2 && token->str[0] == '>' && token)
-		token = token->next;
-	if (token->flag == 2 && token->str[0] == ' ' && token)
-		token = token->next->next;
-	else
-		token = token->next;
-	return (token);
-}
-
 /*
 **	parse the arguments into a string, without the meta, each token is
 **	delimited with '\n' in the string, in order to split it in a char **tab;
@@ -78,4 +56,13 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 	}
 	cmd->token = cmd->firsttoken;
 	return ;
+}
+
+void	print_tab(char **tab)
+{
+	int		i;
+
+	i = 0;
+	while (tab[i])
+		ft_putstr_fd(tab[i++], 2);
 }

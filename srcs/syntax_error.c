@@ -24,12 +24,15 @@ int		syntax_error(t_mini *s, char *str, int err)
 	g_sig.ret = 2;
 	ft_putstr_fd(RED, STDERR);
 	if (err == 1)
-		ft_putstr_fd("Minishell: syntax error : single quotes opened.\n", STDERR);
+		ft_putstr_fd("Minishell: syntax error : single quotes opened.\n",
+				STDERR);
 	else if (err == 2)
-		ft_putstr_fd("Minishell: syntax error : double quotes opened.\n", STDERR);
+		ft_putstr_fd("Minishell: syntax error : double quotes opened.\n",
+				STDERR);
 	else
 	{
-		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
+		ft_putstr_fd("Minishell: syntax error near unexpected token: \"",
+				STDERR);
 		ft_putstr_fd(str, STDERR);
 		ft_putstr_fd("\"\n", STDERR);
 	}
