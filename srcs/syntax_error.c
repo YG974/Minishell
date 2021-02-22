@@ -53,6 +53,7 @@ int		pipe_syntax_error(t_mini *s, t_tok *tok)
 	int		i;
 	t_tok	*tmp;
 
+	(void)s;
 	i = 0;
 	tmp = tok;
 	while (tok && tok->prev && i == 0)
@@ -70,7 +71,7 @@ int		pipe_syntax_error(t_mini *s, t_tok *tok)
 	}
 	if (i == 2)
 	{
-		s->has_pipe = 1;
+		g_sig.has_pipe = 1;
 		return (1);
 	}
 	return (-1);
