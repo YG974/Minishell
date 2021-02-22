@@ -319,6 +319,7 @@ int					parse_cmd_args(t_mini *s, t_cmdl *cmd);
 void				parse_cmd_args2(t_cmdl *cmd);
 void				print_tab(char **tab);
 
+
 /*
 **	exec_tools.c
 */

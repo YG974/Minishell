@@ -56,24 +56,22 @@ int		pipe_syntax_error(t_mini *s, t_tok *tok)
 	(void)s;
 	i = 0;
 	tmp = tok;
-	while (tok && tok->prev && i == 0)
+	while (tok && tok->prev && i == 0 && tok->flag != S_SEMICOLON)
 	{
 		tok = tok->prev;
 		if (tok->flag == T_WORD)
 			i++;
 	}
 	tok = tmp;
-	while (tok && tok->next && i == 1)
+	while (tok && tok->next && i == 1 && tok->flag != S_SEMICOLON)
 	{
 		tok = tok->next;
 		if (tok->flag == T_WORD)
 			i++;
 	}
-	if (i == 2)
-	{
-		g_sig.has_pipe = 1;
+	if (i == 2 && (g_sig.has_pipe = 1))
 		return (1);
-	}
+	s->currentcmdl->token = tok;
 	return (-1);
 }
 
@@ -117,11 +115,11 @@ int		check_sep_syntax(t_mini *s)
 	while (tok && tok->flag != NEWLINE)
 	{
 		if (tok->flag == FORBIDEN_SEP)
-			return (syntax_sep_error(s, tok, 2));
+			return (syntax_sep_error(s, s->currentcmdl->token, 2));
 		else if ((is_redir(tok->flag) == 1) && ((find_redir_arg(s, tok)) == -1))
-			return (syntax_sep_error(s, tok, 1));
+			return (syntax_sep_error(s, s->currentcmdl->token, 1));
 		else if (tok->flag == S_PIPE && (pipe_syntax_error(s, tok)) == -1)
-			return (syntax_sep_error(s, tok, 1));
+			return (syntax_sep_error(s, s->currentcmdl->token, 1));
 		tok = tok->next;
 	}
 	return (1);
