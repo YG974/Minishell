@@ -28,6 +28,7 @@ SRCS			= 	minishell \
 					alloc_token2 \
 					break_into_token \
 					free \
+					debug \
 					flag_input_string \
 					handle_dollar \
 					quote_parsing \

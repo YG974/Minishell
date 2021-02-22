@@ -90,7 +90,6 @@ int		break_cmdline_into_token(t_mini *s)
 			cmd->token = add_newline(s, s->i, cmd->token);
 		else
 			s->i++;
-	s->i = 0;
 	}
 	cmd = join_tokens(cmd);
 	return (1);
