@@ -98,13 +98,15 @@ int		check_quotes(t_mini *s, t_parse *p)
 	while (p->str[s->i] && s->error != 3)
 	{
 		if (p->str[s->i] == '\"')
-			check_double_quotes(s, p);
+			s->parsed = check_double_quotes(s, p);
 		else if (p->str[s->i] == '\'')
-			check_simple_quotes(s, p);
+			s->parsed = check_simple_quotes(s, p);
 		else if (p->str[s->i] == '\\')
 			check_lit_char(s, p);
 		else
 			s->i++;
+		if (s->parsed == -1)
+			return (-1);
 	}
 	return (1);
 }
