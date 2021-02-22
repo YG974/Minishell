@@ -13,18 +13,69 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-void	ft_free_tab(char **env)
-{
-	int i;
+/*
+** loop for executing each command line, and assigning exit status to '$?'
+*/
 
-	i = 0;
-	while (env[i])
+void	exec_cmdlines(t_mini *s)
+{
+	t_cmdl	*cmd;
+
+	cmd = s->firstcmdl;
+	while (cmd && !s->error && cmd->token->flag != NEWLINE)
 	{
-		free(env[i]);
-		i++;
+		handle_dollar_question_mark(s, cmd);
+		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
+		ft_exe_cmd(s, cmd);
+		else
+			ft_firstpipe(s, cmd);
+		ft_closefd(s);
+		ft_del_tokens(cmd, 0);
+		cmd = cmd->next;
 	}
-	free(env[i]);
-	free(env);
+}
+
+/*
+** Split the input into seperated cmdlines, seperated by semicolons ';'
+*/
+
+int		split_cmdl(t_mini *s)
+{
+	(void)s;
+	t_cmdl *cmd;
+	cmd = s->firstcmdl;
+	cmd->token = cmd->firsttoken;
+	while (cmd->token->flag != NEWLINE || !cmd->token)
+	{
+		if (cmd->token->flag == S_SEMICOLON)
+			cmd = new_cmd_line(cmd);
+		else
+			cmd->token = cmd->token->next;
+		if (cmd->token->flag == NEWLINE)
+			break ;
+	}
+	cmd->token = cmd->firsttoken;
+	return (0);
+}
+
+/*
+** malloc a new command line and link the token and cmdlines
+*/
+
+t_cmdl		*new_cmd_line(t_cmdl *cmd)
+{
+	t_cmdl	*new;
+	t_tok	*tmp;
+
+	tmp = cmd->token->next;
+	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+		return (NULL);
+	cmd->next = new;
+	new->firsttoken = tmp;
+	new->token = tmp;
+	new->token->prev = NULL;
+	cmd->token->next = NULL;
+	return (new);
 }
 
 /*
@@ -48,14 +99,7 @@ int		cmd_has_only_assignement(t_cmdl *cmd)
 	cmd->token = cmd->firsttoken;
 	return (1);
 }
-void	print_tab(char **tab)
-{
-	int		i;
 
-	i = 0;
-	while (tab[i])
-		ft_putstr_fd(tab[i++], 2);
-}
 int		apply_assignement(t_mini *s, t_cmdl *cmd)
 {
 	char **args;
@@ -82,12 +126,4 @@ int		apply_assignement(t_mini *s, t_cmdl *cmd)
 	}
 	/*ft_free_tab(args);*/
 	return (cmd->ret);
-}
-
-void	closepipes(t_mini *s)
-{
-	close(0);
-	close(1);
-	close(2);
-	ft_free_env(s->env);
 }

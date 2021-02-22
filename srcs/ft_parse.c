@@ -30,30 +30,10 @@
 **	if name is not found, return empty string ""
 */
 
-char	*get_env_value(t_mini *s, char *name)
-{
-	char	*value;
-	t_env	*env;
-	int		i;
-
-	value = NULL;
-	env = s->env;
-	i = ft_strlen(name);
-	while (env)
-	{
-		if (ft_strncmp(env->name, name, i) == 0 && i == ft_strlen(env->name))
-			value = ft_strdup(env->value);
-		env = env->next;
-	}
-	if (value == NULL)
-		value = ft_strdup("");
-	free(name);
-	return (value);
-}
-
 /*
 ** join strings s1 and s2 and free them
 */
+
 char	*ft_strjoin_free_s1_s2(char const *s1, char const *s2)
 {
 	int		len1;
@@ -81,176 +61,11 @@ char	*ft_strjoin_free_s1_s2(char const *s1, char const *s2)
 	return (str);
 }
 
-/*
-**	replace the env names ($NAME) in the input by their values in cmd->buf
-*/
-void	expand_dollars(t_mini *s, t_parse *p, int i, int j)
-{
-	char	*tmp;
-
-	p->buf = ft_strdup("");
-	while (p->str[i])
-	{
-		i = i + j;
-		j = 0;
-		if (p->flag[i] == '4')
-		{
-			while (p->flag[i + j] == '4' && p->str[i + j])
-				j++;
-			tmp = ft_strdup_size(p->str, i + j, i);
-			tmp = get_env_value(s, tmp);
-			p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);
-		}
-		else
-		{
-			while (p->flag[i + j] != '4' && p->str[i + j])
-				j++;
-			tmp = ft_strdup_size(p->str, i + j - 1, i);
-			p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);
-		}
-	}
-}
-
-/*
-** itinerate the string and put the flag 4 on var names followings '$' char
-** FLAG = 4 --> not escaped VARIABLE NAME
-*/
-void	check_dollars(t_mini *s, t_parse *p)
-{
-	s->i = 0;
-	while (p->str[s->i])
-	{
-		if (p->str[s->i] == '$' && p->flag[s->i] != '1'
-				&& p->str[s->i - 1] != '\\')
-		{
-			s->i++;
-			while (p->str[s->i]
-					&& (ft_isalnum(p->str[s->i]) || p->str[s->i] == '_'))
-				p->flag[s->i++] = '4';
-		}
-		else
-			s->i++;
-	}
-}
-
-/*
-** set exit_status to 2, and print syntax error string to STD ERROR
-*/
-int		syntax_error(t_mini *s, char *str, int err)
-{
-	s->error = 3;
-	(void)s;
-	g_sig.ret = 2;
-	ft_putstr_fd(RED, STDERR);
-	if (err == 1)
-		ft_putstr_fd("Minishell: syntax error : single quotes opened.\n", STDERR);
-	else if (err == 2)
-		ft_putstr_fd("Minishell: syntax error : double quotes opened.\n", STDERR);
-	else
-	{
-		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
-		ft_putstr_fd(str, STDERR);
-		ft_putstr_fd("\"\n", STDERR);
-	}
-	ft_putstr_fd(RESET, STDERR);
-	return (-1);
-}
-
-/*
-** itinerate the string and put the flag 3 on every escaped char
-** FLAG = 3 --> ESCAPED CHAR
-*/
-void	check_lit_char(t_mini *s, t_parse *p)
-{
-	s->i++;
-	if (p->str[s->i])
-		p->flag[s->i] = '3';
-	s->i++;
-}
-
-/*
-** itinerate the string and put the flag 2 on every char inside double quotes
-** FLAG = 2 --> double quoted char
-*/
-int		check_double_quotes(t_mini *s, t_parse *p)
-{
-	if (p->str[s->i - 1] == '\\')
-	{
-		p->flag[s->i - 1] = '3';
-		p->flag[s->i++] = '3';
-	}
-	else
-	{
-		p->flag[s->i++] = '2';
-		while (p->str[s->i] != '\"' && p->str[s->i])
-		{
-			p->flag[s->i++] = '2';
-			if (p->str[s->i - 1] == '\\' && p->str[s->i] != '\0')
-				p->flag[s->i++] = '2';
-			if (p->str[s->i] == '\0')
-				return(syntax_error(s, NULL, 2));
-		}
-		p->flag[s->i++] = '2';
-	}
-	return (1);
-}
-
-/*
-** itinerate the string and put the flag 1 on every char inside single quotes
-** FLAG = 1 --> single quoted char
-*/
-int		check_simple_quotes(t_mini *s, t_parse *p)
-{
-	if (p->str[s->i - 1] == '\\')
-	{
-		p->flag[s->i - 1] = '3';
-		p->flag[s->i++] = '3';
-	}
-	else
-	{
-		p->flag[s->i++] = '1';
-		while (p->str[s->i] != '\'' && p->str[s->i])
-		{
-			p->flag[s->i++] = '1';
-			if (p->str[s->i] == '\0')
-				return(syntax_error(s, NULL, 1));
-		}
-		p->flag[s->i++] = '1';
-	}
-	return (1);
-}
-
-/*
-** malloc the flag string, and call the 3 differents quoting type functions
-*/
-int		check_quotes(t_mini *s, t_parse *p)
-{
-	int i;
-
-	i = -1;
-	if (p->flag)
-		free(p->flag);
-	p->flag = ft_strdup(p->str);
-	while (p->flag && p->flag[++i])
-		p->flag[i] = '0';
-	s->i = 0;
-	while (p->str[s->i]  && s->error != 3)
-	{
-		if (p->str[s->i] == '\"')
-			check_double_quotes(s, p);
-		else if (p->str[s->i] == '\'')
-			check_simple_quotes(s, p);
-		else if (p->str[s->i] == '\\')
-			check_lit_char(s, p);
-		else
-			s->i++;
-	}
-	return (1);
-}
 
 /*
 ** return 1 if the char is a non espaced metacharacter, else 0
 */
+
 int		is_meta(char c)
 {
 	if (c == '>' || c == '<' || c == ';' || c == '|')
@@ -260,159 +75,11 @@ int		is_meta(char c)
 }
 
 /*
-** itinerate the string and put the flag 8 on '\n' char, usefull to return
-** the good error string when syntax error : syntax error near unexpected token
-** FLAG = 8 --> NEWLINE '\n'
-*/
-void	flag_newline(t_mini *s, t_parse *p)
-{
-	s->i = 0;
-	while (p->str[s->i])
-	{
-		if (p->str[s->i] == '\n')
-			p->flag[s->i] = '8';
-		s->i++;
-	}
-	return ;
-}
-
-/*
-** itinerate the string and put the flag 6 on every not escaped metacharacter
-** FLAG = 6 --> not escaped METACHARACTER
-*/
-void	flag_meta(t_mini *s, t_parse *p)
-{
-	s->i = 0;
-	while (p->str[s->i])
-	{
-		if ((is_meta(p->str[s->i]) == 1 && p->flag[s->i] == '0'))
-			p->flag[s->i] = '6';
-		s->i++;
-	}
-	return ;
-}
-
-/*
-** itinerate the string and put the flag 7 on every not escaped word
-** FLAG = 7 --> not escaped WORD
-*/
-void	flag_word(t_mini *s, t_parse *p)
-{
-	s->i = 0;
-	while (p->str[s->i])
-	{
-		if (p->str[s->i] != '\\' && p->flag[s->i] == '0')
-			p->flag[s->i] = '7';
-		s->i++;
-	}
-	return ;
-}
-
-/*
-** itinerate the string and put the flag 5 on every not escaped blank
-** FLAG = 5 --> not escaped BLANK
-*/
-void	flag_blank(t_mini *s, t_parse *p)
-{
-	s->i = 0;
-	while (p->str[s->i])
-	{
-		if ((p->str[s->i] == ' ' || p->str[s->i] == '\t') &&
-			(p->flag[s->i] == '0'))
-			p->flag[s->i] = '5';
-		s->i++;
-	}
-	return ;
-}
-
-/*
-** DEBUG FUNCTION : print the input and the flags for the parsing.
-*/
-void	print_str(t_mini *s)
-{
-	ft_putstr_fd( "str:", 1);
-	ft_putstr_fd(s->p.str, 1);
-	ft_putstr_fd( "\nflg:", 1);
-	ft_putstr_fd(s->p.flag, 1);
-	ft_putstr_fd( "\nbuf:", 1);
-	ft_putstr_fd(s->p.buf, 1);
-	ft_putstr_fd( "\n--------\n", 1);
-}
-
-/*
-** set exit_status to 2, and print syntax error string to STD ERROR
-*/
-int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
-{
-	s->error = 3;
-	(void)s;
-	g_sig.ret = 2;
-	ft_putstr_fd(RED, STDERR);
-	if (err == 1)
-		ft_putstr_fd("Minishell: syntax error near unexpected token: \"", STDERR);
-	else if (err == 2)
-		ft_putstr_fd("Minishell: syntax error token not supported: \"", STDERR);
-	if (tok->str)
-		ft_putstr_fd(tok->str, STDERR);
-	ft_putstr_fd("\"\n", STDERR);
-	ft_del_tokens(s->currentcmdl, 0);
-	return (-1);
-}
-
-/*
-** return 1 if the token is a redirection token
-** return 0 if the token is NOT a redirection token
-*/
-int		is_redir(int flag)
-{
-	if (flag == S_GREATER || flag == D_GREATER || flag == S_LESS)
-		return (1);
-	else
-		return (0);
-}
-
-/*
-** look for pipe syntax error :
-** a pipe need at least one WORD token before AND after
-** command [ | command2 ... ]
-** return -1 if syntax error
-** return 1 if NO syntax error
-*/
-int		pipe_syntax_error(t_mini *s, t_tok *tok)
-{
-	int		i;
-	t_tok	*tmp;
-
-	(void)s;
-	i = 0;
-	tmp = tok;
-	if (!tok->next || !tok->prev)
-		return (-1);
-	while (tok && tok->prev && i == 0)
-	{
-		tok = tok->prev;
-		if (tok->flag == T_WORD)
-			i++;
-	}
-	tok = tmp;
-	while (tok && tok->next && i == 1)
-	{
-		tok = tok->next;
-		if (tok->flag == T_WORD)
-			i++;
-	}
-	if (i == 2)
-		return (1);
-	else
-		return (-1);
-}
-
-
-/*
 ** look for redirection file into the tokens, and flag it with REDIR_ARG
 ** return -1 if syntax error
 ** return 0 if NO syntax error
 */
+
 int		find_redir_arg(t_mini *s, t_tok *tok)
 {
 	(void)s;
@@ -431,96 +98,22 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 }
 
 /*
-** call the differents syntax checking functions for the diffecrents operators
-** return 1 if NO syntax error
-** return -1 and call functions that print error string if syntax error.
+** return 1 if the token is a redirection token
+** return 0 if the token is NOT a redirection token
 */
-int		check_sep_syntax(t_mini *s)
+
+int		is_redir(int flag)
 {
-	t_tok	*tok;
-
-	(void)s;
-	tok = s->firstcmdl->firsttoken;
-	if (tok->flag == S_SEMICOLON)
-		return(syntax_sep_error(s, tok, 1));
-	while (tok && tok->flag != NEWLINE)
-	{
-		if (tok->flag == FORBIDEN_SEP)
-			return(syntax_sep_error(s, tok, 2));
-		else if ((is_redir(tok->flag) == 1) && ((find_redir_arg(s, tok)) == -1))
-			return(syntax_sep_error(s, tok, 1));
-		else if (tok->flag == S_PIPE && (pipe_syntax_error(s, tok)) == -1)
-			return(syntax_sep_error(s, tok, 1));
-		tok = tok->next;
-	}
-	return (1);
-}
-
-/*
-** malloc a new command line and link the token and cmdlines
-*/
-t_cmdl		*new_cmd_line(t_cmdl *cmd)
-{
-	t_cmdl	*new;
-	t_tok	*tmp;
-
-	tmp = cmd->token->next;
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
-		return (NULL);
-	cmd->next = new;
-	new->firsttoken = tmp;
-	new->token = tmp;
-	new->token->prev = NULL;
-	cmd->token->next = NULL;
-	return (new);
-}
-
-/*
-** Split the input into seperated cmdlines, seperated by semicolons ';'
-*/
-int		split_cmdl(t_mini *s)
-{
-	(void)s;
-	t_cmdl *cmd;
-	cmd = s->firstcmdl;
-	cmd->token = cmd->firsttoken;
-	while (cmd->token->flag != NEWLINE || !cmd->token)
-	{
-		if (cmd->token->flag == S_SEMICOLON)
-			cmd = new_cmd_line(cmd);
-		else
-			cmd->token = cmd->token->next;
-		if (cmd->token->flag == NEWLINE)
-			break ;
-	}
-	cmd->token = cmd->firsttoken;
-	return (0);
-}
-
-/*
-** loop for executing each command line, and assigning exit status to '$?'
-*/
-void	exec_cmdlines(t_mini *s)
-{
-	t_cmdl	*cmd;
-
-	cmd = s->firstcmdl;
-	while (cmd && !s->error && cmd->token->flag != NEWLINE)
-	{
-		handle_dollar_question_mark(s, cmd);
-		if (thereisapipe(cmd) && (!ft_redirection(s, cmd)))
-		ft_exe_cmd(s, cmd);
-		else
-			ft_firstpipe(s, cmd);
-		ft_closefd(s);
-		ft_del_tokens(cmd, 0);
-		cmd = cmd->next;
-	}
+	if (flag == S_GREATER || flag == D_GREATER || flag == S_LESS)
+		return (1);
+	else
+		return (0);
 }
 
 /*
 ** main parsing, call the differents parsing and error functions
 */
+
 int		ft_parse(t_mini *s)
 {
 	s->error = 0;
