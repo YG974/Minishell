@@ -15,7 +15,7 @@
 
 t_tok	*ft_next_sep(t_tok *tok)
 {
-	while (tok && tok->flag != FLAG_PIPE)
+	while (tok && tok->flag != S_PIPE)
 		tok = tok->next;
 	if (tok && tok->next)
 		return (tok->next);
@@ -139,7 +139,7 @@ int		thereisapipe(t_cmdl *cmd)
 	tmp = cmd->firsttoken;
 	while (tmp)
 	{
-		if (tmp->flag == FLAG_PIPE)
+		if (tmp->flag == S_PIPE)
 			return (0);
 		tmp = tmp->next;
 	}

@@ -78,7 +78,7 @@
 # define FLAG_LIT_CHAR 3
 # define FLAG_STR 4
 # define FLAG_ASSIGNEMENT 5
-# define FLAG_PIPE 6
+# define FLAG_PIPE 14
 
 # define NOT_EXEC 126
 # define CMD_NOT_FOUND 127
