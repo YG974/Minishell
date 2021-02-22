@@ -21,6 +21,7 @@ t_tok	*ft_next_sep(t_tok *tok)
 		return (tok->next);
 	return (tok);
 }
+
 /*
 void	ft_pipe2(t_mini *s, t_cmdl *cmd, int fd, t_tok *next)
 {

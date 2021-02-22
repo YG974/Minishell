@@ -63,7 +63,7 @@ void	ft_closefd(t_mini *s)
 		dup2(0, 1);
 	if (s->std.in > 0)
 		close(s->std.in);
-	if (s->std.out > 1)
+	if (s->std.out > 1 && s->std.out != s->std.in)
 		close(s->std.out);
 	s->std.in = 0;
 	s->std.out = 1;
