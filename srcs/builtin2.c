@@ -21,14 +21,14 @@ int		ft_cd(t_mini *s, char **args)
 	int		ret;
 
 	i = count_args(args);
-	if (s->std.in > 1)
-	{
-		get_next_line(s->std.in, &buf);
-		ret = go_to_path(s, buf);
-		free(buf);
-		return (ret);
-	}
-	else if (i == 1)
+	/*if (s->std.in > 1)*/
+	/*{*/
+		/*get_next_line(s->std.in, &buf);*/
+		/*ret = go_to_path(s, buf);*/
+		/*free(buf);*/
+		/*return (ret);*/
+	/*}*/
+	if (i == 1)
 		return (go_to_home_path(s));
 	else
 		return (go_to_path(s, args[1]));
