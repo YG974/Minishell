@@ -164,6 +164,7 @@ typedef struct		s_mini
 	t_cmdl			*currentcmdl;
 	t_parse			p;
 	char			**line;
+	int				fd[2];
 	int				status;
 	int				parsed;
 	int				sig;
@@ -171,6 +172,8 @@ typedef struct		s_mini
 	int				i;
 	int				j;
 	int				firstfd;
+	int				y;
+	int				save;
 }					t_mini;
 
 t_sig	g_sig;
@@ -279,9 +282,16 @@ int					ft_redirection(t_mini *s, t_cmdl *cmd);
 /*
 **	ft_pipes.c
 */
-int					thereisapipe(t_cmdl *cmd);
-int					ft_firstpipe(t_mini *s, t_cmdl *cmd);
+t_tok				*ft_pipe3(t_mini *s, t_tok *next, t_cmdl *cmd);
+void				ft_pipe2(t_tok *next, t_mini *s, t_cmdl *cmd, pid_t *pl);
 int					ft_pipe(t_mini *s, t_cmdl *cmd);
+
+/*
+**	ft_pipes_tools.c
+*/
+t_tok				*ft_next_sep(t_tok *tok);
+int					ft_count_pipe(t_tok *tok);
+int					thereisapipe(t_cmdl *cmd);
 
 /*
 **	ft_exe_cmd.c
