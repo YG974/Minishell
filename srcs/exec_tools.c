@@ -35,6 +35,33 @@ void		exec_cmdlines(t_mini *s)
 	}
 }
 
+int		check_empty_cmdline(t_mini *s, t_cmdl *cmd)
+{
+	int		ret;
+
+	(void)s;
+	ret = -1;
+	cmd->token = cmd->firsttoken;
+	while (cmd)
+	{
+		while (cmd->token)
+		{
+			if (cmd->token->flag <= REDIR_ARG)
+				ret = 1;
+			cmd->token = cmd->token->next;
+		}
+		if (cmd->next)
+			ret = -1;
+		cmd = cmd->next;
+		if (cmd)
+			cmd->token = cmd->firsttoken;
+	}
+	if (ret == 1)
+		return (1);
+	else
+		return (-1);
+}
+
 /*
 ** Split the input into seperated cmdlines, seperated by semicolons ';'
 */
@@ -56,6 +83,9 @@ int			split_cmdl(t_mini *s)
 			break ;
 	}
 	cmd->token = cmd->firsttoken;
+	/*cmd = s->firstcmdl;*/
+	/*if (check_empty_cmdline(s, cmd) == -1)*/
+		/*return (syntax_error(s, ";", 3));*/
 	return (0);
 }
 

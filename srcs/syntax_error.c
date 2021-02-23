@@ -47,6 +47,13 @@ int		syntax_error(t_mini *s, char *str, int err)
 ** return -1 if syntax error
 ** return 1 if NO syntax error
 */
+int		is_control_op(int		flag)
+{
+	if (flag == S_SEMICOLON || flag == NEWLINE || flag == S_PIPE)
+		return (1);
+	else
+		return (-1);
+}
 
 int		pipe_syntax_error(t_mini *s, t_tok *tok)
 {
@@ -56,14 +63,14 @@ int		pipe_syntax_error(t_mini *s, t_tok *tok)
 	(void)s;
 	i = 0;
 	tmp = tok;
-	while (tok && tok->prev && i == 0 && tok->flag != S_SEMICOLON)
+	while (tok && tok->prev && i == 0 && (is_control_op(tok->flag)) == -1)
 	{
 		tok = tok->prev;
 		if (tok->flag == T_WORD)
 			i++;
 	}
 	tok = tmp;
-	while (tok && tok->next && i == 1 && tok->flag != S_SEMICOLON)
+	while (tok && tok->next && i == 1 && (is_control_op(tok->flag)) == -1)
 	{
 		tok = tok->next;
 		if (tok->flag == T_WORD)
