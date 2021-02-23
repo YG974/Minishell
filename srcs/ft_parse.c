@@ -92,7 +92,10 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 			return (0);
 		}
 		else
+		{
+			s->currentcmdl->token = tok;
 			return (-1);
+		}
 	}
 	return (-1);
 }
