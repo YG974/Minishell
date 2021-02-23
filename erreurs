@@ -66,6 +66,7 @@ bash macos et bash linux, j'ai corrige, si argument non numeric, renvoit 2
 
 9) echo bonjour |   | echo salut
     on n'a pas de retour d'erreur (FIX à retester)
+	normalement c'est fix
 
 10) echo "bip | bip ; coyotte > < " "
     on a deux messages d'erreur (FIX à retester)
@@ -74,3 +75,4 @@ bash macos et bash linux, j'ai corrige, si argument non numeric, renvoit 2
 
 11) echo bonjoure ;    ; echo salut
     pas de message d'erreur (FIX à retester)
+	segfault lors de la tentative de fix, a creuser
