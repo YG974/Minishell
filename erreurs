@@ -6,6 +6,7 @@
 
 3) cd ~
     no such file or directory
+	pas a gerer selon moi car caractere special
 
 4) exit exit
     c'est pas le bon retour, bash renvoi 2
@@ -28,12 +29,16 @@ echo $? devrait être 2
 
 8) echo bonjour > $var_qui_nexiste_pas
     syntax error alors que ça devrait être redirection ambigue
+	ouais a changer, retour d'erreur n'est pas 2, mais 1, donc pas considere
+	comme une syntax error
 
 9) echo bonjour |   | echo salut
     on n'a pas de retour d'erreur (FIX à retester)
 
 10) echo "bip | bip ; coyotte > < " "
     on a deux messages d'erreur (FIX à retester)
+	pas grave d'apres moi, sachant que le message sur les quotes est specifique
+	a notre bash et que ca change pas le retour d'erreur
 
 11) echo bonjoure ;    ; echo salut
     pas de message d'erreur (FIX à retester)

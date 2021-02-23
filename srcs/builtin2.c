@@ -39,7 +39,10 @@ int		ft_pwd(t_mini *s, char **args)
 	char *cwd;
 
 	(void)s;
-	cwd = getcwd(args[1], PATH_MAX);
+	(void)args;
+	if (!(cwd = ft_calloc(PATH_MAX, sizeof(char))))
+		return (1);
+	cwd = getcwd(cwd, PATH_MAX);
 	if (!cwd)
 	{
 		ft_putstr_fd(RED, STDERR);
