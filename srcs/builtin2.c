@@ -17,8 +17,8 @@
 int		ft_cd(t_mini *s, char **args)
 {
 	int		i;
-	char	*buf;
-	int		ret;
+	/*char	*buf;*/
+	/*int		ret;*/
 
 	i = count_args(args);
 	/*if (s->std.in > 1)*/
