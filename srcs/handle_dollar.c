@@ -93,7 +93,8 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 	str = replace_tab_by_space(str);
 	tab = ft_split(str, ' ');
 	/*print_token(s);*/
-	free(prev->next);
+	if (prev)
+		free(prev->next);
 	if (tab[0][0] == '\0')
 	{
 		new = new_dollar_tok(s, "", prev, 1);
