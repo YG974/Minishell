@@ -128,7 +128,7 @@ int		ft_parse(t_mini *s)
 	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
 		return (0);
 	check_dollars(s, &s->p);
-	expand_dollars(s, &s->p, 0, 0);
+	/*expand_dollars(s, &s->p, 0, 0);*/
 	s->p.str = s->p.buf;
 	check_quotes(s, &s->p);
 	flag_blank(s, &s->p);
