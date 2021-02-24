@@ -87,7 +87,7 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 	char **tab;
 	int		i;
 	t_tok	*new;
-	t_tok	*tok;
+	/*t_tok	*tok;*/
 
 	i = 0;
 	str = replace_tab_by_space(str);
