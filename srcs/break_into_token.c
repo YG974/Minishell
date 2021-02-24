@@ -72,7 +72,7 @@ int		break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = init_cmdline(s);
-	while (s->p.buf[s->i])
+	while (s->p.str[s->i])
 	{
 		if (s->p.flag[s->i] == '5')
 			cmd->token = add_blank(s, s->i, cmd->token);

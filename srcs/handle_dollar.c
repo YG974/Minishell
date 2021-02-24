@@ -50,35 +50,110 @@ char	*get_env_value(t_mini *s, char *name)
 	return (value);
 }
 
+char	*replace_tab_by_space(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = ' ';
+		i++;
+	}
+	return (str);
+}
+
+
+t_tok	*new_dollar_tok(t_mini *s, char *str, t_tok *prev, int flag)
+{
+	t_tok	*new;
+
+	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+		error(s, ERR_CALLOC);
+	new->str = str;
+	if (flag == 0)
+		new->flag = T_WORD;
+	if (flag != 0)
+		new->flag = BLANK;
+	new->prev = prev;
+	return (new);
+}
+
+t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
+{
+	char **tab;
+	int		i;
+	t_tok	*new;
+
+	i = 0;
+	str = replace_tab_by_space(str);
+	tab = ft_split(str, ' ');
+	free(prev->next);
+	if (tab[0][0] == '\0')
+	{
+		new = new_dollar_tok(s, "", prev, 1);
+		new->next = next;
+		return (new);
+	}
+	new = new_dollar_tok(s, tab[i], prev, 0);
+	/*print_tab(tab);*/
+	i++;
+	while (tab[i])
+	{
+		new = new_dollar_tok(s, tab[i], new, 0);
+		new = new_dollar_tok(s, " ", new, 1);
+		i++;
+	}
+	new->next = next;
+	return (new);
+}
+
 /*
 **	replace the env names ($NAME) in the input by their values in cmd->buf
 */
 
-void	expand_dollars(t_mini *s, t_parse *p, int i, int j)
+void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 {
 	char	*tmp;
 
-	p->buf = ft_strdup("");
-	while (p->str[i])
+	(void)i;
+	(void)j;
+	cmd->token = cmd->firsttoken;
+	while (cmd->token)
 	{
-		i = i + j;
-		j = 0;
-		if (p->flag[i] == '4')
+		if (cmd->token->flag == T_DOLLAR)
 		{
-			while (p->flag[i + j] == '4' && p->str[i + j])
-				j++;
-			tmp = ft_strdup_size(p->str, i + j, i);
+			tmp = ft_strdup_size(cmd->token->str, ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
-			p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);
+			/*free(cmd->token);*/
+			/*cmd->token->str = tmp;*/
+			cmd->token = split_dollar_token(s, tmp, cmd->token->prev, cmd->token->next);
 		}
-		else
-		{
-			while (p->flag[i + j] != '4' && p->str[i + j])
-				j++;
-			tmp = ft_strdup_size(p->str, i + j - 1, i);
-			p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);
-		}
+		cmd->token = cmd->token->next;
 	}
+	cmd->token = cmd->firsttoken;
+	/*p->buf = ft_strdup("");*/
+	/*while (p->str[i])*/
+	/*{*/
+		/*i = i + j;*/
+		/*j = 0;*/
+		/*if (p->flag[i] == '4')*/
+		/*{*/
+			/*while (p->flag[i + j] == '4' && p->str[i + j])*/
+				/*j++;*/
+			/*tmp = ft_strdup_size(p->str, i + j, i);*/
+			/*tmp = get_env_value(s, tmp);*/
+			/*p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);*/
+		/*}*/
+		/*else*/
+		/*{*/
+			/*while (p->flag[i + j] != '4' && p->str[i + j])*/
+				/*j++;*/
+			/*tmp = ft_strdup_size(p->str, i + j - 1, i);*/
+			/*p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);*/
+		/*}*/
+	/*}*/
 }
 
 /*

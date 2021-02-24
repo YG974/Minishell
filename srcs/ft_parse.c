@@ -122,15 +122,16 @@ int		ft_parse(t_mini *s)
 	s->error = 0;
 	s->parsed = 0;
 	s->p.str = s->read.buf;
+	s->p.buf = ft_strdup("");
 	s->p.flag = ft_strdup("");
 	if (s->read.buf[0] == '\n')
 		return (0);
 	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
 		return (0);
 	check_dollars(s, &s->p);
-	expand_dollars(s, &s->p, 0, 0);
-	s->p.str = s->p.buf;
-	check_quotes(s, &s->p);
+	/*expand_dollars(s, &s->p, 0, 0);*/
+	/*s->p.str = s->p.buf;*/
+	/*check_quotes(s, &s->p);*/
 	flag_blank(s, &s->p);
 	flag_meta(s, &s->p);
 	flag_word(s, &s->p);

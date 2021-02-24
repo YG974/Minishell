@@ -24,6 +24,7 @@ void		exec_cmdlines(t_mini *s)
 	cmd = s->firstcmdl;
 	while (cmd && !s->error && cmd->token->flag != NEWLINE)
 	{
+		expand_dollars(s, cmd, 0, 0);
 		handle_dollar_question_mark(s, cmd);
 		if (!thereisapipe(cmd))
 			ft_pipe(s, cmd);
