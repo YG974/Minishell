@@ -92,7 +92,8 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 		return (tok);
 	tok->str = replace_tab_by_space(tok->str);
 	tab = ft_split(tok->str, ' ');
-	tok->str = tab[i];
+	free(tok->str);
+	tok->str = ft_strdup(tab[i]);
 	new = new_dollar_tok(s, tab[i], 0);
 	link_token(s, prev, new);
 	i++;
@@ -104,6 +105,8 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 		link_token(s, tmp, new);
 		i++;
 	}
+	ft_free_tab(tab);
+	free(tab);
 	new->next = next;
 	return (new);
 }
