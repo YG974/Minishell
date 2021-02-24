@@ -106,7 +106,6 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 		i++;
 	}
 	ft_free_tab(tab);
-	free(tab);
 	new->next = next;
 	return (new);
 }
