@@ -104,6 +104,7 @@ int		print_sorted_env(t_mini *s)
 	i = 0;
 	while (s_env[i])
 		free(s_env[i++]);
+	free(s_env);
 	return (0);
 }
 
