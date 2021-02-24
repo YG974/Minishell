@@ -137,9 +137,9 @@ int		ft_parse(t_mini *s)
 	flag_word(s, &s->p);
 	flag_newline(s, &s->p);
 	if (!(break_cmdline_into_token(s)))
-		return (0);
+		return (ft_del_cmdline(s, 0));
 	if ((check_sep_syntax(s)) == -1 || (split_cmdl(s)) == -1)
-		return (0);
+		return (ft_del_cmdline(s, 0));
 	exec_cmdlines(s);
 	ft_del_cmdline(s, 0);
 	free(s->p.buf);
