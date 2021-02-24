@@ -71,40 +71,30 @@ t_tok	*new_dollar_tok(t_mini *s, char *str, t_tok *prev, int flag)
 
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
-	new->str = str;
+	new->str = ft_strdup(str);
 	if (flag == 0)
 		new->flag = T_WORD;
 	if (flag != 0)
 		new->flag = BLANK;
-	new->prev = prev;
-	if (!prev)
-		s->currentcmdl->firsttoken = new;
+	if (prev)
+		new->prev = prev;
 	return (new);
 }
 
-t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
+t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 {
 	char **tab;
 	int		i;
 	t_tok	*new;
-	/*t_tok	*tok;*/
 
+	(void)prev;
+	(void)next;
 	i = 0;
-	str = replace_tab_by_space(str);
-	tab = ft_split(str, ' ');
-	/*print_token(s);*/
-	if (prev)
-		free(prev->next);
-	if (tab[0][0] == '\0')
-	{
-		new = new_dollar_tok(s, "", prev, 1);
-		new->next = next;
-		return (new);
-	}
-	new = new_dollar_tok(s, tab[i], prev, 0);
-	/*tok = new;*/
-	/*print_tab(tab);*/
-	i++;
+	tok->str = replace_tab_by_space(tok->str);
+	tab = ft_split(tok->str, ' ');
+	tok->str = tab[i++];
+	tok->flag = T_WORD;
+	new = tok;
 	while (tab[i])
 	{
 		new = new_dollar_tok(s, tab[i], new, 0);
@@ -112,12 +102,8 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 		i++;
 	}
 	new->next = next;
-	/*while (tok && tok->next)*/
-	/*{*/
-		/*ft_printf("tok:%s|\n flag:%d|\n----\n", tok->str, tok->flag);*/
-		/*tok = tok->next;*/
-	/*}*/
-	new = new->prev;
+	while (new)
+		new = new->next;
 	return (new);
 }
 
@@ -138,7 +124,8 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 		{
 			tmp = ft_strdup_size(cmd->token->str, ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
-			cmd->token = split_dollar_token(s, tmp, cmd->token->prev, cmd->token->next);
+			cmd->token->str = tmp;
+			cmd->token = split_dollar_token(s, cmd->token, cmd->token->prev, cmd->token->next);
 		}
 		cmd->token = cmd->token->next;
 	}
