@@ -26,7 +26,11 @@ void		exec_cmdlines(t_mini *s)
 	{
 		handle_dollar_question_mark(s, cmd);
 		if (!thereisapipe(cmd))
+		{
+			s->save_tok = cmd->firsttoken;
 			ft_pipe(s, cmd);
+			cmd->firsttoken = s->save_tok;
+		}
 		else if (!ft_redirection(s, cmd))
 			ft_exe_cmd(s, cmd);
 		ft_closefd(s);

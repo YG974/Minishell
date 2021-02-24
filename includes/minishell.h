@@ -164,6 +164,7 @@ typedef struct		s_mini
 	t_cmdl			*firstcmdl;
 	t_cmdl			*currentcmdl;
 	t_parse			p;
+	t_tok			*save_tok;
 	char			**line;
 	int				fd[2];
 	int				status;
