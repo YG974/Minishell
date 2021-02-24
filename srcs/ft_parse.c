@@ -122,7 +122,7 @@ int		ft_parse(t_mini *s)
 	s->error = 0;
 	s->parsed = 0;
 	s->p.str = s->read.buf;
-	s->p.buf = ft_strdup("");
+	/*s->p.buf = ft_strdup("");*/
 	s->p.flag = ft_strdup("");
 	if (s->read.buf[0] == '\n')
 		return (0);
