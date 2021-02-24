@@ -93,7 +93,6 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 	tok->str = replace_tab_by_space(tok->str);
 	tab = ft_split(tok->str, ' ');
 	tok->str = tab[i];
-	/*write(s->std.out, "K\n", 2);*/
 	new = new_dollar_tok(s, tab[i], 0);
 	link_token(s, prev, new);
 	i++;
@@ -127,7 +126,8 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 			tmp = ft_strdup_size(cmd->token->str, ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
 			cmd->token->str = tmp;
-			cmd->token = split_dollar_token(s, cmd->token, cmd->token->prev, cmd->token->next);
+			cmd->token = split_dollar_token(s, cmd->token,
+					cmd->token->prev, cmd->token->next);
 		}
 		cmd->token = cmd->token->next;
 	}
