@@ -110,6 +110,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 			execve(path, args, env);
 		else
 		{
+			ft_free_tab(env);
 			free(path);
 			exit(g_sig.ret);
 		}
