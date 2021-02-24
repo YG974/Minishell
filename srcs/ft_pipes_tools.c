@@ -21,7 +21,10 @@ int		thereisapipe(t_cmdl *cmd)
 	while (tmp)
 	{
 		if (tmp->flag == S_PIPE)
+		{
+			g_sig.in_pipe = 1;
 			return (0);
+		}
 		tmp = tmp->next;
 	}
 	return (1);

@@ -150,6 +150,7 @@ typedef	struct		s_sig
 	int				status;
 	int				ret;
 	int				has_pipe;
+	int				in_pipe;
 	pid_t			pid;
 }					t_sig;
 
