@@ -77,6 +77,8 @@ t_tok	*new_dollar_tok(t_mini *s, char *str, t_tok *prev, int flag)
 	if (flag != 0)
 		new->flag = BLANK;
 	new->prev = prev;
+	if (!prev)
+		s->currentcmdl->firsttoken = new;
 	return (new);
 }
 
@@ -85,10 +87,12 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 	char **tab;
 	int		i;
 	t_tok	*new;
+	t_tok	*tok;
 
 	i = 0;
 	str = replace_tab_by_space(str);
 	tab = ft_split(str, ' ');
+	/*print_token(s);*/
 	free(prev->next);
 	if (tab[0][0] == '\0')
 	{
@@ -97,6 +101,7 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 		return (new);
 	}
 	new = new_dollar_tok(s, tab[i], prev, 0);
+	/*tok = new;*/
 	/*print_tab(tab);*/
 	i++;
 	while (tab[i])
@@ -106,6 +111,12 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 		i++;
 	}
 	new->next = next;
+	/*while (tok && tok->next)*/
+	/*{*/
+		/*ft_printf("tok:%s|\n flag:%d|\n----\n", tok->str, tok->flag);*/
+		/*tok = tok->next;*/
+	/*}*/
+	new = new->prev;
 	return (new);
 }
 
@@ -126,34 +137,11 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 		{
 			tmp = ft_strdup_size(cmd->token->str, ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
-			/*free(cmd->token);*/
-			/*cmd->token->str = tmp;*/
 			cmd->token = split_dollar_token(s, tmp, cmd->token->prev, cmd->token->next);
 		}
 		cmd->token = cmd->token->next;
 	}
 	cmd->token = cmd->firsttoken;
-	/*p->buf = ft_strdup("");*/
-	/*while (p->str[i])*/
-	/*{*/
-		/*i = i + j;*/
-		/*j = 0;*/
-		/*if (p->flag[i] == '4')*/
-		/*{*/
-			/*while (p->flag[i + j] == '4' && p->str[i + j])*/
-				/*j++;*/
-			/*tmp = ft_strdup_size(p->str, i + j, i);*/
-			/*tmp = get_env_value(s, tmp);*/
-			/*p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);*/
-		/*}*/
-		/*else*/
-		/*{*/
-			/*while (p->flag[i + j] != '4' && p->str[i + j])*/
-				/*j++;*/
-			/*tmp = ft_strdup_size(p->str, i + j - 1, i);*/
-			/*p->buf = ft_strjoin_free_s1_s2(p->buf, tmp);*/
-		/*}*/
-	/*}*/
 }
 
 /*
