@@ -76,4 +76,3 @@ bash macos et bash linux, j'ai corrige, si argument non numeric, renvoit 2
 11) echo bonjoure ;    ; echo salut
     pas de message d'erreur (FIX à retester)
 	ok fix a mieux tester
-	segfault lors de la tentative de fix, a creuser
