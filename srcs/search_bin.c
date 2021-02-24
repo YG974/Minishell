@@ -111,6 +111,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 		else
 		{
 			ft_free_tab(env);
+			ft_free_tab(args);
 			free(path);
 			exit(g_sig.ret);
 		}
