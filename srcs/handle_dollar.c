@@ -65,11 +65,10 @@ char	*replace_tab_by_space(char *str)
 }
 
 
-t_tok	*new_dollar_tok(t_mini *s, char *str, t_tok *prev, int flag)
+t_tok	*new_dollar_tok(t_mini *s, char *str, int flag)
 {
 	t_tok	*new;
 
-	(void)prev;
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
 	new->str = ft_strdup(str);
@@ -87,21 +86,19 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 	t_tok	*new;
 	t_tok	*tmp;
 
-	(void)prev;
-	(void)next;
 	new = NULL;
 	i = 0;
 	tok->str = replace_tab_by_space(tok->str);
 	tab = ft_split(tok->str, ' ');
 	tok->str = tab[i];
-	new = new_dollar_tok(s, tab[i], new, 0);
+	new = new_dollar_tok(s, tab[i], 0);
 	link_token(s, prev, new);
 	i++;
 	while (tab[i])
 	{
-		tmp = new_dollar_tok(s, " ", new, 1);
+		tmp = new_dollar_tok(s, " ", 1);
 		link_token(s, new, tmp);
-		new = new_dollar_tok(s, tab[i], new, 0);
+		new = new_dollar_tok(s, tab[i], 0);
 		link_token(s, tmp, new);
 		i++;
 	}
