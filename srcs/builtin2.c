@@ -91,7 +91,6 @@ int		print_sorted_env(t_mini *s)
 		while (s_env[i][j - 1] != '=' && s_env[i][j])
 			write(s->std.out, &s_env[i][j++], 1);
 		if (s_env[i][j - 1] == '=')
-		/*if (s_env[i][j])*/
 		{
 			write(s->std.out, "\"", 1);
 			while (s_env[i][j])
@@ -102,6 +101,9 @@ int		print_sorted_env(t_mini *s)
 		j = 0;
 		i++;
 	}
+	i = 0;
+	while (s_env[i])
+		free(s_env[i++]);
 	return (0);
 }
 
