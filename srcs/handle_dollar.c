@@ -88,9 +88,12 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 
 	new = NULL;
 	i = 0;
+	if (tok->str[0] == '\0')
+		return (tok);
 	tok->str = replace_tab_by_space(tok->str);
 	tab = ft_split(tok->str, ' ');
 	tok->str = tab[i];
+	/*write(s->std.out, "K\n", 2);*/
 	new = new_dollar_tok(s, tab[i], 0);
 	link_token(s, prev, new);
 	i++;
