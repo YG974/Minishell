@@ -75,6 +75,7 @@ int		is_valid_env_name(char *str)
 	return (1);
 }
 
+/*a normer en supprimant i et j, en l'envoyant dans les arguments de la fonction*/
 int		print_sorted_env(t_mini *s)
 {
 	char	**s_env;
