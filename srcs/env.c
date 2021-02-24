@@ -80,6 +80,7 @@ char	**put_env_in_tab(t_mini *s)
 {
 	t_env	*env;
 	char	*env_str;
+	char	*tmp;
 	char	**env_tab;
 
 	env = s->env;
@@ -95,7 +96,8 @@ char	**put_env_in_tab(t_mini *s)
 		}
 		env = env->next;
 	}
-	env_tab = ft_split(env_str, '\n');
+	tmp = ft_strdup(env_str);
+	env_tab = ft_split(tmp, '\n');
 	free(env_str);
 	return (env_tab);
 }
