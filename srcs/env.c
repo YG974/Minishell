@@ -88,10 +88,10 @@ char	**put_env_in_tab(t_mini *s)
 	{
 		if (env->value)
 		{
-			env_str = ft_strjoin_free_s1_s2(ft_strdup(env_str), ft_strdup(env->name));
-			env_str = ft_strjoin_free_s1_s2(ft_strdup(env_str), ft_strdup("="));
-			env_str = ft_strjoin_free_s1_s2(ft_strdup(env_str), ft_strdup(env->value));
-			env_str = ft_strjoin_free_s1_s2(ft_strdup(env_str), ft_strdup("\n"));
+			env_str = ft_strjoin_free_s1((env_str), ft_strdup(env->name));
+			env_str = ft_strjoin_free_s1((env_str), ft_strdup("="));
+			env_str = ft_strjoin_free_s1((env_str), ft_strdup(env->value));
+			env_str = ft_strjoin_free_s1((env_str), ft_strdup("\n"));
 		}
 		env = env->next;
 	}
