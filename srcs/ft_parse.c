@@ -142,7 +142,7 @@ int		ft_parse(t_mini *s)
 		return (ft_del_cmdline(s, 0));
 	exec_cmdlines(s);
 	ft_del_cmdline(s, 0);
-	free(s->p.buf);
+	/*free(s->p.buf);*/
 	free(s->p.flag);
 	return (0);
 }
