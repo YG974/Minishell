@@ -136,6 +136,7 @@ int		ft_parse(t_mini *s)
 	flag_meta(s, &s->p);
 	flag_word(s, &s->p);
 	flag_newline(s, &s->p);
+	//leak dans break l88
 	if (!(break_cmdline_into_token(s)))
 		return (ft_del_cmdline(s, 0));
 	if ((check_sep_syntax(s)) == -1 || (split_cmdl(s)) == -1)
