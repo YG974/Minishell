@@ -27,6 +27,7 @@ t_tok	*add_backslash(t_mini *s, int j, t_tok *tok)
 	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new->flag = T_WORD;
 	new = link_token(s, tok, new);
+	free(tok);
 	return (new);
 }
 
@@ -51,6 +52,7 @@ t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 	new->str = delete_backslash(new->str);
 	new->flag = T_WORD;
 	new = link_token(s, tok, new);
+	free(tok);
 	return (new);
 }
 
@@ -69,6 +71,7 @@ t_tok	*add_simple_quote(t_mini *s, int j, t_tok *tok)
 	new->str = ft_strdup_size(s->p.str, s->i - 1, j + 1);
 	new->flag = T_WORD;
 	new = link_token(s, tok, new);
+	free(tok);
 	return (new);
 }
 
