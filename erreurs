@@ -1,0 +1,76 @@
+1) cd < fichier_texte
+    Si le chemin n'est pas reconnaissable, le bash considère ça comme "cd" sans arg
+	j'ai fait mes test sur la VM, j'ai comme notre minishell avec bash et le
+	minishell...
+	en supprimant ca, ca marche... t'es sur que ca avait une utilite a un moment
+	?
+	en faisant des test je vois pas de situation ou le vrai bash lit le stdin...
+		/*char	*buf;*/
+	/*int		ret;*/
+
+	i = count_args(args);
+	/*if (s->std.in > 1)*/
+	/*{*/
+		/*get_next_line(s->std.in, &buf);*/
+		/*ret = go_to_path(s, buf);*/
+		/*free(buf);*/
+		/*return (ret);*/
+	/*}*/
+
+
+2) pwd avec arguments
+    segfault
+	resolu, a tester davantage mais moi j'ai plus de segfault la
+
+3) cd ~
+    no such file or directory
+	pas a gerer selon moi car caractere special
+	le sujet dit : ◦ cd with only a relative or absolute path 
+
+4) exit exit
+    c'est pas le bon retour, bash renvoi 2
+	ok fix normalement, quand largument n'est psa valid, ca renvoit 2, si pas
+	d'argument 0, si argument numeric, atoio de l'arg
+
+5) Y'a un soucis avec ctrl + c, comme si le retour était en retard
+ctrl + c
+puis echo bonjour
+puis echo $? => 130 (au lieu de 0)
+
+6) export var ="cat Makefile | grep >"
+puis $var
+    Le vrai bash considère qu'on veut faire un cat sur Makefile, puis sur |, puis sur grep, puis sur >
+Il considère toute la valeur d'une var comme un T_WORD
+
+7) exit ne retourne pas le bon retour (sauf avec un ctrl + c avant du coup)
+Si on fait sans argument
+ls qdsqdd => erreur fichier n'existe pas
+exit
+echo $? devrait être 2
+meme chose que le 4), normalement c'est bon, c'est juste une difference entre
+bash macos et bash linux, j'ai corrige, si argument non numeric, renvoit 2
+
+8) echo bonjour > $var_qui_nexiste_pas
+    syntax error alors que ça devrait être redirection ambigue
+	ouais a changer, retour d'erreur n'est pas 2, mais 1, donc pas considere
+	comme une syntax error
+	il faut changer l'imbrication des boucles au niveau du handle dollar, pour
+	le moment, je remplace direct dans la string cmd->str ou cmd->buf. Il
+	faudrait en fait laisser la variable $var avec les flag, et la remplacer au
+	niveau de la creation des token, pour pouvoir allouer un token avec
+	token->str = string vide, et ensuite faire un retour d'erreur au niveau de
+	des redirection, si redir arg=string vide (c'est a dire dire token->str
+	existe et token->str[0] == '\0')
+	if (token->str && token->str[0] == '\0')
+		return(g_sig.ret = 1 && print redir ambigous)
+
+9) echo bonjour |   | echo salut
+    on n'a pas de retour d'erreur (FIX à retester)
+
+10) echo "bip | bip ; coyotte > < " "
+    on a deux messages d'erreur (FIX à retester)
+	pas grave d'apres moi, sachant que le message sur les quotes est specifique
+	a notre bash et que ca change pas le retour d'erreur
+
+11) echo bonjoure ;    ; echo salut
+    pas de message d'erreur (FIX à retester)

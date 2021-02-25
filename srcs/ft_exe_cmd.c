@@ -58,7 +58,7 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 		else if (s->i == 0)
 			g_sig.ret = 0;
 		else
-			g_sig.ret = 1;
+			g_sig.ret = 2;
 		error(s, WANT_EXIT);
 	}
 	return (g_sig.ret);
@@ -99,6 +99,8 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	/*}*/
 	/*if (cmd->token == NULL)*/
 		/*return ;*/
+	if (cmd->buf)
+		free(cmd->buf);
 	parse_cmd_args(s, cmd);
 	args = ft_split_ms(cmd->buf, '\n');
 	free(cmd->buf);

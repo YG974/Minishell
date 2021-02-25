@@ -21,7 +21,7 @@ t_tok	*add_backslash(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
 
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
 	s->i++;
 	new->str = ft_strdup_size(s->p.str, s->i, j);
@@ -38,7 +38,7 @@ t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
 
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '2')
 	{
@@ -62,7 +62,7 @@ t_tok	*add_simple_quote(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
 
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '1')
 		s->i++;

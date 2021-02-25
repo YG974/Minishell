@@ -36,6 +36,7 @@ SRCS			= 	minishell \
 					ft_init_signal \
 					ft_redirection \
 					ft_pipes \
+					ft_pipes_tools \
 					ft_exe_cmd \
 					ft_error \
 					ft_split_ms \

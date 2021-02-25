@@ -60,11 +60,11 @@ char	**put_sorted_env_in_tab(t_mini *s)
 	env_str = strdup("");
 	while (env)
 	{
-		env_str = ft_strjoin_free_s1(env_str, env->name);
+		env_str = ft_strjoin_free_s1_s2(env_str, ft_strdup(env->name));
 		if (env->value)
 		{
 			env_str = ft_strjoin_free_s1(env_str, "=");
-			env_str = ft_strjoin_free_s1(env_str, env->value);
+			env_str = ft_strjoin_free_s1_s2(env_str, ft_strdup(env->value));
 		}
 		env_str = ft_strjoin_free_s1(env_str, "\n");
 		env = env->next;

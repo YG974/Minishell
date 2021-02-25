@@ -17,18 +17,18 @@
 int		ft_cd(t_mini *s, char **args)
 {
 	int		i;
-	char	*buf;
-	int		ret;
+	/*char	*buf;*/
+	/*int		ret;*/
 
 	i = count_args(args);
-	if (s->std.in > 1)
-	{
-		get_next_line(s->std.in, &buf);
-		ret = go_to_path(s, buf);
-		free(buf);
-		return (ret);
-	}
-	else if (i == 1)
+	/*if (s->std.in > 1)*/
+	/*{*/
+		/*get_next_line(s->std.in, &buf);*/
+		/*ret = go_to_path(s, buf);*/
+		/*free(buf);*/
+		/*return (ret);*/
+	/*}*/
+	if (i == 1)
 		return (go_to_home_path(s));
 	else
 		return (go_to_path(s, args[1]));
@@ -39,7 +39,10 @@ int		ft_pwd(t_mini *s, char **args)
 	char *cwd;
 
 	(void)s;
-	cwd = getcwd(args[1], PATH_MAX);
+	(void)args;
+	if (!(cwd = ft_calloc(PATH_MAX, sizeof(char))))
+		return (1);
+	cwd = getcwd(cwd, PATH_MAX);
 	if (!cwd)
 	{
 		ft_putstr_fd(RED, STDERR);
@@ -72,6 +75,7 @@ int		is_valid_env_name(char *str)
 	return (1);
 }
 
+/*a normer en supprimant i et j, en l'envoyant dans les arguments de la fonction*/
 int		print_sorted_env(t_mini *s)
 {
 	char	**s_env;
@@ -88,7 +92,6 @@ int		print_sorted_env(t_mini *s)
 		while (s_env[i][j - 1] != '=' && s_env[i][j])
 			write(s->std.out, &s_env[i][j++], 1);
 		if (s_env[i][j - 1] == '=')
-		/*if (s_env[i][j])*/
 		{
 			write(s->std.out, "\"", 1);
 			while (s_env[i][j])
@@ -99,6 +102,10 @@ int		print_sorted_env(t_mini *s)
 		j = 0;
 		i++;
 	}
+	i = 0;
+	while (s_env[i])
+		free(s_env[i++]);
+	free(s_env);
 	return (0);
 }
 

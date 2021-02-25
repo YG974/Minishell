@@ -80,6 +80,7 @@ char	**put_env_in_tab(t_mini *s)
 {
 	t_env	*env;
 	char	*env_str;
+	char	*tmp;
 	char	**env_tab;
 
 	env = s->env;
@@ -88,14 +89,15 @@ char	**put_env_in_tab(t_mini *s)
 	{
 		if (env->value)
 		{
-			env_str = ft_strjoin_free_s1(env_str, env->name);
-			env_str = ft_strjoin_free_s1(env_str, "=");
-			env_str = ft_strjoin_free_s1(env_str, env->value);
-			env_str = ft_strjoin_free_s1(env_str, "\n");
+			env_str = ft_strjoin_free_s1((env_str), (env->name));
+			env_str = ft_strjoin_free_s1((env_str), ("="));
+			env_str = ft_strjoin_free_s1((env_str), (env->value));
+			env_str = ft_strjoin_free_s1((env_str), ("\n"));
 		}
 		env = env->next;
 	}
-	env_tab = ft_split(env_str, '\n');
+	/*tmp = ft_strdup(env_str);*/
+	env_tab = ft_split(tmp, '\n');
 	free(env_str);
 	return (env_tab);
 }

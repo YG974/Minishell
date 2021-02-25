@@ -72,7 +72,7 @@ int		break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = init_cmdline(s);
-	while (s->p.buf[s->i])
+	while (s->p.str[s->i])
 	{
 		if (s->p.flag[s->i] == '5')
 			cmd->token = add_blank(s, s->i, cmd->token);
@@ -85,6 +85,8 @@ int		break_cmdline_into_token(t_mini *s)
 		else if (s->p.flag[s->i] == '6')
 			cmd->token = add_meta(s, s->i, cmd->token);
 		else if (s->p.flag[s->i] == '7')
+			cmd->token = add_word(s, s->i, cmd->token);
+		else if (s->p.flag[s->i] == '4')
 			cmd->token = add_word(s, s->i, cmd->token);
 		else if (s->p.flag[s->i] == '8')
 			cmd->token = add_newline(s, s->i, cmd->token);

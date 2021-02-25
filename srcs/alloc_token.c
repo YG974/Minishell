@@ -21,7 +21,7 @@ t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
 
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
 	if (s->p.str[s->i] == '>' && s->p.str[s->i + 1] == '|')
 		s->i++;
@@ -42,12 +42,20 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
 
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '7')
 		s->i++;
+	while (s->p.flag[s->i] == '4')
+		s->i++;
+	if (s->p.flag[s->i - 1] == '4')
+		new->flag = T_DOLLAR;
+	if (s->p.flag[s->i - 1] == '7')
+		new->flag = T_WORD;
+	/*new->flag = T_WORD;*/
+	if (new->str)
+		free(new->str);
 	new->str = ft_strdup_size(s->p.str, s->i, j);
-	new->flag = T_WORD;
 	new = link_token(s, tok, new);
 	return (new);
 }
@@ -61,7 +69,7 @@ t_tok	*add_newline(t_mini *s, int j, t_tok *tok)
 	t_tok	*new;
 
 	(void)j;
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
 	new->str = ft_strdup("newline");
 	new->flag = NEWLINE;
@@ -79,7 +87,7 @@ t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 	t_tok	*new;
 
 	(void)j;
-	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '5')
 		s->i++;

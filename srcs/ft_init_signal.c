@@ -23,10 +23,11 @@ void	sigprompt(void)
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	if (g_sig.pid == 0)
+	if (g_sig.has_pipe == 0)
 	{
 		ft_putstr_fd("\b\b  ", STDERR);
-		sigprompt();
+		ft_putstr_fd("\n", STDOUT);
+		//sigprompt();
 	}
 	else
 		ft_putstr_fd("\n", STDERR);
