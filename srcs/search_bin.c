@@ -122,6 +122,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	else
 		waitpid(g_sig.pid, &g_sig.ret, 0);
 	g_sig.ret = WEXITSTATUS(g_sig.ret);
+	ft_del_tokens(cmd, 0);
 	return (g_sig.ret);
 }
 
