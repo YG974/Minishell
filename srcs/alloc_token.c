@@ -42,6 +42,7 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 {
 	t_tok	*new;
 
+	/*leak ici ?*/
 	if (!(new = ft_calloc(1, sizeof(t_cmdl))))
 		error(s, ERR_CALLOC);
 	while (s->p.flag[s->i] == '7')

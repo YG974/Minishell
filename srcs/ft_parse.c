@@ -122,7 +122,7 @@ int		ft_parse(t_mini *s)
 	s->error = 0;
 	s->parsed = 0;
 	s->p.str = s->read.buf;
-	s->p.buf = ft_strdup("");
+	/*s->p.buf = ft_strdup("");*/
 	s->p.flag = ft_strdup("");
 	if (s->read.buf[0] == '\n')
 		return (0);
@@ -136,13 +136,14 @@ int		ft_parse(t_mini *s)
 	flag_meta(s, &s->p);
 	flag_word(s, &s->p);
 	flag_newline(s, &s->p);
+	//leak dans break l88
 	if (!(break_cmdline_into_token(s)))
-		return (0);
+		return (ft_del_cmdline(s, 0));
 	if ((check_sep_syntax(s)) == -1 || (split_cmdl(s)) == -1)
-		return (0);
+		return (ft_del_cmdline(s, 0));
 	exec_cmdlines(s);
 	ft_del_cmdline(s, 0);
-	free(s->p.buf);
+	/*free(s->p.buf);*/
 	free(s->p.flag);
 	return (0);
 }
