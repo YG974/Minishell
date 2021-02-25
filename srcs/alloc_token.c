@@ -31,8 +31,11 @@ t_tok	*add_meta(t_mini *s, int j, t_tok *tok)
 	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new->flag = flag_meta_token(new->str);
 	new = link_token(s, tok, new);
+	if (tok)
+	{
 	free(tok->str);
 	free(tok);
+	}
 	return (new);
 }
 
@@ -58,8 +61,6 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 	/*new->flag = T_WORD;*/
 	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new = link_token(s, tok, new);
-	free(tok->str);
-	free(tok);
 	return (new);
 }
 
@@ -77,8 +78,6 @@ t_tok	*add_newline(t_mini *s, int j, t_tok *tok)
 	new->str = ft_strdup("newline");
 	new->flag = NEWLINE;
 	new = link_token(s, tok, new);
-	free(tok->str);
-	free(tok);
 	s->i++;
 	return (new);
 }
@@ -99,8 +98,6 @@ t_tok	*add_blank(t_mini *s, int j, t_tok *tok)
 	new->str = ft_strdup(" ");
 	new->flag = BLANK;
 	new = link_token(s, tok, new);
-	free(tok->str);
-	free(tok);
 	return (new);
 }
 
