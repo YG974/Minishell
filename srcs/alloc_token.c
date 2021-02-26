@@ -52,9 +52,6 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 		new->flag = T_DOLLAR;
 	if (s->p.flag[s->i - 1] == '7')
 		new->flag = T_WORD;
-	/*new->flag = T_WORD;*/
-	if (new->str)
-		free(new->str);
 	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new = link_token(s, tok, new);
 	return (new);
