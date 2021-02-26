@@ -27,7 +27,11 @@ void		exec_cmdlines(t_mini *s)
 		expand_dollars(s, cmd, 0, 0);
 		handle_dollar_question_mark(s, cmd);
 		if (!thereisapipe(cmd))
+		{
+			s->save_tok = cmd->firsttoken;
 			ft_pipe(s, cmd);
+			cmd->firsttoken = s->save_tok;
+		}
 		else if (!ft_redirection(s, cmd))
 			ft_exe_cmd(s, cmd);
 		ft_closefd(s);
@@ -44,13 +48,20 @@ int			split_cmdl(t_mini *s)
 {
 	t_cmdl	*cmd;
 
-	(void)s;
+	s->parsed = -1;
 	cmd = s->firstcmdl;
 	cmd->token = cmd->firsttoken;
 	while (cmd->token->flag != NEWLINE || !cmd->token)
 	{
-		if (cmd->token->flag == S_SEMICOLON)
+		if (cmd->token->flag <= REDIR_ARG)
+			s->parsed = 1;
+		if (cmd->token->flag == S_SEMICOLON && s->parsed == 1)
+		{
+			s->parsed = -1;
 			cmd = new_cmd_line(cmd);
+		}
+		else if (cmd->token->flag == S_SEMICOLON && s->parsed == -1)
+			return (syntax_error(s, ";", 3));
 		else
 			cmd->token = cmd->token->next;
 		if (cmd->token->flag == NEWLINE)

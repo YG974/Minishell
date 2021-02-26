@@ -48,25 +48,29 @@ int		syntax_error(t_mini *s, char *str, int err)
 ** return 1 if NO syntax error
 */
 
-int		pipe_syntax_error(t_mini *s, t_tok *tok)
+int		is_control_op(int		flag)
+{
+	if (flag == S_SEMICOLON || flag == NEWLINE || flag == S_PIPE)
+		return (1);
+	else
+		return (-1);
+}int		pipe_syntax_error(t_mini *s, t_tok *tok)
 {
 	int		i;
-	t_tok	*tmp;
-
-	(void)s;
+	t_tok	*tmp;	(void)s;
 	i = 0;
 	tmp = tok;
-	while (tok && tok->prev && i == 0 && tok->flag != S_SEMICOLON)
+	while (tmp && tmp->prev && i == 0 && (is_control_op(tmp->prev->flag)) == -1)
 	{
-		tok = tok->prev;
-		if (tok->flag == T_WORD)
+		tmp = tmp->prev;
+		if (tmp->flag == T_WORD || (tmp->flag >= 11 && tmp->flag <= 13))
 			i++;
 	}
-	tok = tmp;
-	while (tok && tok->next && i == 1 && tok->flag != S_SEMICOLON)
+	tmp = tok;
+	while (tmp && tmp->next && i == 1 && (is_control_op(tmp->next->flag)) == -1)
 	{
-		tok = tok->next;
-		if (tok->flag == T_WORD)
+		tmp = tmp->next;
+		if (tmp->flag == T_WORD || (tmp->flag >= 11 && tmp->flag <= 13))
 			i++;
 	}
 	if (i == 2 && (g_sig.has_pipe = 1))
@@ -106,9 +110,7 @@ int		syntax_sep_error(t_mini *s, t_tok *tok, int err)
 
 int		check_sep_syntax(t_mini *s)
 {
-	t_tok	*tok;
-
-	(void)s;
+	t_tok	*tok;	(void)s;
 	tok = s->firstcmdl->firsttoken;
 	if (tok->flag == S_SEMICOLON)
 		return (syntax_sep_error(s, tok, 1));
