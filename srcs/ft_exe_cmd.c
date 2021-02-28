@@ -56,7 +56,7 @@ int		exec_builtin(t_mini *s, t_cmdl *cmd, char **args)
 		if ((s->i = ft_exit(s, args)) == 2)
 			g_sig.ret = ft_atoi(args[1]);
 		else if (s->i == 0)
-			g_sig.ret = 0;
+			g_sig.ret = g_sig.ret;
 		else
 			g_sig.ret = 2;
 		error(s, WANT_EXIT);
@@ -92,6 +92,7 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 	int		status;
 
 	cmd->ret = 0;
+	g_sig.in_func = 1;
 	/*if (cmd_has_only_assignement(cmd))*/
 	/*{*/
 		/*g_sig.ret = apply_assignement(s, cmd);*/

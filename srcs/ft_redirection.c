@@ -15,19 +15,21 @@
 
 int		ft_change_fd2(t_mini *s, t_tok *tok, t_tok *tmp)
 {
-	if (s->std.out > 1)
+	if (s->std.out > 2)
 		close(s->std.out);
 	if (tok->flag == D_GREATER)
-		s->std.out = open(tmp->str, O_WRONLY | O_CREAT | O_APPEND, 00644);
+		s->std.out = open(tmp->str, O_WRONLY | O_CREAT | O_APPEND, 420);
 	else
-		s->std.out = open(tmp->str, O_WRONLY | O_CREAT | O_TRUNC, 00644);
+		s->std.out = open(tmp->str, O_WRONLY | O_CREAT | O_TRUNC, 420);
 	if (s->std.out < 0)
 	{
 		s->std.out = 0;
 		return (1);
 	}
 	else
+	{
 		dup2(s->std.out, 1);
+	}
 	return (0);
 }
 
@@ -44,7 +46,7 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 		return (ft_change_fd2(s, tok, tmp));
 	if (tok->flag == S_LESS)
 	{
-		if (s->std.in > 0)
+		if (s->std.in > 2)
 			close(s->std.in);
 		s->std.in = open(tmp->str, O_RDONLY);
 		if (s->std.in < 0)
@@ -53,7 +55,9 @@ int		ft_change_fd(t_mini *s, t_tok *tok)
 			return (1);
 		}
 		else
+		{
 			dup2(s->std.in, 0);
+		}
 	}
 	return (0);
 }

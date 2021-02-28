@@ -23,7 +23,7 @@ void	sigprompt(void)
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	if (g_sig.in_pipe == 0)
+	if (g_sig.in_func == 0)
 	{
 		ft_putstr_fd("\b\b  ", STDERR);
 		ft_putstr_fd("\b", STDOUT);
@@ -56,7 +56,7 @@ int		init_signal(t_mini *s)
 	g_sig.pid = 0;
 	g_sig.status = 0;
 	g_sig.has_pipe = 0;
-	g_sig.in_pipe = 0;
+	g_sig.in_func = 0;
 	signal(SIGINT, &handle_sigint);
 	signal(SIGQUIT, &handle_sigquit);
 	return (0);

@@ -69,4 +69,6 @@ void	ft_closefd(t_mini *s)
 	s->std.out = 1;
 	dup2(1, 1);
 	dup2(1, 0);
+	dup2(s->std.sin, 0);
+	dup2(s->std.sout, 1);
 }

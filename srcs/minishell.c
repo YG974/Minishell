@@ -57,6 +57,8 @@ void	init_mini(t_mini *s)
 	s->parse.semcol = 0;
 	s->firstcmdl = NULL;
 	s->firstfd = 0;
+	s->std.sin = dup(STDIN);
+	s->std.sout = dup(STDOUT);
 }
 
 void	ft_free_env(t_env *env)

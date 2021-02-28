@@ -118,6 +118,8 @@ typedef struct		s_std
 {
 	int				in;
 	int				out;
+	int				sin;
+	int				sout;
 	int				err;
 }					t_std;
 
@@ -151,7 +153,7 @@ typedef	struct		s_sig
 	int				status;
 	int				ret;
 	int				has_pipe;
-	int				in_pipe;
+	int				in_func;
 	pid_t			pid;
 }					t_sig;
 
