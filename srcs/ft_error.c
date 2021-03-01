@@ -61,10 +61,10 @@ void	export_error(char *str)
 void		error_ambigous(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
+	(void)cmd;
 	g_sig.ret = 1;
 	ft_putstr_fd(RED, STDERR);
-	ft_putstr_fd("Minishell: ", STDERR);
-	ft_putstr_fd(cmd->token->str, STDERR);
+	ft_putstr_fd("Minishell: undefined variable", STDERR);
 	ft_putstr_fd(" : ambigous redirect\n", STDERR);
 	return ;
 }
