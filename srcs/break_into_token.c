@@ -19,7 +19,7 @@
 
 t_tok	*link_token(t_mini *s, t_tok *tok, t_tok *new)
 {
-	if (tok)
+	if (tok != NULL)
 	{
 		tok->next = new;
 		new->prev = tok;
