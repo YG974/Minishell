@@ -96,8 +96,9 @@ char	**put_env_in_tab(t_mini *s)
 		}
 		env = env->next;
 	}
-	tmp = ft_strdup(env_str);
-	env_tab = ft_split(tmp, '\n');
+	/*tmp = ft_strdup(env_str);*/
+	/*env_tab = ft_split(tmp, '\n');*/
+	env_tab = ft_split(env_str, '\n');
 	free(env_str);
 	return (env_tab);
 }
