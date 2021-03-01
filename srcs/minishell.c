@@ -29,7 +29,6 @@ void	prompt(t_mini *s)
 				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret],
 						s->read.count);
 			}
-			/*s->read.buf[s->read.ret] = '\n';*/
 		}
 		else
 		{
@@ -56,6 +55,7 @@ void	init_mini(t_mini *s)
 	s->read.count = BUFF_SIZE;
 	s->parse.semcol = 0;
 	s->firstcmdl = NULL;
+	s->currentcmdl = NULL;
 	s->firstfd = 0;
 	s->std.sin = dup(STDIN);
 	s->std.sout = dup(STDOUT);

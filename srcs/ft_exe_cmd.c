@@ -93,13 +93,6 @@ void	ft_exe_cmd(t_mini *s, t_cmdl *cmd)
 
 	cmd->ret = 0;
 	g_sig.in_func = 1;
-	/*if (cmd_has_only_assignement(cmd))*/
-	/*{*/
-		/*g_sig.ret = apply_assignement(s, cmd);*/
-		/*return ;*/
-	/*}*/
-	/*if (cmd->token == NULL)*/
-		/*return ;*/
 	if (cmd->buf)
 		free(cmd->buf);
 	parse_cmd_args(s, cmd);

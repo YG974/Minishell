@@ -137,6 +137,5 @@ int			apply_assignement(t_mini *s, t_cmdl *cmd)
 		print_tab(args);
 		cmd->ret = ft_export(s, args);
 	}
-	/*ft_free_tab(args);*/
 	return (cmd->ret);
 }

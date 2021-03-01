@@ -248,6 +248,7 @@ void				split_env_value(t_mini *s);
 **	env2.c
 */
 void				copy_env(t_mini *s, char **env);
+char				*get_env_value(t_mini *s, char *name);
 void				init_env(t_mini *s, char **env);
 
 /*
@@ -366,7 +367,6 @@ void				flag_meta(t_mini *s, t_parse *p);
 void				check_dollars(t_mini *s, t_parse *p);
 //void				expand_dollars(t_mini *s, t_parse *p, int i, int j);
 void				expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j);
-char				*get_env_value(t_mini *s, char *name);
 
 /*
 **	quote_parsing.c

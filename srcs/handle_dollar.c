@@ -13,43 +13,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-/*
-**	cmd->str = command line;
-**	cmd->flag = flags or comments;
-**	cmd->str[i] = char i of the line;
-**	cmd->flag[i] = flags or comments on char i;
-**	flags :
-**	1 : inside simpled quotes
-**	2 : inside double quotes
-**	3 : escaped by backslash
-**	4 : dollar expansion
-**
-**	look for name variable in env
-**	if variable name is found, return its value
-**	if name is not found, return empty string ""
-*/
-
-char	*get_env_value(t_mini *s, char *name)
-{
-	char	*value;
-	t_env	*env;
-	int		i;
-
-	value = NULL;
-	env = s->env;
-	i = ft_strlen(name);
-	while (env)
-	{
-		if (ft_strncmp(env->name, name, i) == 0 && i == ft_strlen(env->name))
-			value = ft_strdup(env->value);
-		env = env->next;
-	}
-	if (value == NULL)
-		value = ft_strdup("");
-	free(name);
-	return (value);
-}
-
 char	*replace_tab_by_space(char *str)
 {
 	int		i;
@@ -63,7 +26,6 @@ char	*replace_tab_by_space(char *str)
 	}
 	return (str);
 }
-
 
 t_tok	*new_dollar_tok(t_mini *s, char *str, int flag)
 {
@@ -81,7 +43,7 @@ t_tok	*new_dollar_tok(t_mini *s, char *str, int flag)
 
 t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 {
-	char **tab;
+	char	**tab;
 	int		i;
 	t_tok	*new;
 	t_tok	*tmp;
@@ -92,8 +54,6 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 		return (tok);
 	tok->str = replace_tab_by_space(tok->str);
 	tab = ft_split(tok->str, ' ');
-	/*free(tok->str);*/
-	/*tok->str = ft_strdup(tab[i]);*/
 	new = new_dollar_tok(s, tab[i], 0);
 	link_token(s, prev, new);
 	i++;
@@ -105,7 +65,6 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 		link_token(s, tmp, new);
 		i++;
 	}
-	/*free(tmp);*/
 	ft_free_tab(tab);
 	new->next = next;
 	return (new);
@@ -126,7 +85,8 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 	{
 		if (cmd->token->flag == T_DOLLAR)
 		{
-			tmp = ft_strdup_size(cmd->token->str, ft_strlen(cmd->token->str), 1);
+			tmp = ft_strdup_size(cmd->token->str,
+					ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
 			free(cmd->token->str);
 			cmd->token->str = tmp;
