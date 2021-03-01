@@ -102,6 +102,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	char	**env;
 
 	g_sig.pid = fork();
+	(void)cmd;
 	if (g_sig.pid == 0)
 	{
 		env = put_env_in_tab(s);
