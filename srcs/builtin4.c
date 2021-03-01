@@ -21,7 +21,7 @@ int		ft_export(t_mini *s, char **args)
 
 	i = 1;
 	if ((ret = count_args(args)) == 1)
-		return (print_sorted_env(s));
+		return (print_sorted_env(s, 0, 0));
 	ret = 0;
 	while (args[i])
 	{

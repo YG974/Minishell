@@ -206,7 +206,7 @@ int					go_to_home_path(t_mini *s);
 int					ft_cd(t_mini *s, char **args);
 int					ft_pwd(t_mini *s, char **args);
 int					is_valid_env_name(char *str);
-int					print_sorted_env(t_mini *s);
+int					print_sorted_env(t_mini *s, int i, int j);
 int					ft_strchr_int(const char *s, int c);
 
 /*
@@ -233,7 +233,6 @@ int					str_is_digit(char *str);
 int					ft_exit(t_mini *s, char **args);
 char				**put_sorted_env_in_tab(t_mini *s);
 char				**sort_tab_env(char **s_env);
-int					print_sorted_env(t_mini *s);
 void				cd_str_error(char *s1, int flag);
 
 /*

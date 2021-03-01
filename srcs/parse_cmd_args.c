@@ -41,8 +41,6 @@ int		parse_cmd_args(t_mini *s, t_cmdl *cmd)
 void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
-	/*if (cmd->flag)*/
-		/*free(cmd->flag);*/
 	cmd->token = cmd->firsttoken;
 	while (cmd->token)
 	{

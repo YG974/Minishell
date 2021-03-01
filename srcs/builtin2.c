@@ -17,17 +17,8 @@
 int		ft_cd(t_mini *s, char **args)
 {
 	int		i;
-	/*char	*buf;*/
-	/*int		ret;*/
 
 	i = count_args(args);
-	/*if (s->std.in > 1)*/
-	/*{*/
-		/*get_next_line(s->std.in, &buf);*/
-		/*ret = go_to_path(s, buf);*/
-		/*free(buf);*/
-		/*return (ret);*/
-	/*}*/
 	if (i == 1)
 		return (go_to_home_path(s));
 	else
@@ -75,15 +66,10 @@ int		is_valid_env_name(char *str)
 	return (1);
 }
 
-/*a normer en supprimant i et j, en l'envoyant dans les arguments de la fonction*/
-int		print_sorted_env(t_mini *s)
+int		print_sorted_env(t_mini *s, int i, int j)
 {
 	char	**s_env;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
 	s_env = put_sorted_env_in_tab(s);
 	s_env = sort_tab_env(s_env);
 	while (s_env[i])
@@ -102,10 +88,7 @@ int		print_sorted_env(t_mini *s)
 		j = 0;
 		i++;
 	}
-	i = 0;
-	while (s_env[i])
-		free(s_env[i++]);
-	free(s_env);
+	ft_free_tab(s_env);
 	return (0);
 }
 
