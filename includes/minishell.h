@@ -381,6 +381,7 @@ int					syntax_error(t_mini *s, char *str, int err);
 int					pipe_syntax_error(t_mini *s, t_tok *tok);
 int					syntax_sep_error(t_mini *s, t_tok *tok, int err);
 int					check_sep_syntax(t_mini *s);
+int					is_control_op(int flag);
 
 /*
 **	alloc_token.c

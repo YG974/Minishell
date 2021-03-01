@@ -12,41 +12,47 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
-
+void		flag_redir_arg(t_mini *s, t_tok *tok)
+{
+	tok->flag = REDIR_ARG;
+	s->parsed = 0;
+	return ;
+}
 int			check_ambigous_redir(t_mini *s, t_cmdl *cmd)
 {
 	t_tok	*tok;
 
-	(void)s;
+	s->parsed = 0;
 	tok = cmd->token;
-	while (tok && tok->next && tok->flag != NEWLINE)
+	while (tok && tok->next && is_control_op(tok->flag) == -1)
 	{
-		while (tok->flag != S_GREATER || tok->flag != D_GREATER ||
-				tok->flag != S_LESS)
+		while (tok && (is_redir(tok->flag) != 1))
 			tok = tok->next;
-		if (tok->flag == BLANK)
+		if (tok && is_redir(tok->flag) == 1)
+			s->parsed = 1;
+		if (tok && tok->next)
 			tok = tok->next;
-		if (tok->flag == T_DOLLAR)
+		if (tok && tok->next && tok->flag == BLANK)
+			tok = tok->next;
+		if (tok && tok->flag == T_DOLLAR && s->parsed == 1)
 		{
-			if (tok->str[0] == '\0')
+			if (tok && tok->str[0] == '\0')
 				return(-1);
-			tok->flag = REDIR_ARG;
-			return (0);
+			flag_redir_arg(s, tok);
 		}
-		else if (tok->flag <= REDIR_ARG)
-		{
-			tok->flag = REDIR_ARG;
-			return (0);
-		}
-		else
-			return (-1);
+		else if (tok && tok->flag <= REDIR_ARG && s->parsed == 1)
+			flag_redir_arg(s, tok);
 	}
+	if (s->parsed != 0)
+		return (-1);
+	tok = cmd->firsttoken;
 	return (0);
 }
 
 void		error_ambigous(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
+	g_sig.ret = 1;
 	ft_putstr_fd(RED, STDERR);
 	ft_putstr_fd("Minishell: ", STDERR);
 	ft_putstr_fd(cmd->token->str, STDERR);
