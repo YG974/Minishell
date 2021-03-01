@@ -18,18 +18,13 @@ int			check_ambigous_redir(t_mini *s, t_cmdl *cmd)
 	t_tok	*tok;
 
 	(void)s;
-	tok = cmd->firsttoken;
-	while (tok && tok->flag != NEWLINE)
+	tok = cmd->token;
+	while (tok && tok->next && tok->flag != NEWLINE)
 	{
 		while ((is_redir(tok->flag) != 1))
 			tok = tok->next;
 		if (tok->flag == BLANK)
 			tok = tok->next;
-		if (tok->flag <= REDIR_ARG)
-		{
-			tok->flag = REDIR_ARG;
-			return (0);
-		}
 		if (tok->flag == T_DOLLAR)
 		{
 			if (tok->str[0] == '\0')
@@ -37,6 +32,13 @@ int			check_ambigous_redir(t_mini *s, t_cmdl *cmd)
 			tok->flag = REDIR_ARG;
 			return (0);
 		}
+		else if (tok->flag <= REDIR_ARG)
+		{
+			tok->flag = REDIR_ARG;
+			return (0);
+		}
+		else
+			return (-1);
 	}
 	return (0);
 }
@@ -65,7 +67,7 @@ void		exec_cmdlines(t_mini *s)
 		expand_dollars(s, cmd, 0, 0);
 		handle_dollar_question_mark(s, cmd);
 		cmd = join_tokens(cmd);
-		print_token(s);
+		/*print_token(s);*/
 		if (check_ambigous_redir(s, cmd) == -1)
 			error_ambigous(s, cmd);
 		else if (!thereisapipe(cmd))
