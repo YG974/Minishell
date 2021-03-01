@@ -117,7 +117,6 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 			free(path);
 			exit(g_sig.ret);
 		}
-		cmd->ret = cmd->ret;
 	}
 	else
 		waitpid(g_sig.pid, &g_sig.ret, 0);

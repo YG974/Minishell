@@ -13,71 +13,6 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
-/*
-int		ft_pipe(t_mini *s, t_cmdl *cmd)
-{
-	t_tok	*next = NULL;
-	pid_t	*pidlist;
-	int fd[2];
-	int j = 0;
-	int i = 0;
-
-	next = cmd->firsttoken;
-	while (next)
-	{
-		if (next->flag == S_PIPE)
-			j++;
-		next = next->next;
-	}
-	if (!(pidlist = ft_calloc(sizeof(pid_t), j)))
-	{
-		error(s, ERR_CALLOC);
-		return (1);
-	}
-	ft_putstr_fd(ft_itoa(j), 2);
-	next = ft_next_sep(cmd->firsttoken);
-	while (cmd->firsttoken)
-	{
-		pipe(fd);
-		pidlist[i] = fork();
-		if (pidlist[i] == 0)
-		{
-			close(fd[0]);
-			if (next)
-				dup2(fd[1], 1);
-			else
-				g_sig.has_pipe = 0;
-			if (!ft_redirection(s, cmd))
-				ft_exe_cmd(s, cmd);
-			close(fd[1]);
-			closepipes(s);
-			free(pidlist);
-			exit(g_sig.ret);
-		}
-		else
-		{
-			close(fd[1]);
-			dup2(fd[0], 0);
-			i++;
-			cmd->firsttoken = next;
-			next = ft_next_sep(cmd->firsttoken);
-			close(fd[0]);
-		}
-	}
-	ft_putstr_fd(ft_itoa(i), 2);
-	waitpid(pidlist[--i], &g_sig.ret, 0);
-	g_sig.ret = WEXITSTATUS(g_sig.ret);
-	while (--i >= 0)
-		waitpid(pidlist[i], &j, 0);
-	free(pidlist);
-	//exit(g_sig.ret);
-	return (0);
-}
-
-*/
-
-
-
 t_tok	*ft_pipe3(t_mini *s, t_tok *next, t_cmdl *cmd)
 {
 	close(s->fd[1]);
@@ -112,10 +47,7 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 	s->y = ft_count_pipe(cmd->firsttoken);
 	next = ft_next_sep(cmd->firsttoken);
 	if (!(pidlist = ft_calloc(sizeof(pid_t), s->y)))
-	{
-		error(s, ERR_CALLOC);
-		return (1);
-	}
+		return (pipe_error(s));
 	s->y = 0;
 	while (cmd->firsttoken)
 	{

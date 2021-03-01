@@ -68,10 +68,10 @@ void	sig_ret(void)
 {
 	if (g_sig.pid == 0 || g_sig.has_pipe == 0)
 	{
-	if (g_sig.interrupt == 1)
-		g_sig.ret = 130;
-	if (g_sig.quit == 1)
-		g_sig.ret = 131;
+		if (g_sig.interrupt == 1)
+			g_sig.ret = 130;
+		if (g_sig.quit == 1)
+			g_sig.ret = 131;
 	}
 }
 
