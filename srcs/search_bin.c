@@ -115,7 +115,6 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 			ft_free_env(s->env);
 			ft_del_tokens(s->currentcmdl, 0);
 			free(path);
-			/*ft_del_cmdline(s, 0);*/
 			exit(g_sig.ret);
 		}
 		cmd->ret = cmd->ret;
