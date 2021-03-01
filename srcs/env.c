@@ -80,8 +80,8 @@ char	**put_env_in_tab(t_mini *s)
 {
 	t_env	*env;
 	char	*env_str;
-	char	*tmp;
 	char	**env_tab;
+	/*char	*tmp;*/
 
 	env = s->env;
 	env_str = strdup("");
