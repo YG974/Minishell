@@ -58,7 +58,7 @@ void	export_error(char *str)
 	ft_putstr_fd(RESET, STDERR);
 }
 
-void		error_ambigous(t_mini *s, t_cmdl *cmd)
+void	error_ambigous(t_mini *s, t_cmdl *cmd)
 {
 	(void)s;
 	(void)cmd;

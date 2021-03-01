@@ -29,6 +29,7 @@ void	prompt(t_mini *s)
 				s->read.ret += read(s->read.fd, &s->read.buf[s->read.ret],
 						s->read.count);
 			}
+			s->read.buf[s->read.ret] = '\n';
 		}
 		else
 		{
@@ -55,10 +56,7 @@ void	init_mini(t_mini *s)
 	s->read.count = BUFF_SIZE;
 	s->parse.semcol = 0;
 	s->firstcmdl = NULL;
-	s->currentcmdl = NULL;
 	s->firstfd = 0;
-	s->std.sin = dup(STDIN);
-	s->std.sout = dup(STDOUT);
 }
 
 void	ft_free_env(t_env *env)
@@ -103,8 +101,6 @@ int		main(int ac, char **av, char **env)
 	close(0);
 	close(1);
 	close(2);
-	close(s.std.sin);
-	close(s.std.sout);
 	ft_printf("END OF MINISHELL\n");
 	return (g_sig.ret);
 }

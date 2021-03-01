@@ -59,8 +59,9 @@ void		exec_cmdlines(t_mini *s)
 	cmd = s->firstcmdl;
 	while (cmd && !s->error && cmd->token->flag != NEWLINE)
 	{
-		expand_dollars(s, cmd, 0, 0);
+		print_token(s);
 		handle_dollar_question_mark(s, cmd);
+		expand_dollars(s, cmd, 0, 0);
 		cmd = join_tokens(cmd);
 		if (check_ambigous_redir(s, cmd, cmd->token) == -1)
 			error_ambigous(s, cmd);

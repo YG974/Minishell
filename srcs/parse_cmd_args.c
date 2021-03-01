@@ -49,6 +49,7 @@ void	handle_dollar_question_mark(t_mini *s, t_cmdl *cmd)
 		{
 			free(cmd->token->str);
 			cmd->token->str = ft_itoa(g_sig.ret);
+			cmd->token->flag = T_WORD;
 		}
 		cmd->token = cmd->token->next;
 	}

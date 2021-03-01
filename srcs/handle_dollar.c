@@ -111,7 +111,12 @@ void	check_dollars(t_mini *s, t_parse *p)
 		if (p->str[s->i] == '$' && p->flag[s->i] != '1'
 				&& p->str[s->i - 1] != '\\')
 		{
-			s->i++;
+			p->flag[s->i++] = '4';
+			if (p->str[s->i] == '?')
+			{
+				p->flag[s->i++] = '4';
+				break ;
+			}
 			while (p->str[s->i]
 					&& (ft_isalnum(p->str[s->i]) || p->str[s->i] == '_'))
 				p->flag[s->i++] = '4';

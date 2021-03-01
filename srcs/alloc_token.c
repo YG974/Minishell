@@ -44,14 +44,18 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 
 	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
-	while (s->p.flag[s->i] == '7')
-		s->i++;
-	while (s->p.flag[s->i] == '4')
-		s->i++;
-	if (s->p.flag[s->i - 1] == '4')
-		new->flag = T_DOLLAR;
-	if (s->p.flag[s->i - 1] == '7')
+	if (s->p.flag[s->i] == '7')
+	{
+		while (s->p.flag[s->i] == '7')
+			s->i++;
 		new->flag = T_WORD;
+	}
+	else if (s->p.flag[s->i] == '4')
+	{
+		while (s->p.flag[s->i] == '4')
+			s->i++;
+		new->flag = T_DOLLAR;
+	}
 	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new = link_token(s, tok, new);
 	return (new);
