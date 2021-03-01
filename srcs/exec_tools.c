@@ -21,7 +21,8 @@ int			check_ambigous_redir(t_mini *s, t_cmdl *cmd)
 	tok = cmd->token;
 	while (tok && tok->next && tok->flag != NEWLINE)
 	{
-		while (is_redir(tok->flag) == 0)
+		while (tok->flag != S_GREATER || tok->flag != D_GREATER ||
+				tok->flag != S_LESS)
 			tok = tok->next;
 		if (tok->flag == BLANK)
 			tok = tok->next;
