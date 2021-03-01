@@ -129,7 +129,7 @@ int		ft_parse(t_mini *s)
 	if (s->read.buf[0] == '\n')
 		return (0);
 	s->p.str = s->read.buf;
-	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
+	if ((check_quotes(s, &s->p)) < 0)
 		return (0);
 	check_dollars(s, &s->p);
 	flag_blank(s, &s->p);

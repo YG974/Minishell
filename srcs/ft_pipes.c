@@ -63,5 +63,7 @@ int		ft_pipe(t_mini *s, t_cmdl *cmd)
 	while (--s->y >= 0)
 		waitpid(pidlist[s->y], &s->save, 0);
 	free(pidlist);
+	dup2(s->std.sin, 0);
+	dup2(s->std.sout, 1);
 	return (0);
 }

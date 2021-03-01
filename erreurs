@@ -1,34 +1,13 @@
-1) Y'a un soucis avec ctrl + c, comme si le retour était en retard
-ctrl + c
-puis echo bonjour
-puis echo $? => 130 (au lieu de 0)
-je pense que c'est parce que au moment du sigprompt après un ctrl + c, g_sig.ret n'a pas encore été mis dans $?
+1) leaks quand /bin/qsdqsd 
+	aussi le retour est 126, sur bash cest 127
 
-2) echo bonjour > $var_qui_nexiste_pas
-    syntax error alors que ça devrait être redirection ambigue
-	ouais a changer, retour d'erreur n'est pas 2, mais 1, donc pas considere
-	comme une syntax error
-	il faut changer l'imbrication des boucles au niveau du handle dollar, pour
-	le moment, je remplace direct dans la string cmd->str ou cmd->buf. Il
-	faudrait en fait laisser la variable $var avec les flag, et la remplacer au
-	niveau de la creation des token, pour pouvoir allouer un token avec
-	token->str = string vide, et ensuite faire un retour d'erreur au niveau de
-	des redirection, si redir arg=string vide (c'est a dire dire token->str
-	existe et token->str[0] == '\0')
-	if (token->str && token->str[0] == '\0')
-		return(g_sig.ret = 1 && print redir ambigous)
+2) leaks quand echo $HOME ou cat $HOME
+	bref quand $variable leaks.
 
+3) Erreur sur echo "salut $HOME"
+	la variable disparait de la string quand entre quotes
+	echo "salut $HOME coucou" => "salut  coucou"
 
-3) cd $HOME/Documents
-	ça rajoute un espace entre $HOME et /Documents
-
-	c$var Makefile
-	si le nom de la variable est colle a un autre truc 
-	ca fait deconner, le join doit deconner je pense
-	echo "bonjour $test"
-	ca deconne aussi, ça donne "bonjour $"
-
-
-
+4) leaks quand unset var
 
 

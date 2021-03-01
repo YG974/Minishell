@@ -104,7 +104,10 @@ int		check_quotes(t_mini *s, t_parse *p)
 		else
 			s->i++;
 		if (s->parsed == -1)
+		{
+			free(p->flag);
 			return (-1);
+		}
 	}
 	return (1);
 }
