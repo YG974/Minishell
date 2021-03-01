@@ -26,6 +26,7 @@ void		exec_cmdlines(t_mini *s)
 	{
 		expand_dollars(s, cmd, 0, 0);
 		handle_dollar_question_mark(s, cmd);
+		cmd = join_tokens(cmd);
 		if (!thereisapipe(cmd))
 		{
 			s->save_tok = cmd->firsttoken;
