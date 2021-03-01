@@ -110,11 +110,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 			execve(path, args, env);
 		else
 		{
-			ft_free_tab(env);
-			ft_free_tab(args);
-			ft_free_env(s->env);
-			ft_del_tokens(s->currentcmdl, 0);
-			free(path);
+			free_all(s, args, env, path);
 			exit(g_sig.ret);
 		}
 		cmd->ret = cmd->ret;

@@ -72,3 +72,12 @@ void	ft_closefd(t_mini *s)
 	dup2(s->std.sin, 0);
 	dup2(s->std.sout, 1);
 }
+
+void	free_all(t_mini *s, char **args, char **env, char *path)
+{
+	ft_free_tab(env);
+	ft_free_tab(args);
+	ft_free_env(s->env);
+	ft_del_tokens(s->currentcmdl, 0);
+	free(path);
+}

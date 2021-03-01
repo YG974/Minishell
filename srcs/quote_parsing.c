@@ -89,8 +89,6 @@ int		check_quotes(t_mini *s, t_parse *p)
 	int i;
 
 	i = -1;
-	/*if (p->flag)*/
-		/*free(p->flag);*/
 	p->flag = ft_strdup(p->str);
 	while (p->flag && p->flag[++i])
 		p->flag[i] = '0';

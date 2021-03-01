@@ -124,7 +124,6 @@ int		ft_parse(t_mini *s)
 	if (s->read.buf[0] == '\n')
 		return (0);
 	s->p.str = s->read.buf;
-	/*s->p.flag = ft_strdup("");*/
 	if ((!check_quotes(s, &s->p)) && s->parsed == 0)
 		return (0);
 	check_dollars(s, &s->p);

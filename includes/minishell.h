@@ -417,6 +417,7 @@ void				ft_free_tab(char **env);
 void				closepipes(t_mini *s);
 int					ft_del_tokens(t_cmdl *cmd, int ret);
 void				ft_closefd(t_mini *s);
+void				free_all(t_mini *s, char **args, char **env, char *path);
 
 /*
 **	debug.c
