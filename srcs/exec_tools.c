@@ -13,6 +13,44 @@
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
 
+int			check_ambigous_redir(t_mini *s, t_cmdl *cmd)
+{
+	t_tok	*tok;
+
+	(void)s;
+	tok = cmd->firsttoken;
+	while (tok && tok->flag != NEWLINE)
+	{
+		while ((is_redir(tok->flag) != 1))
+			tok = tok->next;
+		if (tok->flag == BLANK)
+			tok = tok->next;
+		if (tok->flag <= REDIR_ARG)
+		{
+			tok->flag = REDIR_ARG;
+			return (0);
+		}
+		if (tok->flag == T_DOLLAR)
+		{
+			if (tok->str[0] == '\0')
+				return(-1);
+			tok->flag = REDIR_ARG;
+			return (0);
+		}
+	}
+	return (0);
+}
+
+void		error_ambigous(t_mini *s, t_cmdl *cmd)
+{
+	(void)s;
+	ft_putstr_fd(RED, STDERR);
+	ft_putstr_fd("Minishell: ", STDERR);
+	ft_putstr_fd(cmd->token->str, STDERR);
+	ft_putstr_fd(" : ambigous redirect\n", STDERR);
+	return ;
+}
+
 /*
 ** loop for executing each command line, and assigning exit status to '$?'
 */
@@ -27,7 +65,10 @@ void		exec_cmdlines(t_mini *s)
 		expand_dollars(s, cmd, 0, 0);
 		handle_dollar_question_mark(s, cmd);
 		cmd = join_tokens(cmd);
-		if (!thereisapipe(cmd))
+		print_token(s);
+		if (check_ambigous_redir(s, cmd) == -1)
+			error_ambigous(s, cmd);
+		else if (!thereisapipe(cmd))
 		{
 			s->save_tok = cmd->firsttoken;
 			ft_pipe(s, cmd);

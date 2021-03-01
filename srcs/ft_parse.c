@@ -91,6 +91,11 @@ int		find_redir_arg(t_mini *s, t_tok *tok)
 			tok->flag = REDIR_ARG;
 			return (0);
 		}
+		if (tok->flag == T_DOLLAR)
+		{
+			tok->flag = T_DOLLAR;
+			return (0);
+		}
 		else
 		{
 			s->currentcmdl->token = tok;
