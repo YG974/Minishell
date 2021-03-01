@@ -12,12 +12,14 @@
 
 #include "../libft/libft.h"
 #include "../includes/minishell.h"
+
 void		flag_redir_arg(t_mini *s, t_tok *tok)
 {
 	tok->flag = REDIR_ARG;
 	s->parsed = 0;
 	return ;
 }
+
 int			check_ambigous_redir(t_mini *s, t_cmdl *cmd, t_tok *tok)
 {
 	s->parsed = 0;
@@ -34,7 +36,7 @@ int			check_ambigous_redir(t_mini *s, t_cmdl *cmd, t_tok *tok)
 		if (tok && tok->flag == T_DOLLAR && s->parsed == 1)
 		{
 			if (tok && tok->str[0] == '\0')
-				return(-1);
+				return (-1);
 			flag_redir_arg(s, tok);
 		}
 		else if (tok && tok->flag <= REDIR_ARG && s->parsed == 1)
@@ -44,17 +46,6 @@ int			check_ambigous_redir(t_mini *s, t_cmdl *cmd, t_tok *tok)
 		return (-1);
 	tok = cmd->firsttoken;
 	return (0);
-}
-
-void		error_ambigous(t_mini *s, t_cmdl *cmd)
-{
-	(void)s;
-	g_sig.ret = 1;
-	ft_putstr_fd(RED, STDERR);
-	ft_putstr_fd("Minishell: ", STDERR);
-	ft_putstr_fd(cmd->token->str, STDERR);
-	ft_putstr_fd(" : ambigous redirect\n", STDERR);
-	return ;
 }
 
 /*
@@ -71,7 +62,6 @@ void		exec_cmdlines(t_mini *s)
 		expand_dollars(s, cmd, 0, 0);
 		handle_dollar_question_mark(s, cmd);
 		cmd = join_tokens(cmd);
-		/*print_token(s);*/
 		if (check_ambigous_redir(s, cmd, cmd->token) == -1)
 			error_ambigous(s, cmd);
 		else if (!thereisapipe(cmd))
@@ -137,53 +127,4 @@ t_cmdl		*new_cmd_line(t_cmdl *cmd)
 	new->token->prev = NULL;
 	cmd->token->next = NULL;
 	return (new);
-}
-
-/*
-**	check if the command line has only assignement : name=value ...
-**	return 0 if there is a command in the line (a string without '=')
-**	return 1 if there is only assignements in the command line
-**	(only strings that contains '=')
-*/
-
-int			cmd_has_only_assignement(t_cmdl *cmd)
-{
-	cmd->token = cmd->firsttoken;
-	if (cmd->token == NULL)
-		return (0);
-	while (cmd->token)
-	{
-		if (!(ft_strchr(cmd->token->str, '=')) && cmd->token->flag != 2)
-			return (0);
-		cmd->token = cmd->token->next;
-	}
-	cmd->token = cmd->firsttoken;
-	return (1);
-}
-
-int			apply_assignement(t_mini *s, t_cmdl *cmd)
-{
-	char **args;
-
-	(void)s;
-	cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
-	cmd->token = cmd->firsttoken;
-	while (cmd->token)
-	{
-		if (ft_strchr(cmd->token->str, '='))
-		{
-			cmd->buf = ft_strjoin_free_s1(cmd->buf, cmd->token->str);
-			cmd->buf = ft_strjoin_free_s1(cmd->buf, "\n");
-		}
-		cmd->token = cmd->token->next;
-	}
-	args = ft_split(cmd->buf, '\n');
-	if (cmd->buf)
-		free(cmd->buf);
-	if (args)
-	{
-		print_tab(args);
-		cmd->ret = ft_export(s, args);
-	}
-	return (cmd->ret);
 }

@@ -57,3 +57,14 @@ void	export_error(char *str)
 	ft_putstr_fd("\" : not a valid identifier\n", STDERR);
 	ft_putstr_fd(RESET, STDERR);
 }
+
+void		error_ambigous(t_mini *s, t_cmdl *cmd)
+{
+	(void)s;
+	g_sig.ret = 1;
+	ft_putstr_fd(RED, STDERR);
+	ft_putstr_fd("Minishell: ", STDERR);
+	ft_putstr_fd(cmd->token->str, STDERR);
+	ft_putstr_fd(" : ambigous redirect\n", STDERR);
+	return ;
+}

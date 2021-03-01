@@ -351,6 +351,7 @@ void				error_fd(char *s);
 int					ft_redir_error(char *s);
 void				error(t_mini *s, int error);
 void				export_error(char *str);
+void				error_ambigous(t_mini *s, t_cmdl *cmd);
 
 /*
 **	flag_input_string.c
