@@ -87,8 +87,7 @@ t_cmdl	*join_tokens(t_cmdl *cmd)
 	tok = cmd->firsttoken;
 	while (tok && tok->next)
 	{
-		while (tok->next && ((tok->flag == T_WORD && tok->next->flag == T_WORD)
-				|| ( tok->flag == T_DOLLAR && tok->next->flag == T_DOLLAR)))
+		while (tok->next && tok->flag == 1 && tok->next->flag == 1)
 		{
 			tmp = tok->next;
 			tok->next = tmp->next;

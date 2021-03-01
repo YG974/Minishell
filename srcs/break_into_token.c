@@ -91,8 +91,5 @@ int		break_cmdline_into_token(t_mini *s)
 		else
 			s->i++;
 	}
-	/*print_token(s);*/
-	/*cmd = join_tokens(cmd);*/
-	/*print_token(s);*/
 	return (1);
 }
