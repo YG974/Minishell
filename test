@@ -1,1 +1,9 @@
-bonjour
+drwxrwxr-x 9 user42 user42   4096 mars   1 13:23 .
+drwxrwxr-x 8 user42 user42   4096 mars   1 11:06 ..
+drwxrwxr-x 2 user42 user42   4096 mars   1 13:23 building_dir
+drwxrwxr-x 8 user42 user42   4096 févr. 28 22:51 .git
+drwxrwxr-x 2 user42 user42   4096 févr. 26 20:05 includes
+drwxrwxr-x 2 user42 user42   4096 mars   1 13:23 libft
+drwxrwxr-x 2 user42 user42   4096 févr. 26 20:03 Minishell_documentation
+drwxrwxr-x 2 user42 user42   4096 févr. 26 20:05 srcs
+drwxrwxr-x 2 user42 user42   4096 févr. 26 20:03 .vim

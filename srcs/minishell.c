@@ -103,6 +103,8 @@ int		main(int ac, char **av, char **env)
 	close(0);
 	close(1);
 	close(2);
+	close(s.std.sin);
+	close(s.std.sout);
 	ft_printf("END OF MINISHELL\n");
 	return (g_sig.ret);
 }
