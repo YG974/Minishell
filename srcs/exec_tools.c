@@ -20,6 +20,10 @@ void		flag_redir_arg(t_mini *s, t_tok *tok)
 	return ;
 }
 
+/*
+** check if a redirection argument is an empty string -> ambigous redirect
+*/
+
 int			check_ambigous_redir(t_mini *s, t_cmdl *cmd, t_tok *tok)
 {
 	s->parsed = 0;
