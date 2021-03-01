@@ -54,7 +54,7 @@
 # define BLANK 5
 # define META 6
 # define WORD 7
-//# define NEWLINE 8
+
 /*
 **	FLAGS FOR TOKENS
 */
@@ -68,7 +68,6 @@
 # define S_PIPE 14
 # define S_SEMICOLON 15
 # define NEWLINE 16
-//forbidenn token
 # define FORBIDEN_SEP 20
 
 /*
@@ -305,6 +304,7 @@ int					pipe_error(t_mini *s);
 void				ft_exe_cmd(t_mini *s, t_cmdl *cmd);
 void				print_tab(char **tab);
 char				**put_env_in_tab(t_mini *s);
+void				sig_ret(void);
 
 /*
 **	ft_exe_cmd.c
@@ -335,7 +335,6 @@ int					parse_cmd_args(t_mini *s, t_cmdl *cmd);
 void				parse_cmd_args2(t_cmdl *cmd);
 void				print_tab(char **tab);
 
-
 /*
 **	exec_tools.c
 */
@@ -344,7 +343,6 @@ int					split_cmdl(t_mini *s);
 t_cmdl				*new_cmd_line(t_cmdl *cmd);
 int					apply_assignement(t_mini *s, t_cmdl *cmd);
 int					cmd_has_only_assignement(t_cmdl *cmd);
-
 
 /*
 **	ft_error.c
@@ -366,7 +364,6 @@ void				flag_meta(t_mini *s, t_parse *p);
 **	handle_dollar.c
 */
 void				check_dollars(t_mini *s, t_parse *p);
-//void				expand_dollars(t_mini *s, t_parse *p, int i, int j);
 void				expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j);
 
 /*

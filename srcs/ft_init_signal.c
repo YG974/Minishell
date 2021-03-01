@@ -15,14 +15,17 @@
 
 void	sigprompt(void)
 {
+	sig_ret();
 	ft_putstr_fd(CYAN, STDOUT);
 	ft_putstr_fd("\nMINISHELL DU TURFU -> ", STDOUT);
 	ft_putstr_fd(RESET, STDOUT);
+	g_sig.interrupt = 0;
 }
 
 void	handle_sigint(int signum)
 {
 	(void)signum;
+	g_sig.interrupt = 1;
 	if (g_sig.in_func == 0)
 	{
 		ft_putstr_fd("\b\b  ", STDERR);
@@ -31,7 +34,6 @@ void	handle_sigint(int signum)
 	}
 	else
 		ft_putstr_fd("\n", STDERR);
-	g_sig.interrupt = 1;
 }
 
 void	handle_sigquit(int signum)
