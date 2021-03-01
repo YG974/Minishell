@@ -1,5 +1,17 @@
-#include "../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   debug.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pcoureau <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 14:38:47 by pcoureau          #+#    #+#             */
+/*   Updated: 2021/02/09 14:41:04 by pcoureau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
+#include "../libft/libft.h"
 
 /*
 ** DEBUG FUNCTION : print the input and the flags for the parsing.
