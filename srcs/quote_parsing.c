@@ -86,7 +86,7 @@ int		check_simple_quotes(t_mini *s, t_parse *p)
 
 int		check_quotes(t_mini *s, t_parse *p)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	p->flag = ft_strdup(p->str);

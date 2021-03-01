@@ -297,6 +297,7 @@ int					ft_pipe(t_mini *s, t_cmdl *cmd);
 t_tok				*ft_next_sep(t_tok *tok);
 int					ft_count_pipe(t_tok *tok);
 int					thereisapipe(t_cmdl *cmd);
+int					pipe_error(t_mini *s);
 
 /*
 **	ft_exe_cmd.c

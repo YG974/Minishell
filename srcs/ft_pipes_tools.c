@@ -32,7 +32,7 @@ int		thereisapipe(t_cmdl *cmd)
 
 int		ft_count_pipe(t_tok *tok)
 {
-	int i;
+	int		i;
 	t_tok	*tmp;
 
 	i = 0;
@@ -53,4 +53,10 @@ t_tok	*ft_next_sep(t_tok *tok)
 	if (tok && tok->next)
 		return (tok->next);
 	return (tok);
+}
+
+int		pipe_error(t_mini *s)
+{
+	error(s, ERR_CALLOC);
+	return (1);
 }
