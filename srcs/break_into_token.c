@@ -64,6 +64,28 @@ t_cmdl	*init_cmdline(t_mini *s)
 }
 
 /*
+** malloc the new token from dollar word and flag it with T_DOLLAR
+*/
+
+t_tok	*add_dollar(t_mini *s, int j, t_tok *tok)
+{
+	t_tok	*new;
+
+	if (!(new = ft_calloc(1, sizeof(t_tok))))
+		error(s, ERR_CALLOC);
+	while (s->p.flag[s->i] == '4')
+	{
+		s->i++;
+		if (s->p.str[s->i] == '$' && s->p.str[s->i - 1] != '\\')
+			break ;
+	}
+	new->flag = T_DOLLAR;
+	new->str = ft_strdup_size(s->p.str, s->i, j);
+	new = link_token(s, tok, new);
+	return (new);
+}
+
+/*
 ** main tokenization function, call the differents token functions
 */
 
@@ -87,7 +109,7 @@ int		break_cmdline_into_token(t_mini *s)
 		else if (s->p.flag[s->i] == '7')
 			cmd->token = add_word(s, s->i, cmd->token);
 		else if (s->p.flag[s->i] == '4')
-			cmd->token = add_word(s, s->i, cmd->token);
+			cmd->token = add_dollar(s, s->i, cmd->token);
 		else if (s->p.flag[s->i] == '8')
 			cmd->token = add_newline(s, s->i, cmd->token);
 		else

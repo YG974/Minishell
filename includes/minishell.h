@@ -409,6 +409,7 @@ t_tok				*link_token(t_mini *s, t_tok *tok, t_tok *new);
 int					flag_meta_token(char *str);
 t_cmdl				*init_cmdline(t_mini *s);
 int					break_cmdline_into_token(t_mini *s);
+t_tok				*add_dollar(t_mini *s, int j, t_tok *tok);
 
 /*
 **	free.c
