@@ -110,7 +110,7 @@ int		exec_bin(t_mini *s, t_cmdl *cmd, char **args)
 	{
 		env = put_env_in_tab(s);
 		path = find_bin_path(s, args);
-		if ((check_bin_right(path, args) == 1))
+		if (check_bin_right(path, args) == 1)
 			execve(path, args, env);
 		else
 		{
