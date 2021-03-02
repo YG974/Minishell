@@ -94,7 +94,8 @@ t_cmdl	*join_tokens(t_cmdl *cmd)
 	tok = cmd->firsttoken;
 	while (tok && tok->next)
 	{
-		while (tok->next && tok->flag == 1 && tok->next->flag == 1)
+		while (tok->next && (tok->flag == 1 || tok->flag == 4) &&
+					(tok->next->flag == 1 || tok->next->flag == 4))
 		{
 			tmp = tok->next;
 			tok->next = tmp->next;

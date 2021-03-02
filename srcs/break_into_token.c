@@ -73,15 +73,12 @@ t_tok	*add_dollar(t_mini *s, int j, t_tok *tok)
 
 	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
-	/*s->i++;*/
-	ft_printf("before: si:%d|\n", s->i);
 	while (s->p.flag[s->i] == '4')
 	{
 		s->i++;
 		if (s->p.str[s->i] == '$' && s->p.str[s->i - 1] != '\\')
 			break ;
 	}
-	ft_printf("si:%d|\n", s->i);
 	new->flag = T_DOLLAR;
 	new->str = ft_strdup_size(s->p.str, s->i, j);
 	new = link_token(s, tok, new);
@@ -97,9 +94,9 @@ int		break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = init_cmdline(s);
-	ft_putstr_fd(s->p.flag, 1);
-	ft_putstr_fd("\n", 1);
-	ft_putstr_fd(s->p.str, 1);
+	/*ft_putstr_fd(s->p.flag, 1);*/
+	/*ft_putstr_fd("\n", 1);*/
+	/*ft_putstr_fd(s->p.str, 1);*/
 	while (s->p.str[s->i])
 	{
 		if (s->p.flag[s->i] == '5')
