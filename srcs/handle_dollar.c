@@ -65,7 +65,7 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 		link_token(s, tmp, new);
 		i++;
 	}
-	ft_free_split_dollar(tab, tok);
+	/*ft_free_split_dollar(tab, tok);*/
 	new->next = next;
 	return (new);
 }
