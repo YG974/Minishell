@@ -1,11 +1,4 @@
-1) leaks quand echo $HOME ou cat $HOME
-	bref quand $variable leaks.
-
-2) Erreur sur echo "salut $HOME"
-	la variable disparait de la string quand entre quotes
-	echo "salut $HOME coucou" => "salut  coucou"
-
-3) ERREUR $var1$var2 Makefile, ou echo $var$HOME
+1) ERREUR $var1$var2 Makefile, ou echo $var$HOME
 	les deux variables sont zappées au lieu de join
 	surement le même problème que 2) et/ou 3)
 

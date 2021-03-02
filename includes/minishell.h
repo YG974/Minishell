@@ -430,6 +430,7 @@ void				print_tab(char **tab);
 **	ft_split_ms.c
 */
 char				**ft_split_ms(char const *s, char c);
+void				ft_free_split_dollar(char **tab, t_tok *tok);
 
 #endif
 #ifndef SIZE_T_MAX
