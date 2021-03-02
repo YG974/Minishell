@@ -95,6 +95,7 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 			cmd->token->str = tmp;
 			cmd->token = split_dollar_token(s, cmd->token,
 					cmd->token->prev, cmd->token->next);
+			/*free(tmp);*/
 		}
 		cmd->token = cmd->token->next;
 	}
