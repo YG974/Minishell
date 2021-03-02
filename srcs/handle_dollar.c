@@ -91,6 +91,7 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 			tmp = ft_strdup_size(cmd->token->str,
 					ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
+
 			free(cmd->token->str);
 			cmd->token->str = tmp;
 			cmd->token = split_dollar_token(s, cmd->token,
