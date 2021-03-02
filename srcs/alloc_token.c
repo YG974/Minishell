@@ -52,7 +52,9 @@ t_tok	*add_word(t_mini *s, int j, t_tok *tok)
 	}
 	else if (s->p.flag[s->i] == '4')
 	{
-		while (s->p.flag[s->i] == '4')
+		s->i++;
+		while (s->p.flag[s->i] == '4' && s->p.str[s->i] != '$'
+				&& s->p.str[s->i - 1] != '\\')
 			s->i++;
 		new->flag = T_DOLLAR;
 	}
