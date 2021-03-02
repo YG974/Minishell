@@ -74,6 +74,8 @@ int		ft_redirection(t_mini *s, t_cmdl *cmd)
 			{
 				while (tmp && tmp->flag != REDIR_ARG)
 					tmp = tmp->next;
+				dup2(s->std.sin, 0);
+				dup2(s->std.sout, 1);
 				return (ft_redir_error(tmp->str));
 			}
 		tmp = tmp->next;

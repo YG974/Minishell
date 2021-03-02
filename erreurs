@@ -10,4 +10,13 @@
 
 4) leaks quand unset var
 
+5) leaks sur echo bonjour ;|, echo bonjour >, echo <, echo ;;
+	sur les erreurs de syntax
+
+6) ERREUR $var1$var2 Makefile, ou echo $var$HOME
+	les deux variables sont zappées au lieu de join
+	surement le même problème que 2) et/ou 3)
+
+
+
 
