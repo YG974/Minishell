@@ -58,7 +58,7 @@ int		check_bin_right(char *path, char **args)
 	if (!path)
 		return (ft_str_error(args[0], "command not found", CMD_NOT_FOUND));
 	if ((stat(path, &file)) == -1)
-		return (ft_str_error(path, "no such file or directory", NOT_EXEC));
+		return (ft_str_error(path, "no such file or directory", CMD_NOT_FOUND));
 	if (S_ISDIR(file.st_mode))
 		return (ft_str_error(path, "is a directory", NOT_EXEC));
 	else if ((file.st_mode & S_IXUSR) == 0)
@@ -85,7 +85,10 @@ char	*find_bin_path(t_mini *s, char **args)
 	free(path);
 	path = NULL;
 	if (ft_strchr(args[0], '/'))
+	{
+		ft_free_tab(bin_paths);
 		return (args[0]);
+	}
 	while (bin_paths[i] && !path)
 		path = try_bin_path(bin_paths[i++], args[0]);
 	ft_free_tab(bin_paths);

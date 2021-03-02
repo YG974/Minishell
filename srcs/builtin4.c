@@ -52,6 +52,8 @@ void	unset_value(t_mini *s, char *args)
 		if (ft_strncmp(env->next->name, args, len) == 0)
 		{
 			tmp = env->next->next;
+			free(env->next->name);
+			free(env->next->value);
 			free(env->next);
 			env->next = tmp;
 			return ;

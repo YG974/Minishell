@@ -72,8 +72,6 @@ int		break_cmdline_into_token(t_mini *s)
 	t_cmdl	*cmd;
 
 	cmd = init_cmdline(s);
-	/*ft_putstr_fd(s->p.str, 1);*/
-	/*ft_putstr_fd(s->p.flag, 1);*/
 	while (s->p.str[s->i])
 	{
 		if (s->p.flag[s->i] == '5')
