@@ -40,14 +40,21 @@ t_tok	*add_double_quote(t_mini *s, int j, t_tok *tok)
 
 	if (!(new = ft_calloc(1, sizeof(t_tok))))
 		error(s, ERR_CALLOC);
+	if (s->p.str[s->i] == '\"')
+		j++;
 	while (s->p.flag[s->i] == '2')
 	{
 		s->i++;
 		if (s->p.str[s->i] == '"' && s->p.str[s->i - 1] != '\\')
 			break ;
 	}
-	s->i++;
-	new->str = ft_strdup_size(s->p.str, s->i - 1, j + 1);
+	if (s->p.str[s->i] == '\"')
+	{
+		s->i++;
+		new->str = ft_strdup_size(s->p.str, s->i - 1, j);
+	}
+	else
+		new->str = ft_strdup_size(s->p.str, s->i, j);
 	new->str = delete_backslash(new->str);
 	new->flag = T_WORD;
 	new = link_token(s, tok, new);
