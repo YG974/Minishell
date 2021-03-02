@@ -140,7 +140,7 @@ int		ft_parse(t_mini *s)
 		return (ft_del_cmdline(s, 0));
 	if ((check_sep_syntax(s)) == -1 || (split_cmdl(s)) == -1)
 	{
-		/*free(s->p.flag);*/
+		free(s->p.flag);
 		return (ft_del_cmdline(s, 0));
 	}
 	exec_cmdlines(s);
