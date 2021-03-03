@@ -37,7 +37,7 @@ int			check_ambigous_redir(t_mini *s, t_cmdl *cmd, t_tok *tok)
 			tok = tok->next;
 		if (tok && tok->next && tok->flag == BLANK)
 			tok = tok->next;
-		if (tok && tok->flag == T_DOLLAR && s->parsed == 1)
+		if (tok && s->parsed == 1 && (tok->flag == T_DOLLAR || tok->flag == 1))
 		{
 			if (tok && tok->str[0] == '\0')
 				return (-1);
