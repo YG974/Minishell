@@ -53,7 +53,6 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 	str = replace_tab_by_space(str);
 	tab = ft_split(str, ' ');
 	free(str);
-	/*free(tok);*/
 	new = new_dollar_tok(s, tab[i], 0);
 	link_token(s, prev, new);
 	i++;
@@ -65,7 +64,6 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 		link_token(s, tmp, new);
 		i++;
 	}
-	/*ft_free_split_dollar(tab, tok);*/
 	ft_free_tab(tab);
 	new->next = next;
 	return (new);
@@ -75,14 +73,11 @@ t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 **	replace the env names ($NAME) in the input by their values in cmd->buf
 */
 
-void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
+void	expand_dollars(t_mini *s, t_cmdl *cmd)
 {
 	char	*tmp;
 
-	(void)i;
-	(void)j;
 	cmd->token = cmd->firsttoken;
-	print_token(s);
 	while (cmd->token)
 	{
 		if (cmd->token->flag == T_DOLLAR)
@@ -90,14 +85,11 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 			tmp = ft_strdup_size(cmd->token->str,
 					ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
+			free(cmd->token->str);
 			if (ft_strchr_int(tmp, ' ') == -1)
-			{
-				free(cmd->token->str);
 				cmd->token->str = tmp;
-			}
 			else
 			{
-				free(cmd->token->str);
 				free(cmd->token);
 				cmd->token = split_dollar_token(s, tmp,
 					cmd->token->prev, cmd->token->next);
@@ -106,7 +98,6 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 		}
 		cmd->token = cmd->token->next;
 	}
-	print_token(s);
 	cmd->token = cmd->firsttoken;
 }
 

@@ -365,7 +365,7 @@ void				flag_meta(t_mini *s, t_parse *p);
 **	handle_dollar.c
 */
 void				check_dollars(t_mini *s, t_parse *p);
-void				expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j);
+void				expand_dollars(t_mini *s, t_cmdl *cmd);
 
 /*
 **	quote_parsing.c

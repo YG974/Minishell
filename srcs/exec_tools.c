@@ -64,7 +64,7 @@ void		exec_cmdlines(t_mini *s)
 	while (cmd && !s->error && cmd->token->flag != NEWLINE)
 	{
 		handle_dollar_question_mark(s, cmd);
-		expand_dollars(s, cmd, 0, 0);
+		expand_dollars(s, cmd);
 		cmd = join_tokens(cmd);
 		if (check_ambigous_redir(s, cmd, cmd->token) == -1)
 			error_ambigous(s, cmd);
