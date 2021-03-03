@@ -86,7 +86,7 @@ char		**ft_split_ms(char const *s, char c)
 	return (tab);
 }
 
-void	ft_free_split_dollar(char **tab, t_tok *tok)
+void		ft_free_split_dollar(char **tab, t_tok *tok)
 {
 	free(tok->str);
 	free(tok);

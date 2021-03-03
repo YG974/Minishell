@@ -77,7 +77,6 @@ void	free_all(t_mini *s, char **args, char **env, char *path)
 {
 	(void)args;
 	ft_free_tab(env);
-	/*ft_free_tab(args);*/
 	ft_free_env(s->env);
 	ft_del_tokens(s->currentcmdl, 0);
 	free(path);
