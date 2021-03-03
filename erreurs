@@ -2,6 +2,15 @@
 	les deux variables sont zappées au lieu de join
 	surement le même problème que 2) et/ou 3)
 
+ $bla # with bla not defined
+ try to run emprty string command, pas grave je pense
+
+
+  echo bonjour > $test
+  par d'ambigous redir, mais bien un massage d'erreur
+
+
+  > a ls > b < Makefile
 
 
 
