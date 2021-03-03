@@ -121,3 +121,23 @@ void	cd_str_error(char *s1, int flag)
 	}
 	free(s1);
 }
+
+int		is_valid_env_name_unset(char *str)
+{
+	int		i;
+
+	i = 0;
+	if (str[i] == '=' || str[i] == '\0')
+		return (0);
+	if (ft_strchr_int(str, '=') != -1)
+		return (0);
+	while (str[i] && str[i] != '=')
+	{
+		if (ft_isdigit(str[0]) == 1)
+			return (0);
+		if (ft_isalnum(str[i]) == 0 && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}

@@ -233,6 +233,7 @@ int					ft_exit(t_mini *s, char **args);
 char				**put_sorted_env_in_tab(t_mini *s);
 char				**sort_tab_env(char **s_env);
 void				cd_str_error(char *s1, int flag);
+int					is_valid_env_name_unset(char *str);
 
 /*
 **	env.c
