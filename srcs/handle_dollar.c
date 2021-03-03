@@ -41,7 +41,7 @@ t_tok	*new_dollar_tok(t_mini *s, char *str, int flag)
 	return (new);
 }
 
-t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
+t_tok	*split_dollar_token(t_mini *s, char *str, t_tok *prev, t_tok *next)
 {
 	char	**tab;
 	int		i;
@@ -50,11 +50,9 @@ t_tok	*split_dollar_token(t_mini *s, t_tok *tok, t_tok *prev, t_tok *next)
 
 	new = NULL;
 	i = 0;
-	if (tok->str[0] == '\0')
-		return (tok);
-	tok->str = replace_tab_by_space(tok->str);
-	tab = ft_split(tok->str, ' ');
-	free(tok->str);
+	str = replace_tab_by_space(str);
+	tab = ft_split(str, ' ');
+	free(str);
 	/*free(tok);*/
 	new = new_dollar_tok(s, tab[i], 0);
 	link_token(s, prev, new);
@@ -92,11 +90,13 @@ void	expand_dollars(t_mini *s, t_cmdl *cmd, int i, int j)
 			tmp = ft_strdup_size(cmd->token->str,
 					ft_strlen(cmd->token->str), 1);
 			tmp = get_env_value(s, tmp);
-			free(cmd->token->str);
 			if (ft_strchr_int(tmp, ' ') == -1)
+			{
+				free(cmd->token->str);
 				cmd->token->str = tmp;
+			}
 			else
-				cmd->token = split_dollar_token(s, cmd->token,
+				cmd->token = split_dollar_token(s, tmp,
 					cmd->token->prev, cmd->token->next);
 			cmd->token->flag = T_WORD;
 		}
